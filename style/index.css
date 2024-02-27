@@ -1,0 +1,764 @@
+*
+{
+    text-align: center;
+    color: white;
+    transition: all 0.3s ease;
+    font-family: "Coffe", sans-serif;
+    font-weight: 200;
+    user-select: none;
+    -webkit-user-drag: none;
+    text-shadow: 3px 2px 6px black;
+}
+@font-face {
+    font-family: "Coffe";
+    src: url(../font/CocoBubble-Regular.ttf);
+}
+:focus
+{
+    outline: none;
+}
+*::-webkit-scrollbar
+{
+    display: none;
+}
+@keyframes se {
+    0%{
+        opacity: 0%;
+        transform: scale(0.9);
+    }
+    100%{
+        opacity: 100%;
+        transform: scale(1);
+    }
+}
+@keyframes seinversoa {
+    0%{
+        opacity: 100%;
+    }
+    100%{
+        opacity: 0%;
+    }
+}
+@keyframes seinverso {
+    0%{
+        opacity: 100%;
+        transform: scale(1);
+    }
+    100%{
+        opacity: 0%;
+        transform: scale(0.9);
+    }
+}
+@keyframes transitionout {
+    0%{
+        opacity: 100%;
+        transform: scale(1);
+    }
+    35%{
+        opacity: 0%;
+        transform: scale(0.95);
+    }
+    100%{
+        opacity: 0%;
+        transform: scale(0.95);
+        display: none;
+    }
+}
+@keyframes transitionin {
+    0%{
+        opacity: 0%;
+        transform: scale(0.95);
+    }
+    65%{
+        opacity: 0%;
+        transform: scale(0.95);
+    }
+    100%{
+        opacity: 100%;
+        transform: scale(1);
+        display: flex;
+    }
+}
+@keyframes compari {
+    0%{
+        opacity: 100%;
+        transform: scale(1);
+    }
+    50%{
+        opacity: 0%;
+        transform: scale(0.95);
+    }
+    100%{
+        opacity: 100%;
+        transform: scale(1);
+    }
+}
+@keyframes scompari {
+    0%{
+        opacity: 100%;
+    }
+    100%{
+        opacity: 0%;
+    }
+}
+@keyframes respira {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(0.9)
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+@keyframes ecco {
+    0%
+    {
+        opacity: 0%;
+        transform: translateY(-10px);
+    }
+    75%{
+        opacity: 0%;
+        transform: translateY(-10px);
+    }
+    100%{
+        opacity: 100%;
+        transform: translateY(0px);
+    }
+}
+@keyframes transitionover {
+    0%{
+        display: block;
+        opacity: 0%;
+    }
+    60%{
+        opacity: 100%;
+    }
+    70%
+    {
+        opacity: 100%;
+    }
+    100%{
+        opacity: 0%;
+    }
+}
+@keyframes hh {
+    0%{
+        opacity: 0%;
+    }
+    100%{
+        opacity: 70%;
+    }
+}
+html
+{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+#over
+{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 3;
+    opacity: 15%;
+    animation: inover 2.5s ease ;
+}
+.generalover
+{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    z-index: 999;
+    opacity: 0%;
+}
+.visiover
+{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    z-index: 10;
+    opacity: 0%;
+    animation: hh 0.3 ease forwards;
+}
+.blocco
+{
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    z-index: 998;
+    opacity: 0%;
+}
+#sfondo
+{
+    z-index: 2;
+    position: fixed;
+    object-fit:cover;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(1.3);
+}
+.bo
+{
+    animation: ecco 1.5s ease forwards;
+}
+.img
+{
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+}
+#logoload
+{
+    width: 80%;
+    height: auto;
+    object-fit: cover;
+    animation: respira 2s ease infinite;
+}
+#logo
+{
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+}
+.load
+{
+    position: fixed;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+}
+body
+{
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+.loadscreen
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 5;
+    animation: se 0.6s ease forwards
+}
+.homescreen
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 4;
+}
+.selezione
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 6;
+}
+.regole
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 6;
+}
+.areagioco
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 9;
+}
+.classifica
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 6;
+}
+.barrasuperiore
+{
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    height: 10%;
+}
+.logo
+{
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.pulsanti
+{
+    height: 30%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+.barrainferiore
+{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 10%;
+}
+button
+{
+    width: 125px;
+    height: auto;
+    border: solid white 5px;
+    border-radius: 15px;
+    background: #518c38ce;
+    margin: 12px;
+    padding: 8px;
+    box-shadow: 0px 10px 10px #01241d;
+    object-fit: cover;
+}
+.levels
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 80%;
+    width: 95%;
+    overflow-x: scroll;
+}
+.regolario
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 80%;
+    width: 95%;
+    overflow-x: scroll;
+}
+.level
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    height: 75%;
+    margin: 15px;
+}
+.levelbutton
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 95%;
+    height: 90%;
+    border-radius: 30px;
+    position: sticky;
+    overflow: hidden;
+    border: solid white 5px;
+    padding: 2px;
+}
+p
+{
+    display: flex;
+    flex-wrap: nowrap;
+    font-size: 25px;
+    position: absolute;
+    z-index: 8;
+}
+.imglivello
+{
+    position: sticky;
+    height: 110%;
+    width: 110%;
+    object-fit: cover;
+    z-index: 7;
+}
+#x5
+{
+    background-color: #518c38ce;
+}
+#x6
+{
+    background-color: #b1670cce;
+}
+#x7
+{
+    background-color: #b10c0cce;
+}
+#xcasuale
+{
+    background:linear-gradient(to right,#518c38ce,#b1670cce,#b10c0cce)
+}
+.divregole
+{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: auto;
+    align-items:flex-start;
+    justify-content: flex-start;
+    text-align:justify;
+    margin: 15px;
+}
+.inizio
+{
+    justify-content: center;
+    align-items: center;
+}
+h1
+{
+    font-size: 40px;
+}
+li
+{
+    font-size: 15px;
+}
+h2
+{
+    font-size: 25px;
+}
+@media(orientation:landscape)
+{
+    .secondo:hover{
+        li
+        {
+            font-size: 20px;
+        }
+    }
+    button:hover
+    {
+        transform: scale(1.1);
+    }
+    .back
+    {
+        width: 3%;
+        height: auto;
+        border: none;
+        border-radius: 100%;
+        padding: 2px;
+        padding-bottom: 0px;
+        margin: 5px;
+    }
+    .back:active
+    {
+        border: none;
+    }
+    .backimg
+    {
+        width: 95%;
+        height: auto;
+    }
+    .levelbutton:hover
+    {
+        transform: scale(1.05);
+        .imglivello
+        {
+            transform: scale(1.2);
+        }
+        p
+        {
+            font-size: 30px;
+        }
+    }
+    #x5:hover
+    {
+        border: solid #518c38ce 10px;
+    }
+    #x6:hover
+    {
+        border: solid #b1670cce 10px;
+    }
+    #x7:hover
+    {
+        border: solid #b10c0cce 10px;
+    }
+    #xcasuale:hover
+    {
+        border: solid #b1670cce 10px;
+    }
+}
+@media(orientation: portrait)
+{
+    .back
+    {
+        width: auto;
+        height: 75%;
+        border: none;
+        border-radius: 100%;
+        padding: 2px;
+        padding-bottom: 0px;
+    }
+    .load
+    {
+        width: 100%;
+    }
+    .back:active
+    {
+        border: none;
+    }
+    .backimg
+    {
+        width: auto;
+        height: 95%;
+    }
+}
+.levelbutton:active
+{
+    transform: scale(0.9);
+    .imglivello
+    {
+        transform: scale(1.2);
+    }
+    p
+    {
+        font-size: 30px;
+    }
+}
+#x5:active
+{
+    border: solid #518c38ce 5px;
+}
+#x6:active
+{
+    border: solid #b1670cce 5px;
+}
+#x7:active
+{
+    border: solid #b10c0cce 5px;
+}
+#xcasuale:active
+{
+    border: solid #b1670cce 5px;
+}
+.griglia
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 85%;
+    width: 85%;
+}
+.appiglio
+{
+    display: none;
+    flex-direction: column;
+    background: var(--sfondotabella);
+    border-radius: 30px;
+    border: solid white 10px;
+    margin: 10px;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    width: 75%;
+    height: auto;
+    overflow: scroll;
+    box-shadow: 10px 16px 10px #01241dc4;;
+}
+.riga
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: auto;
+}
+.cella
+{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    border: solid white 10px;
+    padding: 5px;
+    margin: 20px;
+    border-radius: 20px;
+}
+@media (orientation:landscape) {
+    .cella:hover
+    {
+        border: solid #c9b27d 10px;
+        transform: scale(1.1);
+    }
+}
+@media(orientation:portrait)
+{
+    #logo
+    {
+        width: 100%;
+        height: auto;
+    }
+    .appiglio
+    {
+        width: 80%;
+    }
+    .riga
+    {
+        width: 100%;
+    }
+}
+.cella:active
+{
+    border:  solid #833920 10px;
+    transform: scale(0.85);
+}
+button:active
+{
+    background: #833920;
+    transform: scale(0.9);
+    border:  solid #c9b27d 5px;
+    box-shadow: 0px 0px 0px black;
+}
+.divisore
+{
+    height: auto;
+}
+.reverseflex
+{
+    flex-direction: row-reverse;
+}
+.immaginecella
+{
+    width: 40px;
+    height: 40px;
+}
+@media (orientation:landscape)
+{
+    body:hover
+    {
+        #sfondo
+        {
+            transform: translate(-50%,-50%) scale(1.4);
+        }
+        .img
+        {
+            transform: scale(0.96);
+        }
+        #over
+        {
+            opacity: 40%;
+        }
+        .appiglio
+        {
+            box-shadow: 0px 0px 10px #01241dc4
+        }
+    }
+}
+.chiedinome
+{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 98;
+}
+.bn
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 40px;
+    background: var(--sfondotabella);
+    border: solid white 10px;
+    padding: 20px;
+    width: 50%;
+    height: auto;
+}
+input{
+    border-radius: 40px;
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    border: solid white 5px;
+    margin: 10px;
+    width: 95%;
+}
+.box
+{
+    display: flex;
+    border-radius: 40px;
+    background: var(--esito);
+    border: solid white 10px;
+    padding: 20px;
+    width: 50%;
+    height: auto;
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.avviso
+{
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+.pausa
+{
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    z-index: 11;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+}
