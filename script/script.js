@@ -9,23 +9,21 @@ let classificabutton = document.getElementById("classici")
 let statoattuale = ""
 let colori = new Map()
 let avviato = false
+let strike = document.getElementById("strike")
 let scambio = undefined
+let mosse = 0
 let player = ""
 let eliminaegenerata = []
+let esplosioni = ["64% 36% 45% 55% / 41% 55% 45% 59%","64% 36% 73% 27% / 36% 69% 31% 64%","34% 66% 73% 27% / 63% 35% 65% 37%","58% 42% 41% 59% / 35% 84% 16% 65%"]
 colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
 let punti = [1,2,3,5]
 let oggetti = ["secco.png","carta.png","plastica.png","vetro.png","poterericiclo.png","amorenatura.png"]
 let punteggio = [0,0,0,0]
 let spawnato = false
-let classificarray = []
-let classificamap = []
+let classifica = []
 if(localStorage.getItem("classifica"))
 {
-    classificarray = localStorage.getItem("classifica")
-}
-if(localStorage.getItem("classificaplayer"))
-{
-    classificamap = JSON.parse(localStorage.getItem("classificaplayer"))
+    classifica = JSON.parse(localStorage.getItem("classifica"))
 }
 document.querySelector(".homescreen").style.display = "flex"
 
@@ -174,8 +172,10 @@ function stampaggiorna(matrix)
     })
     if(spawnato == false)
     {
-        document.querySelector(".appiglio").style.animation = "se 0.3s ease forwards"
-        document.querySelector(".appiglio").style.display = "flex"
+        setTimeout(()=>{
+            document.querySelector(".appiglio").style.animation = "ser 0.3s ease"
+            document.querySelector(".appiglio").style.display = "flex"
+        },300)
     }
     spawnato = true
     let celle = document.querySelectorAll(".cella")
@@ -221,37 +221,74 @@ function stampaggiorna(matrix)
                 if(vicino(posizioneelemento,posizioneelemento2))
                 {
                     matrix = swap(posizioneelemento,posizioneelemento2,matrix)
+                    swapanimation(idunivocoattuale,idunivocoscambiare)
                     let posizioni = [posizioneelemento.i,posizioneelemento.j]
                     let posizioni2 = [posizioneelemento2.i,posizioneelemento2.j]
                     eliminaegenerata = [controllo(matrix[posizioni[0]][posizioni[1]][0],posizioni,matrix),controllo(matrix[posizioni2[0]][posizioni2[1]][0],posizioni2,matrix)]
-                    if(eliminaegenerata[0] != false)
+                    if(eliminaegenerata[0] != false || eliminaegenerata[1] != false)
                     {
-                        for(let i = 0; i<eliminaegenerata[0][0].length;i++)
-                        {
-                            punteggio[eliminaegenerata[0][0][i][0]] = parseInt(punteggio[eliminaegenerata[0][0][i][0]]) + 1
-                        }
-                        matrix = elimina(eliminaegenerata[0][0],matrix)
+                        setTimeout(()=>{
+                            if(eliminaegenerata[0] != false)
+                            {
+                                for(let i = 0; i<eliminaegenerata[0][0].length;i++)
+                                {
+                                    punteggio[eliminaegenerata[0][0][i][0]] = parseInt(punteggio[eliminaegenerata[0][0][i][0]]) + 1
+                                }
+                                matrix = elimina(eliminaegenerata[0][0],matrix)
+                            }
+                            if(eliminaegenerata[1] != false)
+                            {
+                                for(let i = 0; i<eliminaegenerata[1][0].length;i++)
+                                {
+                                    punteggio[eliminaegenerata[1][0][i][0]] = parseInt(punteggio[eliminaegenerata[1][0][i][0]]) + 1
+                                }
+                                matrix = elimina(eliminaegenerata[1][0],matrix)
+                            }
+                            creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)
+                            creaelementocondizionale(eliminaegenerata[1][1],posizioni2,matrix)    
+                            cella.removeAttribute("style")
+                            matrix = shift(matrix)
+                            matrix = rigenera(matrix)
+                            stampaggiorna(matrix)
+                            scambio = undefined
+                        },300)
+                        mosse = 0
                     }
-                    if(eliminaegenerata[1] != false)
+                    else
                     {
-                        for(let i = 0; i<eliminaegenerata[1][0].length;i++)
-                        {
-                            punteggio[eliminaegenerata[1][0][i][0]] = parseInt(punteggio[eliminaegenerata[1][0][i][0]]) + 1
-                        }
-                        matrix = elimina(eliminaegenerata[1][0],matrix)
+                        matrix = swap(posizioneelemento2,posizioneelemento,matrix)
+                        setTimeout(function(){
+                            reverse(idunivocoattuale,idunivocoscambiare)
+                            scambio.style.border = ""
+                            attuale.style.border = ""
+                            scambio = undefined
+                        },300)
+                        mosse = mosse + 1
                     }
-                    creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)
-                    creaelementocondizionale(eliminaegenerata[1][1],posizioni2,matrix)    
-                    cella.removeAttribute("style")
-                    matrix = shift(matrix)
-                    matrix = rigenera(matrix)
-                    stampaggiorna(matrix)
-                    scambio = undefined
                 }
             }
-            console.log(punteggio)
+            console.log(matrix)
         })
     })
+}
+function swapanimation(idunin, idunout) {
+    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
+    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
+
+    let rectIn = elementoIn.getBoundingClientRect();
+    let rectOut = elementoOut.getBoundingClientRect();
+    let dx = rectIn.left - rectOut.left;
+    let dy = rectIn.top - rectOut.top;
+    elementoIn.style.transform = 'translate(' + -dx + 'px, ' + -dy + 'px)';
+    elementoOut.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+}
+function reverse(idunin, idunout)
+{
+    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
+    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
+
+    elementoIn.style.transform = '';
+    elementoOut.style.transform = '';
 }
 function individua(id1, matrice)
 {
@@ -524,53 +561,76 @@ function rigenera(matrice)
 
 /*Gestione generale*/
 setInterval(()=>{
+    let r = "Mosse: " + mosse
+    strike.innerText = r
     if(avviato == true)
     {
-        if(tuttipunti(punteggio))
+        if(tuttipunti(punteggio) == true)
         {
-            stopgame()
+            win()
+        }
+        if(mosse > 3)
+        {
+            lose()
         }
     }
-})
-function stopgame()
+},0)
+function win()
 {
-    let y = "<h2>Hai Vinto<h/2><h6>Visualizza i risultati nella classifica</h6>"
+    let y = "<h2>Hai Vinto</h2><h6>Tocca per tornare alla home</h6>"
     document.querySelector(".visiover").style.display = "flex"
     messaggio(y,"#518c38")
+    document.querySelector(".areagioco").style.filter = "blur(10px)"
     document.querySelector(".avviso").addEventListener("click",function(){
         if(avviato == true)
         {
             avviato = false
             spawnato = false
             scambio = undefined
-            let kj = 0
-            for(let i = 0;i<punteggio.length;i++)
-            {
-                kj = kj + punteggio[i]
-            }
-            classificarray.push(kj)
-            let ob = new Map()
-            ob = {kj:player}
-            classificamap.push(ob)
-            localStorage.setItem("classifica",classificarray)
-            localStorage.setItem("classificaplayer",JSON.stringify(classificamap))
+            let kj = [punteggio,player]
+            classifica.push(kj)
+            localStorage.setItem("classifica",JSON.stringify(classifica))
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
             setTimeout(function(){
                 document.querySelector(".visiover").style.display = "none"
                 document.querySelector(".avviso").style.display = "none"
                 resetta()
+                player = ""
                 statoattuale = "homescreen"
             },300)
         }
     })
 }
-console.log(classificamap)
+function lose()
+{
+    let y = "<h2>Hai Perso</h2><h6>Tocca per tornare alla home</h6>"
+    document.querySelector(".visiover").style.display = "flex"
+    messaggio(y,"#833920")
+    document.querySelector(".areagioco").style.filter = "blur(10px)"
+    document.querySelector(".avviso").addEventListener("click",function(){
+        if(avviato == true)
+        {
+            avviato = false
+            spawnato = false
+            scambio = undefined
+            transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
+            setTimeout(function(){
+                document.querySelector(".visiover").style.display = "none"
+                document.querySelector(".avviso").style.display = "none"
+                resetta()
+                player = ""
+                statoattuale = "homescreen"
+            },300)
+        }
+    })
+}
 function resetta()
 {
     document.querySelector(".areagioco").removeAttribute("style")
     document.querySelector(".chiedinome").removeAttribute("style")
     document.querySelector(".appiglio").removeAttribute("style")
     document.querySelector(".appiglio").innerHTML = ""
+    mosse = 0
 }
 function tuttipunti(array)
 {
@@ -604,8 +664,7 @@ function transizione(inn,outt)
 function transizioneavanzata(inn,outt,w)
 {
     setTimeout(()=>{
-        document.querySelector
-        (".blocco").style.display = "block"
+        document.querySelector(".blocco").style.display = "block"
         inn.style.animation = "transitionout 0.6s ease forwards"
         outt.style.animation = "transitionin 0.6s ease forwards"
         document.querySelector(".generalover").style.display = "block"
@@ -632,29 +691,21 @@ function messaggio(n,p)
 function avviso(n)
 {
     document.body.style.setProperty("--esito","#833920")
-    document.querySelector(".chiedinome").style.display = "none"
     document.getElementById("avvisu").innerHTML = n
-    document.querySelector(".avviso").style.animation = "se 0.6s ease"
-    document.querySelector(".avviso").style.display = "flex"
+    transizione(document.querySelector(".chiedinome"),document.querySelector(".avviso"))
     setTimeout(function(){
-        document.querySelector(".avviso").style.animation = "seinversoa 0.6s ease"
-        setTimeout(function(){
-            document.querySelector(".avviso").style.display = "none"
-        },550)
-        document.querySelector(".chiedinome").style.animation = "se 0.6s ease"
-        document.querySelector(".chiedinome").style.display = "flex"
-    },1000)
+        transizione(document.querySelector(".avviso"),document.querySelector(".chiedinome"))        
+    },800)
 }
 function chiedinome(e)
 {
-    document.querySelector(".chiedinome").style.display = "flex"
     document.querySelector(".ok").addEventListener("click",()=>{
         if(document.getElementById("nome").value != "")
         {
             player = document.getElementById("nome").value
             let d = generazione(e)
             avviato = true
-            document.querySelector(".chiedinome").style.animation = "scompari 0.3s ease forwards"
+            transizione(document.querySelector(".chiedinome"),document.querySelector(".areagioco"))
             setTimeout(function(){
                 document.querySelector(".chiedinome").style.display = "none"
                 stampaggiorna(d)
@@ -683,23 +734,23 @@ backtohomebutton.forEach(button => {
 x5button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x5+"d5")
     chiedinome(5)
-    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".areagioco"),"x5")
+    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x5")
 })
 x6button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x6+"d5")
     chiedinome(6)
-    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".areagioco"),"x6")
+    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x6")
 })
 x7button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x7+"d5")
     chiedinome(7)
-    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".areagioco"),"x7")
+    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x7")
 })
 xcasualebutton.addEventListener("click",()=>{
     let num = Math.round(Math.random()*(10-5)+5)
     document.body.style.setProperty("--sfondotabella",colori.xcasuale)
     chiedinome(num)
-    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".areagioco"),"xcasuale")
+    transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"xcasuale")
 })
 setInterval(()=>{
     if(document.querySelector(".homescreen").style.display == "flex")
@@ -721,6 +772,10 @@ setInterval(()=>{
     else if(document.querySelector(".classifica").style.display == "flex")
     {
         statoattuale = "classifica"
+    }
+    else if (document.querySelector(".chiedinome").style.display == "flex")
+    {
+        statoattuale = "chiedinome"
     }
 },50)
 history.pushState(null, null, document.URL);
@@ -756,6 +811,12 @@ window.addEventListener('popstate', (e) => {
     history.pushState(null, null, document.URL);
     transizione(document.querySelector(".classifica"),document.querySelector(".homescreen"));
     statoattuale = "homescreen";
+  }
+  else if(statoattuale == "chiedinome")
+  {
+    history.pushState(null, null, document.URL);
+    transizioneavanzata(document.querySelector(".chiedinome"),document.querySelector(".selezione"),"sfondo");
+    statoattuale = "selezione";
   }
 })
 window.addEventListener("beforeunload",(e) => {

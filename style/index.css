@@ -31,6 +31,16 @@
         transform: scale(1);
     }
 }
+@keyframes ser {
+    0%{
+        opacity: 0%;
+        transform: scale(0.8);
+    }
+    100%{
+        opacity: 100%;
+        transform: scale(0.96);
+    }
+}
 @keyframes seinversoa {
     0%{
         opacity: 100%;
@@ -76,7 +86,6 @@
     100%{
         opacity: 100%;
         transform: scale(1);
-        display: flex;
     }
 }
 @keyframes compari {
@@ -686,16 +695,12 @@ button:active
         {
             opacity: 40%;
         }
-        .appiglio
-        {
-            box-shadow: 0px 0px 10px #01241dc4
-        }
     }
 }
 .chiedinome
 {
     position: fixed;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
