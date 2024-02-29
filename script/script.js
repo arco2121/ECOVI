@@ -17,7 +17,7 @@ let eliminaegenerata = []
 let esplosioni = ["64% 36% 45% 55% / 41% 55% 45% 59%","64% 36% 73% 27% / 36% 69% 31% 64%","34% 66% 73% 27% / 63% 35% 65% 37%","58% 42% 41% 59% / 35% 84% 16% 65%"]
 colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
 let punti = [1,2,3,5]
-let oggetti = ["secco.png","carta.png","plastica.png","vetro.png","poterericiclo.png","amorenatura.png"]
+let oggetti = ["secco.png","carta.png","plastica.png","vetro.png","poterericiclo.png","amorenatura.png","rifiutotossico.png"]
 let punteggio = [0,0,0,0]
 let spawnato = false
 let classifica = []
@@ -72,6 +72,14 @@ function generazione(num)
                     valo = [p,codice,idunivoco]
                 }
             }
+            let urio = Math.round(Math.random() * ((16+num) + 0) - 0)
+            if(urio<1)
+            {
+                p = 6
+                idunivoco = genid()
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                valo = [p,codice,idunivoco]
+            }
             riga[j] = valo
         }
         matrice[i] = [...riga]
@@ -98,43 +106,51 @@ function generaelemento(posizioni,tipo,matrice)
         valo = [p,codice,idunivoco]
         if(posizioni[0]+1<matrice.length && matrice[posizioni[0]+1][posizioni[1]] != undefined)
         {
-            while(matrice[posizioni[0]+1][posizioni[1]][0] == tipo)
+            while(matrice[posizioni[0]+1][posizioni[1]][0] == p)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
         }
         if(posizioni[0]-1>=0 && matrice[posizioni[0]-1][posizioni[1]] != undefined)
         {
-            while(matrice[posizioni[0]-1][posizioni[1]][0] == tipo)
+            while(matrice[posizioni[0]-1][posizioni[1]][0] == p)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
         }
         if(posizioni[1]+1 < matrice[posizioni[0]].length && matrice[posizioni[0]][posizioni[1]+1] != undefined)
         {
-            while(matrice[posizioni[0]][posizioni[1]+1][0] == tipo)
+            while(matrice[posizioni[0]][posizioni[1]+1][0] == p)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
         }
         if(posizioni[1]-1 >=0 && matrice[posizioni[0]][posizioni[1]-1] != undefined)
         {
-            while(matrice[posizioni[0]][posizioni[1]-1][0] == tipo)
+            while(matrice[posizioni[0]][posizioni[1]-1][0] == p)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
+        }
+        let urio = Math.round(Math.random() * ((11+matrice.length) + 0) - 0)
+        if(urio<1)
+        {
+            p = 6
+            idunivoco = genid()
+            codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+            valo = [p,codice,idunivoco]
         }
         return valo
     }
@@ -561,8 +577,21 @@ function rigenera(matrice)
 
 /*Gestione generale*/
 setInterval(()=>{
-    let r = "Mosse: " + mosse
-    strike.innerText = r
+    let colore = ""
+    if(mosse <= 1)
+    {
+        colore = "white"
+    }
+    else if(mosse == 2)
+    {
+        colore = colori.x6
+    }
+    else
+    {
+        colore = colori.x7
+    }
+    let r = "Mosse: <f style='color:" + colore + ";'>" + mosse + "</f>"
+    strike.innerHTML = r
     if(avviato == true)
     {
         if(tuttipunti(punteggio) == true)
