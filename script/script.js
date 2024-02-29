@@ -17,7 +17,7 @@ let eliminaegenerata = []
 let esplosioni = ["64% 36% 45% 55% / 41% 55% 45% 59%","64% 36% 73% 27% / 36% 69% 31% 64%","34% 66% 73% 27% / 63% 35% 65% 37%","58% 42% 41% 59% / 35% 84% 16% 65%"]
 colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
 let punti = [1,2,3,5]
-let oggetti = ["secco.png","carta.png","plastica.png","vetro.png","poterericiclo.png","amorenatura.png","rifiutotossico.png"]
+let oggetti = ["secco.png","carta.png","plastica.png","vetro.png","poterericiclo.png","amorenatura.png"]
 let punteggio = [0,0,0,0]
 let spawnato = false
 let classifica = []
@@ -72,14 +72,6 @@ function generazione(num)
                     valo = [p,codice,idunivoco]
                 }
             }
-            let urio = Math.round(Math.random() * ((16+num) + 0) - 0)
-            if(urio<1)
-            {
-                p = 6
-                idunivoco = genid()
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
-                valo = [p,codice,idunivoco]
-            }
             riga[j] = valo
         }
         matrice[i] = [...riga]
@@ -106,51 +98,43 @@ function generaelemento(posizioni,tipo,matrice)
         valo = [p,codice,idunivoco]
         if(posizioni[0]+1<matrice.length && matrice[posizioni[0]+1][posizioni[1]] != undefined)
         {
-            while(matrice[posizioni[0]+1][posizioni[1]][0] == p)
+            while(matrice[posizioni[0]+1][posizioni[1]][0] == tipo)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
         }
         if(posizioni[0]-1>=0 && matrice[posizioni[0]-1][posizioni[1]] != undefined)
         {
-            while(matrice[posizioni[0]-1][posizioni[1]][0] == p)
+            while(matrice[posizioni[0]-1][posizioni[1]][0] == tipo)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
         }
         if(posizioni[1]+1 < matrice[posizioni[0]].length && matrice[posizioni[0]][posizioni[1]+1] != undefined)
         {
-            while(matrice[posizioni[0]][posizioni[1]+1][0] == p)
+            while(matrice[posizioni[0]][posizioni[1]+1][0] == tipo)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
         }
         if(posizioni[1]-1 >=0 && matrice[posizioni[0]][posizioni[1]-1] != undefined)
         {
-            while(matrice[posizioni[0]][posizioni[1]-1][0] == p)
+            while(matrice[posizioni[0]][posizioni[1]-1][0] == tipo)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
                 valo = [tipo,codice,idunivoco]
             }
-        }
-        let urio = Math.round(Math.random() * ((11+matrice.length) + 0) - 0)
-        if(urio<1)
-        {
-            p = 6
-            idunivoco = genid()
-            codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
-            valo = [p,codice,idunivoco]
         }
         return valo
     }
@@ -366,15 +350,64 @@ function controllo(tipo, posizioni, matrice) {
         }
     }
     elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
-
-    if(elemdaeliminare.length > 2) 
+    if(elemdaeliminare.length >= 5) 
     {
         return [elemdaeliminare, elemdaeliminare.length];
+    }
+    else if(elemdaeliminare.length < 5 && elemdaeliminare.length > 2)
+    {
+        let kp = controllosecondario(tipo,posizioni,matrice)
+        return kp
     } 
     else 
     {
         return false;
     }
+}
+function controllosecondario(tipo,posizioni,matrice)
+{
+    let adiacenti = [];
+    console.log(adiacenti)
+    for(let direzione = -1; direzione <= 1; direzione += 2) {
+        for(let i = posizioni[0] + direzione; i >= 0 && i < matrice.length && matrice[i][posizioni[1]] && tipo === matrice[i][posizioni[1]][0]; i += direzione) 
+        {
+            adiacenti.push(matrice[i][posizioni[1]]);
+        }
+    }
+
+    if(adiacenti == "")
+    {
+        for(let direzione = -1; direzione <= 1; direzione += 2) 
+        {
+            for(let j = posizioni[1] + direzione; j >= 0 && j < matrice[posizioni[0]].length && matrice[posizioni[0]][j] && tipo === matrice[posizioni[0]][j][0]; j += direzione)
+            {
+                adiacenti.push(matrice[posizioni[0]][j]);
+            }
+        }
+    }
+    
+    let elemdaeliminare = [];
+    for(let i = 0; i < adiacenti.length; i++) 
+    {
+        if(elemdaeliminare.indexOf(adiacenti[i]) == -1) 
+        {
+            elemdaeliminare.push(adiacenti[i]);
+        }
+    }
+    elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+    if(elemdaeliminare.length >= 5) 
+    {
+        return [elemdaeliminare, elemdaeliminare.length];
+    }
+    else if(elemdaeliminare.length < 5 && elemdaeliminare.length > 2)
+    {
+        let kp = controllosecondario(tipo,posizioni,matrice)
+        return kp
+    } 
+    else 
+    {
+        return false;
+    }   
 }
 function elimina(elemdaeliminare,matrice)
 {
