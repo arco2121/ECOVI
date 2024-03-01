@@ -272,25 +272,6 @@ function stampaggiorna(matrix)
         })
     })
 }
-function swapanimation(idunin, idunout) {
-    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
-    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
-
-    let rectIn = elementoIn.getBoundingClientRect();
-    let rectOut = elementoOut.getBoundingClientRect();
-    let dx = rectIn.left - rectOut.left;
-    let dy = rectIn.top - rectOut.top;
-    elementoIn.style.transform = 'translate(' + -dx + 'px, ' + -dy + 'px)';
-    elementoOut.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
-}
-function reverse(idunin, idunout)
-{
-    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
-    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
-
-    elementoIn.style.transform = '';
-    elementoOut.style.transform = '';
-}
 function individua(id1, matrice)
 {
     let pos1
@@ -531,6 +512,7 @@ function elimina(elemdaeliminare,matrice)
         {
             if(elemdaeliminare.indexOf(matrice[i][j]) != -1)
             {
+                esplosione(matrice[i][j][3])
                 matrice[i][j] = undefined
             }
         }
@@ -720,6 +702,29 @@ function rigenera(matrice)
         }
     }
     return matrice
+}
+function swapanimation(idunin, idunout) {
+    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
+    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
+
+    let rectIn = elementoIn.getBoundingClientRect();
+    let rectOut = elementoOut.getBoundingClientRect();
+    let dx = rectIn.left - rectOut.left;
+    let dy = rectIn.top - rectOut.top;
+    elementoIn.style.transform = 'translate(' + -dx + 'px, ' + -dy + 'px)';
+    elementoOut.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+}
+function reverse(idunin, idunout)
+{
+    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
+    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
+
+    elementoIn.style.transform = '';
+    elementoOut.style.transform = '';
+}
+function esplosione(idunivoco)
+{
+    
 }
 
 /*Gestione generale*/

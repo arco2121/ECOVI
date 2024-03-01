@@ -21,6 +21,18 @@
 {
     display: none;
 }
+@keyframes esplosione {
+    0%{
+        transform: scale(1);
+        opacity: 100%;
+    }
+    100%{
+        transform: scale(1.1);
+        border: solid var(--sfondotabella);
+        border-radius: var(--esplosione);
+        opacity: 0%;
+    }
+}
 @keyframes se {
     0%{
         opacity: 0%;
