@@ -227,6 +227,7 @@ function stampaggiorna(matrix)
                     eliminaegenerata = [controllo(matrix[posizioni[0]][posizioni[1]][0],posizioni,matrix),controllo(matrix[posizioni2[0]][posizioni2[1]][0],posizioni2,matrix)]
                     if(eliminaegenerata[0] != false || eliminaegenerata[1] != false)
                     {
+                        console.log(eliminaegenerata)
                         setTimeout(()=>{
                             if(eliminaegenerata[0] != false)
                             {
@@ -326,80 +327,80 @@ function vicino(posizioni1,posizioni2)
 }
 function controllo(tipo, posizioni, matrice) 
 {
-    function controllo(tipo, posizioni, matrice) {
-        let adiacenti = [];
-    
-        let riga = posizioni[0];
-        let colonna = posizioni[1];
+    let adiacenti = [];
 
-        for (let j = colonna; j >= 0; j--) 
-        {
-            if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
-            {
-                adiacenti.push(matrice[riga][j]);
-            } 
-            else 
-            {
-                break; 
-            }
-        }
-    
-        for (let j = colonna + 1; j < matrice[riga].length; j++) 
-        {
-            if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
-            {
-                adiacenti.push(matrice[riga][j]);
-            }
-            else 
-            {
-                break;
-            }
-        }
+    let riga = posizioni[0];
+    let colonna = posizioni[1];
 
-        for (let i = riga; i >= 0; i--) 
+    for (let j = colonna; j >= 0; j--) 
+    {
+        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
         {
-            if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
-            {
-                adiacenti.push(matrice[i][colonna]);
-                count++;
-            } 
-            else 
-            {
-                break; 
-            }
-        }
-    
-        for (let i = riga + 1; i < matrice.length; i++)
+            adiacenti.push(matrice[riga][j]);
+        } 
+        else 
         {
-            if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
-            {
-                adiacenti.push(matrice[i][colonna]);
-                count++;
-            } 
-            else 
-            {
-                break; 
-            }
+            break; 
         }
+    }
 
-        let elemdaeliminare = [];
-        for (let i = 0; i < adiacenti.length; i++) {
-            if (elemdaeliminare.indexOf(adiacenti[i]) == -1) {
-                elemdaeliminare.push(adiacenti[i]);
-            }
-        }
-        if(elemdaeliminare.indexOf(adiacenti[i]) == -1)
+    for (let j = colonna + 1; j < matrice[riga].length; j++) 
+    {
+        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
         {
-            elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+            adiacenti.push(matrice[riga][j]);
         }
-        if (elemdaeliminare.length >= 5) {
-            return [elemdaeliminare, elemdaeliminare.length];
-        } else if (elemdaeliminare.length < 5 && elemdaeliminare.length > 2) {
-            let kp = controllosecondario(tipo, posizioni, matrice);
-            return kp;
-        } else {
-            return false;
+        else 
+        {
+            break;
         }
+    }
+
+    for (let i = riga; i >= 0; i--) 
+    {
+        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        {
+            adiacenti.push(matrice[i][colonna]);
+        } 
+        else 
+        {
+            break; 
+        }
+    }
+
+    for (let i = riga + 1; i < matrice.length; i++)
+    {
+        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        {
+            adiacenti.push(matrice[i][colonna]);
+        } 
+        else 
+        {
+            break; 
+        }
+    }
+
+    let elemdaeliminare = [];
+    for (let i = 0; i < adiacenti.length; i++) {
+        if (elemdaeliminare.indexOf(adiacenti[i]) == -1) {
+            elemdaeliminare.push(adiacenti[i]);
+        }
+    }
+    if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
+    {
+        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+    }
+    if (elemdaeliminare.length >= 5) {
+        return [elemdaeliminare, elemdaeliminare.length];
+    } 
+    else if (elemdaeliminare.length < 5 && elemdaeliminare.length > 2) 
+    {
+        let kp = controllosecondario(tipo, posizioni, matrice);
+        return kp;
+    }
+    else
+    {
+        return false;
     }
 }
 function controllosecondario(tipo,posizioni,matrice)
@@ -422,7 +423,7 @@ function controllosecondario(tipo,posizioni,matrice)
         }
     }
 }
-function controlloriga()
+function controlloriga(tipo,posizioni,matrice)
 {
     let adiacenti = [];
 
@@ -459,19 +460,31 @@ function controlloriga()
             elemdaeliminare.push(adiacenti[i]);
         }
     }
-    if(elemdaeliminare.indexOf(adiacenti[i]) == -1)
+    if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
     {
         elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
     }
+    if(elemdaeliminare.length > 2 && elemdaeliminare.length < 5)
+    {
+        return [elemdaeliminare,elemdaeliminare.length]
+    }
+    else
+    {
+        return false
+    }
 }
-function controllocolonna()
+function controllocolonna(tipo,posizioni,matrice)
 {
+    let adiacenti = [];
+
+    let riga = posizioni[0];
+    let colonna = posizioni[1]; 
+
     for (let i = riga; i >= 0; i--) 
     {
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
         {
             adiacenti.push(matrice[i][colonna]);
-            count++;
         } 
         else 
         {
@@ -484,12 +497,30 @@ function controllocolonna()
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
         {
             adiacenti.push(matrice[i][colonna]);
-            count++;
         } 
         else 
         {
             break; 
         }
+    }
+    
+    let elemdaeliminare = [];
+    for (let i = 0; i < adiacenti.length; i++) {
+        if (elemdaeliminare.indexOf(adiacenti[i]) == -1) {
+            elemdaeliminare.push(adiacenti[i]);
+        }
+    }
+    if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
+    {
+        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+    }
+    if(elemdaeliminare.length > 2 && elemdaeliminare.length < 5)
+    {
+        return [elemdaeliminare,elemdaeliminare.length]
+    }
+    else
+    {
+        return false
     }
 }
 function elimina(elemdaeliminare,matrice)
