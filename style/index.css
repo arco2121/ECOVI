@@ -638,15 +638,15 @@ h2
     align-items: center;
     width: auto;
     height: auto;
-    border: solid white 10px;
+    border: solid white 5px;
     padding: 5px;
-    margin: 20px;
+    margin: 15px;
     border-radius: 20px;
 }
 @media (orientation:landscape) {
     .cella:hover
     {
-        border: solid #c9b27d 10px;
+        border: solid #c9b27d 5px;
         transform: scale(1.1);
     }
 }
@@ -668,7 +668,7 @@ h2
 }
 .cella:active
 {
-    border:  solid #833920 10px;
+    border:  solid #833920 5px;
     transform: scale(0.85);
 }
 button:active
@@ -688,8 +688,8 @@ button:active
 }
 .immaginecella
 {
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
 }
 @media (orientation:landscape)
 {

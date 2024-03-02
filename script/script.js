@@ -18,7 +18,7 @@ let eliminaegenerata = []
 let esplosioni = ["64% 36% 45% 55% / 41% 55% 45% 59%","64% 36% 73% 27% / 36% 69% 31% 64%","34% 66% 73% 27% / 63% 35% 65% 37%","58% 42% 41% 59% / 35% 84% 16% 65%"]
 colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
 let punti = [1,2,3,5]
-let oggetti = ["secco.png","carta.png","plastica.png","vetro.png","poterericiclo.png","amorenatura.png"]
+let oggetti = [["secco.png","#4d2083"],["carta.png","#948923"],["plastica.png","#245b19"],["vetro.png","#206283"],["poterericiclo.png","white"],["amorenatura.png","white"],["rifiutotossico.png","#810404"]]
 let punteggio = [0,0,0,0]
 let spawnato = false
 let classifica = []
@@ -61,7 +61,7 @@ function generazione(num)
             let valo = []
             let p = Math.round(Math.random() * (3))
             let idunivoco = genid()
-            let codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+            let codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
             valo = [p,codice,idunivoco]
             if(j!=0 || i!=0)
             {
@@ -69,7 +69,7 @@ function generazione(num)
                 {
                     p = Math.round(Math.random() * (3))
                     idunivoco = genid()
-                    codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                    codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
                     valo = [p,codice,idunivoco]
                 }
             }
@@ -86,7 +86,7 @@ function generaelemento(posizioni,tipo,matrice)
     {
         let valo = []
         let idunivoco = genid()
-        let codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo] +"'></div>"
+        let codice = "<div style='background:" + oggetti[tipo][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo][0] +"'></div>"
         valo = [tipo,codice,idunivoco]
         return valo
     }
@@ -95,7 +95,7 @@ function generaelemento(posizioni,tipo,matrice)
         let valo = []
         let p = Math.round(Math.random() * (3))
         let idunivoco = genid()
-        let codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+        let codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
         valo = [p,codice,idunivoco]
         if(posizioni[0]+1<matrice.length && matrice[posizioni[0]+1][posizioni[1]] != undefined)
         {
@@ -103,7 +103,7 @@ function generaelemento(posizioni,tipo,matrice)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
                 valo = [p,codice,idunivoco]
             }
         }
@@ -113,7 +113,7 @@ function generaelemento(posizioni,tipo,matrice)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
                 valo = [p,codice,idunivoco]
             }
         }
@@ -123,7 +123,7 @@ function generaelemento(posizioni,tipo,matrice)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
                 valo = [p,codice,idunivoco]
             }
         }
@@ -133,17 +133,16 @@ function generaelemento(posizioni,tipo,matrice)
             {
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
-                codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+                codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
                 valo = [p,codice,idunivoco]
             }
         }
-        let urai = Math.round(Math.random() * ((13-valo[0]-arrabbiatura) - 0) + 0)
+        let urai = Math.round(Math.random() * ((35-valo[0]-arrabbiatura) - 0) + 0)
         if(urai <= 1)
         {
-            console.log("ehila")
             idunivoco = genid()
             p = 6
-            codice = "<div idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p] +"'></div>"
+            codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
             valo = [p,codice,idunivoco]
         }
         return valo
@@ -210,19 +209,24 @@ function stampaggiorna(matrix)
                 }
                 matrix = shift(matrix)
                 matrix = rigenera(matrix)
+                matrix = controlloricorsivo(matrix)
                 stampaggiorna(matrix)
                 scambio = undefined
                 arrabbiatura = 0
                 mosse = 0
             }
+            else if (attuale.id == '6')
+            {
+
+            }
             else if(scambio == undefined)
             {
                 scambio = attuale
-                cella.style.border = "solid #c9b27d 10px"
+                cella.style.border = "solid #c9b27d 5px"
             }
             else if(scambio.getAttribute('idunivoco') == attuale.getAttribute('idunivoco') && scambio != undefined)
             {
-                cella.style.border = "solid #c9b27d 10px"
+                cella.style.border = "solid #c9b27d 5px"
             }
             else if(scambio.getAttribute('idunivoco') != attuale.getAttribute('idunivoco') && attuale.id != "undefined" && scambio != undefined && (scambio.id != '5' || scambio.id != '4'))
             {
@@ -269,7 +273,9 @@ function stampaggiorna(matrix)
                             cella.removeAttribute("style")
                             matrix = shift(matrix)
                             matrix = rigenera(matrix)
+                            matrix = controlloricorsivo(matrix)
                             stampaggiorna(matrix)
+                            console.log(punteggio)
                             scambio = undefined
                         },300)
                         arrabbiatura = 0
@@ -291,6 +297,35 @@ function stampaggiorna(matrix)
             }
         })
     })
+}
+function controlloricorsivo(matrice)
+{
+    for(let i = 0; i<matrice.length;i++)
+    {
+        for(let j = 0; j<matrice[i].length;j++)
+        {
+            let posizioni = [i,j]
+            let eleminarea = controllo(matrice[i][j][0],posizioni,matrice)
+            if(eleminarea != false)
+            {
+                for(let i = 0; i<eleminarea[0].length;i++)
+                {
+                    console.log("gfgfgf")
+                    punteggio[eleminarea[0][i][0]] = parseInt(punteggio[eleminarea[0][i][0]]) + 1
+                }
+                matrice = elimina(eleminarea[0],matrice)
+                creaelementocondizionale(eleminarea[1],posizioni,matrice)
+                matrice = shift(matrice)
+                matrice = rigenera(matrice)
+                controlloricorsivo(matrice)
+            }
+            else
+            {
+
+            }
+        }
+    }
+    return matrice
 }
 function individua(id1, matrice)
 {
