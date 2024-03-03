@@ -2,7 +2,7 @@ let giocabutton = document.getElementById("gioca")
 let backtohomebutton = document.querySelectorAll(".backtohome")
 let regolebutton = document.getElementById("regole")
 let backtoclassifica = document.querySelectorAll(".backtoclassifica")
-let pausabutton = document.que
+let pausabutton = document.getElementById("pausa")
 let x5button = document.getElementById("x5")
 let x6button = document.getElementById("x6")
 let x7button =  document.getElementById("x7")
@@ -39,6 +39,7 @@ setTimeout(function(){
     document.querySelector(".loadscreen").addEventListener("click",()=>{
         setTimeout(()=>{
             transizione(document.querySelector(".loadscreen"),document.querySelector(".homescreen"))
+            statoattuale = "homescreen"
         },50)
     })
 },1650)
@@ -144,7 +145,7 @@ function generaelemento(posizioni,tipo,matrice)
                 valo = [p,codice,idunivoco]
             }
         }
-        let urai = Math.round(Math.random() * ((50-valo[0]-arrabbiatura) - 0) + 0)
+        let urai = Math.round(Math.random() * ((25-arrabbiatura) - 0) + 0)
         if(urai <= 1)
         {
             idunivoco = genid()
@@ -882,19 +883,16 @@ function win()
     document.querySelector(".avviso").addEventListener("click",function(){
         if(avviato == true)
         {
-            avviato = false
-            spawnato = false
-            scambio = undefined
             let kj = [punteggio,player,livello]
             classifica.push(kj)
             classifica = riordina(classifica)
             localStorage.setItem("classifica",JSON.stringify(classifica))
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
+            statoattuale = "homescreen"
             setTimeout(function(){
                 document.querySelector(".visiover").style.display = "none"
                 document.querySelector(".avviso").style.display = "none"
                 resetta()
-                player = ""
                 statoattuale = "homescreen"
             },300)
         }
@@ -909,15 +907,12 @@ function lose()
     document.querySelector(".avviso").addEventListener("click",function(){
         if(avviato == true)
         {
-            avviato = false
-            spawnato = false
-            scambio = undefined
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
+            statoattuale = "homescreen"
             setTimeout(function(){
                 document.querySelector(".visiover").style.display = "none"
                 document.querySelector(".avviso").style.display = "none"
                 resetta()
-                player = ""
                 statoattuale = "homescreen"
             },300)
         }
@@ -930,7 +925,11 @@ function resetta()
     document.querySelector(".appiglio").removeAttribute("style")
     document.querySelector(".appiglio").innerHTML = ""
     mosse = 0
+    player = ""
     arrabbiatura = mosse
+    avviato = false
+    spawnato = false
+    scambio = undefined
 }
 function tuttipunti(array)
 {
@@ -978,6 +977,7 @@ function stampaclassifica(classifica,dove)
                 let dati = JSON.parse(attuale.getAttribute("dati"))
                 costruisciclassifica(dati,document.querySelector(".classiview"),true)
                 transizione(document.querySelector(".classifica"),document.querySelector(".areaclassifica"))
+                statoattuale = "areaclassifica"
             })
         })
     }
@@ -991,11 +991,11 @@ function costruisciclassifica(dati,dove,si)
     let html = ""
     if(si == false)
     {
-        html = "<div class='classi-box levelbutton'><div class='sinistra'><div class='classi-prog'><img src='img/secco-general.png' class='classi-img'><progress class='secco' max='50' value='"+ dati[0][0] + "'></progress><h4>"+dati[0][0]+"/50</h4></div><div class='classi-prog'><img src='img/carta-general.png' class='classi-img'><progress class='carta' max='50' value='"+dati[0][1]+"'></progress><h4>"+dati[0][1]+"/50</h4></div><div class='classi-prog'><img src='img/plastica-general.png'  class='classi-img'><progress class='plastica' max='50' value='"+dati[0][2]+"'></progress><h4>"+ dati[0][2] +"/50</h4></div><div class='classi-prog'><img src='img/vetro-general.png' class='classi-img'><progress class='vetro' max='50' value='"+ dati[0][3] +"'></progress><h4>" + dati[0][3] + "/50</h4></div></div><div class='destra'><div class='classi-nome'><h3>" + dati[1] + "</h3></div><div class='classi-tot'><h5>" + dati[3] + "</h5></div></div></div>"
+        html = "<div class='classi-box levelbutton'><div class='sinistra'><div class='classi-prog'><img src='img/secco-general.png' class='classi-img'><progress class='secco' max='50' value='"+ dati[0][0] + "'></progress><h4>"+dati[0][0]+"/50</h4></div><div class='classi-prog'><img src='img/carta-general.png' class='classi-img'><progress class='carta' max='50' value='"+dati[0][1]+"'></progress><h4>"+dati[0][1]+"/50</h4></div><div class='classi-prog'><img src='img/plastica-general.png'  class='classi-img'><progress class='plastica' max='50' value='"+dati[0][2]+"'></progress><h4>"+ dati[0][2] +"/50</h4></div><div class='classi-prog'><img src='img/vetro-general.png' class='classi-img'><progress class='vetro' max='50' value='"+ dati[0][3] +"'></progress><h4>" + dati[0][3] + "/50</h4></div></div><div class='destra'><div class='classi-nome'><h3>" + dati[1] + "</h3></div><div class='classi-tot'><h3>" + dati[3] + "</h3></div></div></div>"
     }
     else
     {
-        html = "<div class='classi-box levelbutton'><div class='sinistra'><div class='classi-prog'><img src='img/secco-general.png' class='classi-img'><progress class='secco' max='50' value='"+ dati[0][0] + "'></progress><h4>"+dati[0][0]+"/50</h4></div><div class='classi-prog'><img src='img/carta-general.png' class='classi-img'><progress class='carta' max='50' value='"+dati[0][1]+"'></progress><h4>"+dati[0][1]+"/50</h4></div><div class='classi-prog'><img src='img/plastica-general.png'  class='classi-img'><progress class='plastica' max='50' value='"+dati[0][2]+"'></progress><h4>"+ dati[0][2] +"/50</h4></div><div class='classi-prog'><img src='img/vetro-general.png' class='classi-img'><progress class='vetro' max='50' value='"+ dati[0][3] +"'></progress><h4>" + dati[0][3] + "/50</h4></div></div><div class='destra'><div class='classi-nome'><h3>" + dati[1] + "</h3></div><div class='classi-tot'><h5>" + dati[3] + "</h5></div></div><img class='imglivello posizioneabso' src='img/" + dati[2] + ".jpg'></div>"
+        html = "<div class='classi-box levelbutton'><div class='sinistra'><div class='classi-prog'><img src='img/secco-general.png' class='classi-img'><progress class='secco' max='50' value='"+ dati[0][0] + "'></progress><h4>"+dati[0][0]+"/50</h4></div><div class='classi-prog'><img src='img/carta-general.png' class='classi-img'><progress class='carta' max='50' value='"+dati[0][1]+"'></progress><h4>"+dati[0][1]+"/50</h4></div><div class='classi-prog'><img src='img/plastica-general.png'  class='classi-img'><progress class='plastica' max='50' value='"+dati[0][2]+"'></progress><h4>"+ dati[0][2] +"/50</h4></div><div class='classi-prog'><img src='img/vetro-general.png' class='classi-img'><progress class='vetro' max='50' value='"+ dati[0][3] +"'></progress><h4>" + dati[0][3] + "/50</h4></div></div><div class='destra'><div class='classi-nome'><h3>" + dati[1] + "</h3></div><div class='classi-tot'><h3>" + dati[3] + "</h3></div></div><img class='imglivello posizioneabso' src='img/" + dati[2] + ".jpg'></div>"
     }
     dove.innerHTML = html
 }
@@ -1022,7 +1022,7 @@ function transizioneavanzata(inn,outt,w)
         document.querySelector(".generalover").style.animation = "transitionover 0.6s ease forwards"
         setTimeout(function(){
             document.getElementById("sfondo").src = "img/"+w+".jpg"
-        },401)
+        },200)
         outt.style.display = "flex"
         setTimeout(function(){
             inn.style.display  ="none"
@@ -1044,15 +1044,17 @@ function avviso(n)
     document.body.style.setProperty("--esito","#833920")
     document.getElementById("avvisu").innerHTML = n
     transizione(document.querySelector(".chiedinome"),document.querySelector(".avviso"))
+    statoattuale = "avviso"
     setTimeout(function(){
-        transizione(document.querySelector(".avviso"),document.querySelector(".chiedinome"))        
+        transizione(document.querySelector(".avviso"),document.querySelector(".chiedinome"))  
+        statoattuale = "chiedinome"      
     },800)
 }
 function chiedinome(e)
 {
-    if(player != "")
+    if(localStorage.getItem("player"))
     {
-        document.getElementById("nome").value = player
+        document.getElementById("nome").value = localStorage.getItem("player")
     }
     else
     {
@@ -1066,6 +1068,7 @@ function chiedinome(e)
             let d = generazione(e)
             avviato = true
             transizione(document.querySelector(".chiedinome"),document.querySelector(".areagioco"))
+            statoattuale = "areagioco"
             setTimeout(function(){
                 document.querySelector(".chiedinome").style.display = "none"
                 stampaggiorna(d)
@@ -1079,22 +1082,27 @@ function chiedinome(e)
 }
 giocabutton.addEventListener("click", () => {
     transizione(document.querySelector(".homescreen"),document.querySelector(".selezione"))
+    statoattuale = "selezione"
 })
 regolebutton.addEventListener("click",()=>{
     transizione(document.querySelector(".homescreen"),document.querySelector(".regole"))
+    statoattuale = "regole"
 })
 classificabutton.addEventListener("click",()=>{
     stampaclassifica(classifica,document.querySelector(".classi-view"))
     transizione(document.querySelector(".homescreen"),document.querySelector(".classifica"))
+    statoattuale = "classifica"
 })
 backtohomebutton.forEach(button => {
     button.addEventListener("click", ()=>{
         transizione(document.querySelector("."+statoattuale),document.querySelector(".homescreen"))
+        statoattuale = "homescreen"
     })
 })
 backtoclassifica.forEach(bottone => {
     bottone.addEventListener("click",function(){
         transizione(document.querySelector("."+statoattuale),document.querySelector(".classifica"))
+        statoattuale = "classifica"
     })
 })
 x5button.addEventListener("click", ()=>{
@@ -1102,18 +1110,21 @@ x5button.addEventListener("click", ()=>{
     livello = "x5"
     chiedinome(5)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x5")
+    statoattuale = "chiedinome"
 })
 x6button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x6+"d5")
     livello = "x6"
     chiedinome(6)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x6")
+    statoattuale = "chiedinome"
 })
 x7button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x7+"d5")
     livello = "x7"
     chiedinome(7)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x7")
+    statoattuale = "chiedinome"
 })
 xcasualebutton.addEventListener("click",()=>{
     let num = Math.round(Math.random()*(10-5)+5)
@@ -1121,44 +1132,45 @@ xcasualebutton.addEventListener("click",()=>{
     livello = "xcasuale"
     chiedinome(num)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"xcasuale")
+    statoattuale = "chiedinome"
 })
-setInterval(()=>{
-    if(document.querySelector(".homescreen").style.display == "flex")
-    {
-        statoattuale = "homescreen"
-    }
-    else if(document.querySelector(".selezione").style.display == "flex")
-    {
-        statoattuale = "selezione"
-    }
-    else if(document.querySelector(".regole").style.display == "flex")
-    {
-        statoattuale = "regole"
-    }
-    else if(document.querySelector(".areagioco").style.display == "flex")
-    {
-        statoattuale = "areagioco"
-    }
-    else if(document.querySelector(".classifica").style.display == "flex")
-    {
-        statoattuale = "classifica"
-    }
-    else if (document.querySelector(".chiedinome").style.display == "flex")
-    {
-        statoattuale = "chiedinome"
-    }
-    else if( document.querySelector(".areaclassifica").style.display == "flex")
-    {
-        statoattuale = "areaclassifica"
-    }
-},50)
-history.pushState(null, null, document.URL);
-window.addEventListener('popstate', (e) => {
-  if (statoattuale == "selezione") {
+pausabutton.addEventListener("click",()=>{
+    let tot = 0
+    punteggio.forEach((attuale,index) => {
+        tot = tot + (attuale*punti[index])
+    })
+    costruisciclassifica([punteggio,player,"",tot],document.querySelector(".puntiview"),false)
+    setTimeout(function(){
+        document.querySelector(".areagioco").style.animation = "sevabo 0.6s ease forwards"
+        document.querySelector(".pausa").style.animation = "se 0.6s ease forwards"
+        document.querySelector(".pausa").style.display = "flex"
+    },50)
+    statoattuale = "pausa"
+})
+document.getElementById("termina").addEventListener("click",function(){
+    resetta()
+    transizioneavanzata(document.querySelector(".pausa"),document.querySelector(".homescreen"),"sfondo")
+    statoattuale = "homescreen"
+})
+document.getElementById("riprendi").addEventListener("click",function(){
+    setTimeout(function(){
+        document.querySelector(".areagioco").style.animation = "sevabow 0.6s ease forwards"
+        document.querySelector(".pausa").style.animation = "seinverso 0.6s ease forwards"
+        setTimeout(function(){
+            document.querySelector(".pausa").style.display = "none"
+        },600)
+    },50)
+})
+history.pushState(null, null, document.URL)
+window.addEventListener('popstate', () => {
+  if (statoattuale == "selezione") 
+  {
     history.pushState(null, null, document.URL);
     transizione(document.querySelector(".selezione"),document.querySelector(".homescreen"));
     statoattuale = "homescreen";
-  } else if (statoattuale == "homescreen") {
+  } 
+  else if (statoattuale == "homescreen") 
+  {
     history.back();
   }
   else if(statoattuale == "regole")
@@ -1169,22 +1181,27 @@ window.addEventListener('popstate', (e) => {
   }
   else if(statoattuale == "areagioco")
   {
-    if(avviato == true)
-    {
-        history.pushState(null, null, document.URL);
-    }
-    else
-    {
-        history.pushState(null, null, document.URL);
-        transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".selezione"),"sfondo");
-        statoattuale = "selezione";
-    }
+    history.pushState(null, null, document.URL);
   }
   else if(statoattuale == "classifica")
   {
     history.pushState(null, null, document.URL);
     transizione(document.querySelector(".classifica"),document.querySelector(".homescreen"));
     statoattuale = "homescreen";
+  }
+  else if (statoattuale == "pausa")
+  {
+    history.pushState(null, null, document.URL);
+  }
+  else if (statoattuale == "areaclassifica")
+  {
+    history.pushState(null, null, document.URL);
+    transizione(document.querySelector(".areaclassifica"),document.querySelector(".classifica"))
+    statoattuale = "classifica"
+  }
+  else if (statoattuale == "avviso")
+  {
+    history.pushState(null, null, document.URL);
   }
   else if(statoattuale == "chiedinome")
   {
@@ -1193,8 +1210,8 @@ window.addEventListener('popstate', (e) => {
     statoattuale = "selezione";
   }
 })
-window.addEventListener("beforeunload",(e) => {
-    if(statoattuale == "areagioco")
+window.addEventListener("beforeunload",() => {
+    if(avviato == true)
     {
         e.preventDefault()
     }

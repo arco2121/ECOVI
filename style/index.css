@@ -54,6 +54,31 @@
         transform: scale(0.96);
     }
 }
+@keyframes sevabo {
+    0%{
+        transform: scale(1);
+        opacity: 100%;
+        filter: blur(0px);
+    }
+    100%{
+        transform: scale(0.9);
+        opacity: 0%;
+        filter: blur(20px);
+    }
+}
+@keyframes sevabow {
+    0%{
+        transform: scale(0.9);
+        opacity: 0%;
+        filter: blur(20px);
+    }
+    100%{
+        transform: scale(1);
+        opacity: 100%;
+        filter: blur(0px);
+    }
+
+}
 @keyframes seinversoa {
     0%{
         opacity: 100%;
@@ -934,17 +959,17 @@ progress
     background: #948923;
     width: 200px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 2000px;
 }
 .carta::-webkit-progress-bar
 {
-    border-radius: 20px;
+    border-radius: 2000px;
     background: #948923;
 }
 progress::-webkit-progress-value
 {
     background: white;
-    border-radius: 20px;
+    border-radius: 2000px;
 }
 .secco
 {
@@ -952,11 +977,11 @@ progress::-webkit-progress-value
     background: #4d2083;
     width: 200px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 2000px;
 }
 .secco::-webkit-progress-bar
 {
-    border-radius: 20px;
+    border-radius: 2000px;
     background: #4d2083;
 }
 .plastica
@@ -965,11 +990,11 @@ progress::-webkit-progress-value
     background: #245b19;
     width: 200px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 2000px;
 }
 .plastica::-webkit-progress-bar
 {
-    border-radius: 20px;
+    border-radius: 2000px;
     background: #245b19;
 }
 .vetro
@@ -978,11 +1003,11 @@ progress::-webkit-progress-value
     background: #206283;
     width: 200px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 2000px;
 }
 .vetro::-webkit-progress-bar
 {
-    border-radius: 20px;
+    border-radius: 2000px;
     background: #206283;
 }
 .classi-img
@@ -999,7 +1024,37 @@ progress::-webkit-progress-value
     height: 90%;
     width: 95%;
 }
-.head
+.puntiview
 {
     display: flex;
+    width: 90%;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.azioni
+{ 
+    display: flex;
+    width: 90%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+#pausa
+{
+    background-color: var(--sfondotabella);
+}
+#riprendi
+{
+    background-color: var(--sfondotabella);
+}
+#termina
+{
+    background-color: var(--sfondotabella);
+}
+.ok
+{
+    background-color: var(--sfondotabella);
 }
