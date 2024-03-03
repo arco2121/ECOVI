@@ -21,10 +21,15 @@ let punti = [1,2,3,5]
 let oggetti = [["secco.png","#4d2083"],["carta.png","#948923"],["plastica.png","#245b19"],["vetro.png","#206283"],["poterericiclo.png","white"],["amorenatura.png","white"],["rifiutotossico.png","#810404"]]
 let punteggio = [0,0,0,0]
 let spawnato = false
+let livello = ""
 let classifica = []
 if(localStorage.getItem("classifica"))
 {
     classifica = JSON.parse(localStorage.getItem("classifica"))
+}
+if(localStorage.getItem("player"))
+{
+    player = localStorage.getItem("player")
 }
 document.querySelector(".homescreen").style.display = "flex"
 
@@ -137,7 +142,7 @@ function generaelemento(posizioni,tipo,matrice)
                 valo = [p,codice,idunivoco]
             }
         }
-        let urai = Math.round(Math.random() * ((35-valo[0]-arrabbiatura) - 0) + 0)
+        let urai = Math.round(Math.random() * ((50-valo[0]-arrabbiatura) - 0) + 0)
         if(urai <= 1)
         {
             idunivoco = genid()
@@ -224,9 +229,10 @@ function stampaggiorna(matrix)
                 scambio = attuale
                 cella.style.border = "solid #c9b27d 5px"
             }
-            else if(scambio.getAttribute('idunivoco') == attuale.getAttribute('idunivoco') && scambio != undefined)
+            else if(scambio.getAttribute('idunivoco') == attuale.getAttribute('idunivoco'))
             {
-                cella.style.border = "solid #c9b27d 5px"
+                scambio = undefined
+                cella.style.border = ""
             }
             else if(scambio.getAttribute('idunivoco') != attuale.getAttribute('idunivoco') && attuale.id != "undefined" && scambio != undefined && (scambio.id != '5' || scambio.id != '4'))
             {
@@ -262,7 +268,6 @@ function stampaggiorna(matrix)
                             }
                             if(eliminaegenerata[0] == eliminaegenerata[1])
                             {
-                                console.log("ok")
                                 creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)   
                             } 
                             else
@@ -273,6 +278,8 @@ function stampaggiorna(matrix)
                             cella.removeAttribute("style")
                             matrix = shift(matrix)
                             matrix = rigenera(matrix)
+                            console.clear()
+                            console.log(punteggio)
                             matrix = controlloricorsivo(matrix)
                             stampaggiorna(matrix)
                             console.log(punteggio)
@@ -317,7 +324,7 @@ function controlloricorsivo(matrice)
                 creaelementocondizionale(eleminarea[1],posizioni,matrice)
                 matrice = shift(matrice)
                 matrice = rigenera(matrice)
-                controlloricorsivo(matrice)
+                matrice = controlloricorsivo(matrice)
             }
             else
             {
@@ -570,7 +577,7 @@ function elimina(elemdaeliminare,matrice)
     {
         for(let j = 0;j<matrice[i].length;j++)
         {
-            if(elemdaeliminare.indexOf(matrice[i][j]) != -1)
+            if(elemdaeliminare.indexOf(matrice[i][j]) != -1 && matrice[i][j][0]!=6)
             {
                 esplosione(matrice[i][j][3])
                 matrice[i][j] = undefined
@@ -876,8 +883,9 @@ function win()
             avviato = false
             spawnato = false
             scambio = undefined
-            let kj = [punteggio,player]
+            let kj = [punteggio,player,livello]
             classifica.push(kj)
+            classifica = riordina(classifica)
             localStorage.setItem("classifica",JSON.stringify(classifica))
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
             setTimeout(function(){
@@ -938,6 +946,36 @@ function tuttipunti(array)
     }
     return passo
 }
+function riordina(classifica) 
+{
+    classifica.forEach((giocatore) => {
+        let punteggioTotale = 0;
+        giocatore[0].forEach((punteggio, index) => {
+            punteggioTotale += punteggio * punti[index];
+        });
+        giocatore.push(punteggioTotale);
+    });
+    classifica.sort((a, b) => b[2] - a[2]);
+
+    return classifica;
+}
+function stampaclassifica(classifica,dove)
+{
+    let html = ""
+    if(classifica != "")
+    {
+        classifica.forEach((giocatore,index) => {
+            let riga = "<div class='giocatore levelbutton'><div class='posizioneclass'>" + (index+1) +"</div><div class='player'>" + giocatore[1] + "</div><div class='punteggio'>"+ giocatore[3] +"</div><img src='img/" + giocatore[2] + ".jpg' class='imglivello posizioneabso'></div>"
+            html = html + riga
+        })
+        dove.innerHTML = html
+    }
+    else
+    {
+        dove.innerHTML = "<h3>Attualmente vuota</h3>"
+    }
+}
+console.log(classifica)
 function transizione(inn,outt)
 {
     setTimeout(()=>{
@@ -989,10 +1027,19 @@ function avviso(n)
 }
 function chiedinome(e)
 {
+    if(player != "")
+    {
+        document.getElementById("nome").value = player
+    }
+    else
+    {
+
+    }
     document.querySelector(".ok").addEventListener("click",()=>{
         if(document.getElementById("nome").value != "")
         {
             player = document.getElementById("nome").value
+            localStorage.setItem("player",player)
             let d = generazione(e)
             avviato = true
             transizione(document.querySelector(".chiedinome"),document.querySelector(".areagioco"))
@@ -1014,6 +1061,7 @@ regolebutton.addEventListener("click",()=>{
     transizione(document.querySelector(".homescreen"),document.querySelector(".regole"))
 })
 classificabutton.addEventListener("click",()=>{
+    stampaclassifica(classifica,document.querySelector(".classi-view"))
     transizione(document.querySelector(".homescreen"),document.querySelector(".classifica"))
 })
 backtohomebutton.forEach(button => {
@@ -1023,22 +1071,26 @@ backtohomebutton.forEach(button => {
 })
 x5button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x5+"d5")
+    livello = "x5"
     chiedinome(5)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x5")
 })
 x6button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x6+"d5")
+    livello = "x6"
     chiedinome(6)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x6")
 })
 x7button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x7+"d5")
+    livello = "x7"
     chiedinome(7)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x7")
 })
 xcasualebutton.addEventListener("click",()=>{
     let num = Math.round(Math.random()*(10-5)+5)
     document.body.style.setProperty("--sfondotabella",colori.xcasuale)
+    livello = "xcasuale"
     chiedinome(num)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"xcasuale")
 })
