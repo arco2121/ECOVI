@@ -8,6 +8,7 @@
     user-select: none;
     -webkit-user-drag: none;
     text-shadow: 3px 2px 6px black;
+    scroll-behavior: smooth;
 }
 @font-face {
     font-family: "Coffe";
@@ -396,9 +397,15 @@ button
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 80%;
+    height: 70%;
     width: 95%;
-    overflow-x: scroll;
+    overflow-y: scroll;
+}
+.center
+{
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
 .level
 {
@@ -804,22 +811,75 @@ input{
 .giocatore
 {
     display: flex;
+    margin: 10px;
+    padding: 10px;
+    position: sticky;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 85%;
+    border: solid white 10px;
+    border-radius: 30px;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    width: 85%;
-    height: 150px;
-    border-radius: 30px;
-    position: sticky;
-    overflow: hidden;
-    border: solid white 5px;
-    padding: 2px;
+    height: 60px;
+    flex-wrap: wrap;
 }
 @media(orientation:landscape)
 {
     .giocatore:hover
     {
         transform:scale(1.05);
+    }
+    .destra
+    {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+        width: auto;
+        flex-direction: column;
+        z-index: 9;
+    }
+    .sinistra
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        width: auto;
+        flex-direction: column;
+        z-index: 9;
+    }
+    .classi-box
+    {
+        flex-wrap: nowrap;
+    }
+}
+@media (orientation:portrait) {
+    .destra
+    {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: auto;
+        width: 100%;
+        flex-direction: row;
+        z-index: 9;
+    }
+    .sinistra
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: auto;
+        width: 100%;
+        flex-direction: column;
+        z-index: 9;
+    }
+    .classi-box
+    {
+        flex-wrap: wrap;
     }
 }
 .giocatore:active
@@ -830,4 +890,116 @@ input{
 {
     position: absolute;
     filter: brightness(70%);
+}
+.areaclassifica
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 6;
+}
+.classi-box
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 85%;
+    height: auto;
+    justify-content: space-around;
+    padding: 10px;
+    border: solid white 10px;
+    border-radius: 30px;
+    position: sticky;
+}
+.classi-prog
+{
+    display: flex;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px;
+}
+progress
+{
+    margin: 10px;
+}
+.carta
+{
+    border: solid #948923 5px;
+    background: #948923;
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+}
+.carta::-webkit-progress-bar
+{
+    border-radius: 20px;
+    background: #948923;
+}
+progress::-webkit-progress-value
+{
+    background: white;
+    border-radius: 20px;
+}
+.secco
+{
+    border: solid #4d2083 5px;
+    background: #4d2083;
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+}
+.secco::-webkit-progress-bar
+{
+    border-radius: 20px;
+    background: #4d2083;
+}
+.plastica
+{
+    border: solid #245b19 5px;
+    background: #245b19;
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+}
+.plastica::-webkit-progress-bar
+{
+    border-radius: 20px;
+    background: #245b19;
+}
+.vetro
+{
+    border: solid #206283 5px;
+    background: #206283;
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+}
+.vetro::-webkit-progress-bar
+{
+    border-radius: 20px;
+    background: #206283;
+}
+.classi-img
+{
+    width: 45px;
+    height: 45px;
+}
+.classiview
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    width: 95%;
+}
+.head
+{
+    display: flex;
 }

@@ -1,6 +1,8 @@
 let giocabutton = document.getElementById("gioca")
 let backtohomebutton = document.querySelectorAll(".backtohome")
 let regolebutton = document.getElementById("regole")
+let backtoclassifica = document.querySelectorAll(".backtoclassifica")
+let pausabutton = document.que
 let x5button = document.getElementById("x5")
 let x6button = document.getElementById("x6")
 let x7button =  document.getElementById("x7")
@@ -965,17 +967,38 @@ function stampaclassifica(classifica,dove)
     if(classifica != "")
     {
         classifica.forEach((giocatore,index) => {
-            let riga = "<div class='giocatore levelbutton'><div class='posizioneclass'>" + (index+1) +"</div><div class='player'>" + giocatore[1] + "</div><div class='punteggio'>"+ giocatore[3] +"</div><img src='img/" + giocatore[2] + ".jpg' class='imglivello posizioneabso'></div>"
+            let riga = "<div dati='" + JSON.stringify(giocatore) + "' class='giocatore levelbutton'><div class='posizioneclass'>" + (index+1) +"</div><div class='player'>" + giocatore[1] + "</div><div class='punteggio'>"+ giocatore[3] +"</div><img src='img/" + giocatore[2] + ".jpg' class='imglivello posizioneabso'></div>"
             html = html + riga
         })
         dove.innerHTML = html
+        let giocatori = document.querySelectorAll(".giocatore")
+        giocatori.forEach(oggetto => {
+            oggetto.addEventListener("click",function(e){
+                let attuale = e.currentTarget
+                let dati = JSON.parse(attuale.getAttribute("dati"))
+                costruisciclassifica(dati,document.querySelector(".classiview"),true)
+                transizione(document.querySelector(".classifica"),document.querySelector(".areaclassifica"))
+            })
+        })
     }
     else
     {
         dove.innerHTML = "<h3>Attualmente vuota</h3>"
     }
 }
-console.log(classifica)
+function costruisciclassifica(dati,dove,si)
+{
+    let html = ""
+    if(si == false)
+    {
+        html = "<div class='classi-box levelbutton'><div class='sinistra'><div class='classi-prog'><img src='img/secco-general.png' class='classi-img'><progress class='secco' max='50' value='"+ dati[0][0] + "'></progress><h4>"+dati[0][0]+"/50</h4></div><div class='classi-prog'><img src='img/carta-general.png' class='classi-img'><progress class='carta' max='50' value='"+dati[0][1]+"'></progress><h4>"+dati[0][1]+"/50</h4></div><div class='classi-prog'><img src='img/plastica-general.png'  class='classi-img'><progress class='plastica' max='50' value='"+dati[0][2]+"'></progress><h4>"+ dati[0][2] +"/50</h4></div><div class='classi-prog'><img src='img/vetro-general.png' class='classi-img'><progress class='vetro' max='50' value='"+ dati[0][3] +"'></progress><h4>" + dati[0][3] + "/50</h4></div></div><div class='destra'><div class='classi-nome'><h3>" + dati[1] + "</h3></div><div class='classi-tot'><h5>" + dati[3] + "</h5></div></div></div>"
+    }
+    else
+    {
+        html = "<div class='classi-box levelbutton'><div class='sinistra'><div class='classi-prog'><img src='img/secco-general.png' class='classi-img'><progress class='secco' max='50' value='"+ dati[0][0] + "'></progress><h4>"+dati[0][0]+"/50</h4></div><div class='classi-prog'><img src='img/carta-general.png' class='classi-img'><progress class='carta' max='50' value='"+dati[0][1]+"'></progress><h4>"+dati[0][1]+"/50</h4></div><div class='classi-prog'><img src='img/plastica-general.png'  class='classi-img'><progress class='plastica' max='50' value='"+dati[0][2]+"'></progress><h4>"+ dati[0][2] +"/50</h4></div><div class='classi-prog'><img src='img/vetro-general.png' class='classi-img'><progress class='vetro' max='50' value='"+ dati[0][3] +"'></progress><h4>" + dati[0][3] + "/50</h4></div></div><div class='destra'><div class='classi-nome'><h3>" + dati[1] + "</h3></div><div class='classi-tot'><h5>" + dati[3] + "</h5></div></div><img class='imglivello posizioneabso' src='img/" + dati[2] + ".jpg'></div>"
+    }
+    dove.innerHTML = html
+}
 function transizione(inn,outt)
 {
     setTimeout(()=>{
@@ -1069,6 +1092,11 @@ backtohomebutton.forEach(button => {
         transizione(document.querySelector("."+statoattuale),document.querySelector(".homescreen"))
     })
 })
+backtoclassifica.forEach(bottone => {
+    bottone.addEventListener("click",function(){
+        transizione(document.querySelector("."+statoattuale),document.querySelector(".classifica"))
+    })
+})
 x5button.addEventListener("click", ()=>{
     document.body.style.setProperty("--sfondotabella",colori.x5+"d5")
     livello = "x5"
@@ -1118,6 +1146,10 @@ setInterval(()=>{
     else if (document.querySelector(".chiedinome").style.display == "flex")
     {
         statoattuale = "chiedinome"
+    }
+    else if( document.querySelector(".areaclassifica").style.display == "flex")
+    {
+        statoattuale = "areaclassifica"
     }
 },50)
 history.pushState(null, null, document.URL);
