@@ -320,7 +320,6 @@ function controlloricorsivo(matrice)
             {
                 for(let i = 0; i<eleminarea[0].length;i++)
                 {
-                    console.log("gfgfgf")
                     punteggio[eleminarea[0][i][0]] = parseInt(punteggio[eleminarea[0][i][0]]) + 1
                 }
                 matrice = elimina(eleminarea[0],matrice)
@@ -437,9 +436,15 @@ function controllo(tipo, posizioni, matrice)
     {
         elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
     }
-    if (elemdaeliminare.length >= 5) {
+    if (elemdaeliminare.length > 5) 
+    {
         return [elemdaeliminare, elemdaeliminare.length];
     } 
+    else if(elemdaeliminare.length == 5)
+    {
+        let y = controlloterziario(tipo,posizioni,matrice)
+        return y
+    }
     else if (elemdaeliminare.length < 5 && elemdaeliminare.length > 2) 
     {
         let kp = controllosecondario(tipo, posizioni, matrice);
@@ -513,7 +518,7 @@ function controlloriga(tipo,posizioni,matrice)
     {
         elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
     }
-    if(elemdaeliminare.length > 2 && elemdaeliminare.length < 5)
+    if(elemdaeliminare.length > 2 && elemdaeliminare.length <= 5)
     {
         return [elemdaeliminare,elemdaeliminare.length]
     }
@@ -565,13 +570,174 @@ function controllocolonna(tipo,posizioni,matrice)
     {
         elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
     }
-    if(elemdaeliminare.length > 2 && elemdaeliminare.length < 5)
+    if(elemdaeliminare.length > 2 && elemdaeliminare.length <= 5)
     {
         return [elemdaeliminare,elemdaeliminare.length]
     }
     else
     {
         return false
+    }
+}
+function controlloal(tipo,posizioni,matrice)
+{
+    let adiacenti = [];
+
+    let riga = posizioni[0];
+    let colonna = posizioni[1];
+    let adestra = []
+    let asinistra = []
+    let alto = []
+    let basso = []
+
+    for (let j = colonna; j >= 0; j--) 
+    {
+        if (matrice[riga][j] && tipo === matrice[riga][j][0] && alto.length < 3) 
+        {
+            alto.push(matrice[riga][j]);
+        } 
+        else 
+        {
+            break; 
+        }
+    }
+
+    for (let j = colonna + 1; j < matrice[riga].length; j++) 
+    {
+        if (matrice[riga][j] && tipo === matrice[riga][j][0] && basso.length < 3) 
+        {
+            basso.push(matrice[riga][j]);
+        }
+        else 
+        {
+            break;
+        }
+    }
+
+    for (let i = riga; i >= 0; i--) 
+    {
+        if (matrice[i][colonna] && tipo === matrice[i][colonna][0] && asinistra.length < 3) 
+        {
+            asinistra.push(matrice[i][colonna]);
+        } 
+        else 
+        {
+            break; 
+        }
+    }
+
+    for (let i = riga + 1; i < matrice.length; i++)
+    {
+        if (matrice[i][colonna] && tipo === matrice[i][colonna][0] && adestra.length < 3) 
+        {
+            adestra.push(matrice[i][colonna]);
+        } 
+        else 
+        {
+            break; 
+        }
+    }
+    let dbpre = adestra.concat(basso)
+    let dapre = adestra.concat(alto)
+    let sbpre = asinistra.concat(basso)
+    let sapre = asinistra.concat(alto)
+    let db = []
+    let da = []
+    let sb = []
+    let sa = []
+    for (let i = 0; i < dbpre.length; i++) 
+    {
+        if (db.indexOf(adiacenti[i]) == -1 && dbpre[i][0] != 6)
+        {
+            db.push(adiacenti[i]);
+        }
+    }
+    for (let i = 0; i < dapre.length; i++) 
+    {
+        if (da.indexOf(adiacenti[i]) == -1 && dapre[i][0] != 6)
+        {
+            da.push(adiacenti[i]);
+        }
+    }
+    for (let i = 0; i < sbpre.length; i++) 
+    {
+        if (sb.indexOf(adiacenti[i]) == -1 && sbpre[i][0] != 6)
+        {
+            sb.push(adiacenti[i]);
+        }
+    }
+    for (let i = 0; i < sapre.length; i++) 
+    {
+        if (sa.indexOf(adiacenti[i]) == -1 && sapre[i][0] != 6)
+        {
+            sa.push(adiacenti[i]);
+        }
+    }
+    let u = []
+    if(db.length >= 4)
+    {
+        db.push(matrice[riga][colonna])
+        u = [db,db.length]
+        return u
+    }
+    else
+    {
+        if(da.length >= 4)
+        {
+            da.push(matrice[riga][colonna])
+            u = [da,da.length]
+            return u
+        }
+        else
+        {
+            if(sb.length >= 4)
+            {
+                sb.push(matrice[riga][colonna])
+                u = [sb,sb.length]
+                return u
+            }
+            else
+            {
+                if(sa.length >= 4)
+                {
+                    sa.push(matrice[riga][colonna])
+                    u = [sa,sa.length]
+                    return u
+                }
+                else
+                {
+                    return false
+                }
+            }
+        }
+    }
+}
+function controlloterziario(tipo,posizioni,matrice)
+{
+    let ui = controllocolonna(tipo,posizioni,matrice)
+    if(ui != false)
+    {
+        return ui
+    } 
+    else
+    {
+        ui = controlloriga(tipo,posizioni,matrice)
+        if(ui != false)
+        {
+            return ui
+        }
+        else
+        {
+            ui = controlloal(tipo,posizioni,matrice)
+            if(ui != false)
+            {
+                return ui
+            }
+            else 
+            {
+                return false
+            }
+        }
     }
 }
 function elimina(elemdaeliminare,matrice)
