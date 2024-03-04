@@ -986,7 +986,7 @@ function stampaclassifica(classifica,dove)
         dove.innerHTML = "<h3>Attualmente vuota</h3>"
     }
 }
-function costruisciclassifica(dati,dove,si)
+function costruisciclassifica(dati,dove,si) 
 {
     let html = ""
     if(si == false)
