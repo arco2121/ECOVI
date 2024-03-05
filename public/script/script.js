@@ -241,12 +241,14 @@ function stampaggiorna(matrix)
     setTimeout(()=>{
         if(tuttipunti(punteggio) == true)
         {
-            document.querySelector(".areagioco").style.filter = "blur(20px)"
+            document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+                   document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
             win()
         }
         if(mosse > 3)
         {
-            document.querySelector(".areagioco").style.filter = "blur(20px)"
+            document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+            document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
             lose()
         }
     },50)
@@ -285,12 +287,14 @@ function stampaggiorna(matrix)
                     mosse = 0
                     if(tuttipunti(punteggio) == true)
                     {
-                        document.querySelector(".areagioco").style.filter = "blur(20px)"
+                        document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+                        document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
                         win()
                     }
                     if(mosse > 3)
                     {
-                        document.querySelector(".areagioco").style.filter = "blur(20px)"
+                        document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+                        document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
                         lose()
                     }
                 }
@@ -365,12 +369,14 @@ function stampaggiorna(matrix)
                             mosse = 0
                             if(tuttipunti(punteggio) == true)
                             {
-                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+                                document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
                                 win()
                             }
                             if(mosse > 3)
                             {
-                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+                                document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
                                 lose()
                             }
                         }
@@ -387,12 +393,14 @@ function stampaggiorna(matrix)
                             arrabbiatura = mosse
                             if(tuttipunti(punteggio) == true)
                             {
-                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+                                document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
                                 win()
                             }
                             if(mosse > 3)
                             {
-                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
+                                document.querySelector(".jklh").style.animation = "blur 0.3s ease forwards"
                                 lose()
                             }
                         }
@@ -1239,6 +1247,8 @@ function lose()
 function resetta()
 {
     document.querySelector(".areagioco").removeAttribute("style")
+    document.querySelector(".griglia").removeAttribute("style")
+    document.querySelector(".jklh").removeAttribute("style")
     document.querySelector(".chiedinome").removeAttribute("style")
     document.querySelector(".appiglio").removeAttribute("style")
     document.querySelector(".appiglio").innerHTML = ""
@@ -1495,7 +1505,6 @@ document.getElementById("riprendi").addEventListener("click",function(){
         document.querySelector(".pausa").style.animation = "seinverso 0.6s ease forwards"
         setTimeout(function(){
             document.querySelector(".pausa").style.display = "none"
-            document.querySelector(".areagioco").style.animation = ""
         },600)
     },50)
 })

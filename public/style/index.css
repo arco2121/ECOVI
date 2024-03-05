@@ -70,6 +70,16 @@
         filter: blur(20px);
     }
 }
+@keyframes blur {
+    0%{
+        transform: scale(1);
+        filter: blur(0px);
+    }
+    100%{
+        transform: scale(0.9);
+        filter: blur(20px);
+    }
+}
 @keyframes sevabow {
     0%{
         transform: scale(0.9);
@@ -1051,10 +1061,6 @@ progress::-webkit-progress-value
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-}
-#pausa
-{
-    background-color: var(--sfondotabella);
 }
 #riprendi
 {
