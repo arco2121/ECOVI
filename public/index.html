@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Crush</title>
+    <link rel="icon" href="img/mascote.png">
+    <link rel="stylesheet" href="style/index.css">
+</head>
+<body>
+    <div class="visiover"></div>
+    <div class="avviso">
+        <div class="box">
+            <h2 id="avvisu"></h2>
+        </div>
+    </div>
+    <div class="pausa">
+        <div class="puntiview img"></div>
+        <div class="azioni">
+            <button id="riprendi">Riprendi</button>
+            <button id="termina">Termina</button>
+        </div>
+    </div>
+    <div class="generalover"></div>
+    <div class="blocco"></div>
+    <div class="sfondo">
+        <img src="img/sfondo.jpg" id="sfondo">
+        <div id="over"></div>
+    </div>
+    <div class="loadscreen">
+        <div class="load">
+            <img src="img/logo.png"  alt="Logo EcoCrush" id="logoload">
+            <h2 class="bo">Tocca per continuare</h2>
+        </div>
+    </div>
+    <div class="homescreen">
+        <div class="barrasuperiore reverseflex">
+            <button class="impostazioni back">
+                <img src="img/back.jpg" class="backimg">
+            </button>
+        </div>
+        <div class="logo">
+            <img src="img/logo.png" class="img" id="logo" >
+        </div>
+        <div class="pulsanti">
+            <div class="divisore">
+                <button id="gioca">Gioca</button>
+            </div>
+            <div class="divisore">
+                <button id="regole">Regole</button>
+            </div>
+            <div class="divisore">
+                <button id="classici">Classifica</button>
+            </div>
+        </div>
+        <div class="barrainferiore">
+            <h5 class="versione">1 . 0 . 0</h5>
+        </div>
+    </div>
+    <div class="selezione">
+        <div class="barrasuperiore">
+            <button class="back backtohome">
+                <img src="img/back.jpg" class="backimg">
+            </button>
+        </div>
+        <div class="levels">
+            <div class="img level">
+                <button class="levelbutton" id="x5">
+                    <p>Cinquina Rifiuto</p>
+                    <img class="imglivello" src="img/x5.jpg">
+                </button>
+            </div>
+            <div class="img level">
+                <button class="levelbutton" id="x6">
+                    <p>Sestina Spazzatura</p>
+                    <img class="imglivello" src="img/x6.jpg">
+                </button>
+            </div>
+            <div class="img level">
+                <button class="levelbutton" id="x7">
+                    <p>Settina Immondizia</p>
+                    <img class="imglivello" src="img/x7.jpg">
+                </button>
+            </div>
+            <div class="img level">
+                <button class="levelbutton" id="xcasuale">
+                    <p>Eco Casualita</p>
+                    <img class="imglivello" src="img/xcasuale.jpg">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="regole">
+        <div class="barrasuperiore">
+            <button class="back backtohome">
+                <img src="img/back.jpg" class="img backimg">
+            </button>
+        </div>
+        <div class="img divregole inizio">
+            <h1>Regole</h1>
+        </div>
+        <div class="regolario">
+            <div class="img divregole secondo">
+                <h2>Funzionamento:</h2><br>
+                <ul>
+                    <li>Qui si inserirà il funzionamento del gioco</li>
+                </ul>
+            </div>
+            <div class="img divregole secondo">
+                <h2>Obiettivo:</h2><br>
+                <ul>
+                    <li>Qui si inserirà l'obbiettivo del gioco</li>
+                </ul>
+            </div>
+            <div class="img divregole secondo">
+                <h2>Punteggio:</h2><br>
+                <ul>
+                    <li>Qui si inserirà come si gestiscono i punteggi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="chiedinome">
+        <div class="bn">
+            <h3>Nome del giocatore:</h3>
+            <input type="text" id="nome" name="nome" placeholder="Inserire nome">
+            <button class="ok">Conferma</button>
+        </div>
+    </div>
+    <div class="tutorial"></div>
+    <div class="areagioco">
+        <div class="barrasuperiore">
+            <div class="countmosse">
+                <h4 id="strike"></h4>
+            </div>
+            <button class="back" id="pausa">
+                <img src="src.png" class="backimg">
+            </button>
+        </div>
+        <div class="griglia">
+            <div class="img appiglio"></div>
+        </div>
+    </div>
+    <div class="areaclassifica">
+        <div class="barrasuperiore">
+            <button class="back backtoclassifica">
+                <img src="img/back.jpg" class="img backimg">
+            </button>
+        </div>
+        <div class="center classiview img"></div>
+    </div>
+    <div class="classifica">
+        <div class="barrasuperiore">
+            <button class="back backtohome">
+                <img src="img/back.jpg" class="img backimg">
+            </button>
+        </div>
+        <div class="img divregole inizio">
+            <h1>Classifica</h1>
+        </div>
+        <div class="regolario">
+           <div class="classi-view img"></div>
+        </div>
+    </div>
+    <script src="script/script.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyAbiwJCbYwP_mbPECZU8T7z_BNrEwh2DlU",
+          authDomain: "ecovi-ecd50.firebaseapp.com",
+          projectId: "ecovi-ecd50",
+          storageBucket: "ecovi-ecd50.appspot.com",
+          messagingSenderId: "589408485423",
+          appId: "1:589408485423:web:ea45ebb58ffba3caf346da",
+          measurementId: "G-7EFKD1NNXC"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+</body>
+</html>
