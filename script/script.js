@@ -15,11 +15,12 @@ let strike = document.getElementById("strike")
 let scambio = undefined
 let mosse = 0
 let player = ""
+let noteseguendo = false
 let arrabbiatura = 0
 let eliminaegenerata = []
-let esplosioni = ["64% 36% 45% 55% / 41% 55% 45% 59%","64% 36% 73% 27% / 36% 69% 31% 64%","34% 66% 73% 27% / 63% 35% 65% 37%","58% 42% 41% 59% / 35% 84% 16% 65%"]
 colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
 let punti = [1,2,3,5]
+let esplosioni = ["30% 70% 70% 30% / 47% 30% 70% 53% ","70% 30% 84% 16% / 20% 80% 20% 80%","83% 17% 34% 66% / 81% 80% 20% 19%","83% 17% 34% 66% / 81% 38% 62% 19%", "83% 17% 55% 45% / 29% 38% 62% 71%"]
 let oggetti = [["secco.png","#4d2083"],["carta.png","#948923"],["plastica.png","#245b19"],["vetro.png","#206283"],["poterericiclo.png","white"],["amorenatura.png","white"],["rifiutotossico.png","#810404"]]
 let punteggio = [0,0,0,0]
 let spawnato = false
@@ -70,7 +71,7 @@ function generazione(num)
             let p = Math.round(Math.random() * (3))
             let idunivoco = genid()
             let codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-            valo = [p,codice,idunivoco]
+            valo = [p,codice,idunivoco,false]
             if(j!=0 || i!=0)
             {
                 while(valo[0] == (j!=0 ? riga[j-1][0] : -1) || valo[0] == (i!=0 ? matrice[i-1][j][0] : -1))
@@ -78,7 +79,7 @@ function generazione(num)
                     p = Math.round(Math.random() * (3))
                     idunivoco = genid()
                     codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-                    valo = [p,codice,idunivoco]
+                    valo = [p,codice,idunivoco,false]
                 }
             }
             riga[j] = valo
@@ -90,12 +91,20 @@ function generazione(num)
 }
 function generaelemento(posizioni,tipo,matrice)
 {
-    if(tipo != undefined)
+    if(tipo != undefined && tipo != "no")
     {
         let valo = []
         let idunivoco = genid()
         let codice = "<div style='background:" + oggetti[tipo][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + tipo +"'><img class='immaginecella' src='img/" + oggetti[tipo][0] +"'></div>"
-        valo = [tipo,codice,idunivoco]
+        valo = [tipo,codice,idunivoco,false]
+        return valo
+    }
+    else if(tipo == "no")
+    {
+        let valo = []
+        let idunivoco = genid()
+        let codice = "<div style='opacity:0%;' idunivoco='" + idunivoco + "' class='cella' id='" + undefined +"'><img class='immaginecella'></div>"
+        valo = [undefined,codice,idunivoco,false]
         return valo
     }
     else
@@ -104,7 +113,7 @@ function generaelemento(posizioni,tipo,matrice)
         let p = Math.round(Math.random() * (3))
         let idunivoco = genid()
         let codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-        valo = [p,codice,idunivoco]
+        valo = [p,codice,idunivoco,false]
         if(posizioni[0]+1<matrice.length && matrice[posizioni[0]+1][posizioni[1]] != undefined)
         {
             while(matrice[posizioni[0]+1][posizioni[1]][0] == p)
@@ -112,7 +121,7 @@ function generaelemento(posizioni,tipo,matrice)
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
                 codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-                valo = [p,codice,idunivoco]
+                valo = [p,codice,idunivoco,false]
             }
         }
         if(posizioni[0]-1>=0 && matrice[posizioni[0]-1][posizioni[1]] != undefined)
@@ -122,7 +131,7 @@ function generaelemento(posizioni,tipo,matrice)
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
                 codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-                valo = [p,codice,idunivoco]
+                valo = [p,codice,idunivoco,false]
             }
         }
         if(posizioni[1]+1 < matrice[posizioni[0]].length && matrice[posizioni[0]][posizioni[1]+1] != undefined)
@@ -132,7 +141,7 @@ function generaelemento(posizioni,tipo,matrice)
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
                 codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-                valo = [p,codice,idunivoco]
+                valo = [p,codice,idunivoco,false]
             }
         }
         if(posizioni[1]-1 >=0 && matrice[posizioni[0]][posizioni[1]-1] != undefined)
@@ -142,21 +151,21 @@ function generaelemento(posizioni,tipo,matrice)
                 idunivoco = genid()
                 p = Math.round(Math.random() * (3))
                 codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-                valo = [p,codice,idunivoco]
+                valo = [p,codice,idunivoco,false]
             }
         }
-        let urai = Math.round(Math.random() * ((25-arrabbiatura) - 0) + 0)
+        let urai = Math.round(Math.random() * ((Math.round(900 / arrabbiatura) - arrabbiatura) - 0) + 0)
         if(urai <= 1)
         {
             idunivoco = genid()
             p = 6
             codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-            valo = [p,codice,idunivoco]
+            valo = [p,codice,idunivoco,false]
         }
         return valo
     }
 }
-function stampaggiorna(matrix)
+function stamparidotta(matrix)
 {
     let stringa = ""
     for(let i = 0;i<matrix.length;i++)
@@ -164,23 +173,19 @@ function stampaggiorna(matrix)
         let r = "<div class='riga'>"
         for(let j = 0;j<matrix[i].length;j++)
         {
-            if(matrix[i][j] == undefined)
-            {
-                r = r + "<div id='undefined' class='cella'></div>"
-            }
-            else
-            {
-                r = r + matrix[i][j][1]
-            }
+            r = r + matrix[i][j][1]
         }
         r = r + "</div>"
         stringa = stringa + r
     }
     document.querySelector(".appiglio").innerHTML = stringa
     document.querySelectorAll(".cella").forEach(cella => {
-        if(spawnato == true)
+        let pos = individua(cella.getAttribute("idunivoco"),matrix)
+        let posizioni = [pos.i,pos.j]
+        if(matrix[posizioni[0]][posizioni[1]][0] != undefined && matrix[posizioni[0]][posizioni[1]][3] == false)
         {
-            cella.style.animation = "compari 0.5s ease"
+            cella.style.animation = "compari 0.6s ease-in-out"
+            matrix[posizioni[0]][posizioni[1]][3] = true
         }
         else
         {
@@ -192,36 +197,91 @@ function stampaggiorna(matrix)
         setTimeout(()=>{
             document.querySelector(".appiglio").style.animation = "ser 0.3s ease"
             document.querySelector(".appiglio").style.display = "flex"
-        },300)
+        },100)
     }
     spawnato = true
+}
+function stampaggiorna(matrix)
+{
+    let stringa = ""
+    for(let i = 0;i<matrix.length;i++)
+    {
+        let r = "<div class='riga'>"
+        for(let j = 0;j<matrix[i].length;j++)
+        {
+            r = r + matrix[i][j][1]
+        }
+        r = r + "</div>"
+        stringa = stringa + r
+    }
+    document.querySelector(".appiglio").innerHTML = stringa
+    document.querySelectorAll(".cella").forEach(cella => {
+        let pos = individua(cella.getAttribute("idunivoco"),matrix)
+        let posizioni = [pos.i,pos.j]
+        if(matrix[posizioni[0]][posizioni[1]][0] != undefined && matrix[posizioni[0]][posizioni[1]][3] == false)
+        {
+            cella.style.animation = "compari 0.6s ease-in-out"
+            matrix[posizioni[0]][posizioni[1]][3] = true
+        }
+        else
+        {
+        }
+        cella.style.display = "flex"
+    })
+    if(spawnato == false)
+    {
+        setTimeout(()=>{
+            document.querySelector(".appiglio").style.animation = "ser 0.3s ease"
+            document.querySelector(".appiglio").style.display = "flex"
+        },100)
+    }
+    spawnato = true
+    setTimeout(()=>{
+        if(tuttipunti(punteggio) == true)
+        {
+            document.querySelector(".areagioco").style.filter = "blur(20px)"
+            win()
+        }
+        if(mosse > 3)
+        {
+            document.querySelector(".areagioco").style.filter = "blur(20px)"
+            lose()
+        }
+    },50)
     let celle = document.querySelectorAll(".cella")
     celle.forEach(cella => {
         cella.addEventListener("click",(e)=>{
+            noteseguendo = false
             let attuale = e.currentTarget
             if(attuale.id == 'undefined')
             {
             }
             else if(attuale.id == '4' || attuale.id == '5')
             {
+                noteseguendo = false
                 let posatu = individua(attuale.getAttribute('idunivoco'),matrix)
-                let posizioni = [posatu.i,posatu.j]
-                let k = effettospeciale(attuale.id,posizioni,matrix)
-                matrix = k[0]
-                for(let i = 0; i<k[1].length;i++)
+                if(posatu != false)
                 {
-                    if(k[1][i][0] < 4)
+                    let posizioni = [posatu.i,posatu.j]
+                    let k = effettospeciale(attuale.id,posizioni,matrix)
+                    matrix = k[0]
+                    for(let i = 0; i<k[1].length;i++)
                     {
-                        punteggio[k[1][i][0]] = parseInt(punteggio[k[1][i][0]]) + 1
+                        if(k[1][i][0] < 4)
+                        {
+                            punteggio[k[1][i][0]] = parseInt(punteggio[k[1][i][0]]) + 1
+                        }
                     }
+                    setTimeout(()=>{
+                        stamparidotta(matrix)
+                        setTimeout(function(){
+                            matrix = shift(matrix)
+                        },400)
+                    },400)
+                    scambio = undefined
+                    arrabbiatura = 0
+                    mosse = 0
                 }
-                matrix = shift(matrix)
-                matrix = rigenera(matrix)
-                matrix = controlloricorsivo(matrix)
-                stampaggiorna(matrix)
-                scambio = undefined
-                arrabbiatura = 0
-                mosse = 0
             }
             else if (attuale.id == '6')
             {
@@ -243,66 +303,81 @@ function stampaggiorna(matrix)
                 let idunivocoscambiare = scambio.getAttribute('idunivoco')
                 let posizioneelemento = individua(idunivocoattuale,matrix)
                 let  posizioneelemento2 = individua(idunivocoscambiare,matrix)
-                if(vicino(posizioneelemento,posizioneelemento2))
+                if(posizioneelemento != false && posizioneelemento2 != false)
                 {
-                    matrix = swap(posizioneelemento,posizioneelemento2,matrix)
-                    swapanimation(idunivocoattuale,idunivocoscambiare)
-                    let posizioni = [posizioneelemento.i,posizioneelemento.j]
-                    let posizioni2 = [posizioneelemento2.i,posizioneelemento2.j]
-                    eliminaegenerata = [controllo(matrix[posizioni[0]][posizioni[1]][0],posizioni,matrix),controllo(matrix[posizioni2[0]][posizioni2[1]][0],posizioni2,matrix)]
-                    if(eliminaegenerata[0] != false || eliminaegenerata[1] != false)
+                    if(vicino(posizioneelemento,posizioneelemento2))
                     {
-                        setTimeout(()=>{
-                            if(eliminaegenerata[0] != false)
-                            {
-                                for(let i = 0; i<eliminaegenerata[0][0].length;i++)
+                        noteseguendo = false
+                        matrix = swap(posizioneelemento,posizioneelemento2,matrix)
+                        swapanimation(idunivocoattuale,idunivocoscambiare)
+                        let posizioni = [posizioneelemento.i,posizioneelemento.j]
+                        let posizioni2 = [posizioneelemento2.i,posizioneelemento2.j]
+                        eliminaegenerata = [controllo(matrix[posizioni[0]][posizioni[1]][0],posizioni,matrix),controllo(matrix[posizioni2[0]][posizioni2[1]][0],posizioni2,matrix)]
+                        if(eliminaegenerata[0] != false || eliminaegenerata[1] != false)
+                        {
+                            setTimeout(()=>{
+                                stamparidotta(matrix)
+                                if(eliminaegenerata[0] != false)
                                 {
-                                    punteggio[eliminaegenerata[0][0][i][0]] = parseInt(punteggio[eliminaegenerata[0][0][i][0]]) + 1
+                                    for(let i = 0; i<eliminaegenerata[0][0].length;i++)
+                                    {
+                                        punteggio[eliminaegenerata[0][0][i][0]] = parseInt(punteggio[eliminaegenerata[0][0][i][0]]) + 1
+                                    }
+                                    for(let i = 0; i<eliminaegenerata[0][0].length;i++)
+                                    matrix = elimina(eliminaegenerata[0][0],matrix)
                                 }
-                                matrix = elimina(eliminaegenerata[0][0],matrix)
-                            }
-                            if(eliminaegenerata[1] != false)
-                            {
-                                for(let i = 0; i<eliminaegenerata[1][0].length;i++)
+                                if(eliminaegenerata[1] != false)
                                 {
-                                    punteggio[eliminaegenerata[1][0][i][0]] = parseInt(punteggio[eliminaegenerata[1][0][i][0]]) + 1
+                                    for(let i = 0; i<eliminaegenerata[1][0].length;i++)
+                                    {
+                                        punteggio[eliminaegenerata[1][0][i][0]] = parseInt(punteggio[eliminaegenerata[1][0][i][0]]) + 1
+                                    }
+                                    matrix = elimina(eliminaegenerata[1][0],matrix)
                                 }
-                                matrix = elimina(eliminaegenerata[1][0],matrix)
-                            }
-                            if(eliminaegenerata[0] == eliminaegenerata[1])
-                            {
-                                creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)   
-                            } 
-                            else
-                            {
-                                creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)
-                                creaelementocondizionale(eliminaegenerata[1][1],posizioni2,matrix)   
-                            }
-                            cella.removeAttribute("style")
-                            matrix = shift(matrix)
-                            matrix = rigenera(matrix)
-                            console.clear()
-                            console.log(punteggio)
-                            matrix = controlloricorsivo(matrix)
-                            stampaggiorna(matrix)
-                            console.log(punteggio)
-                            scambio = undefined
-                        },300)
-                        arrabbiatura = 0
-                        mosse = 0
+                                if(eliminaegenerata[0] == eliminaegenerata[1])
+                                {
+                                    creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)   
+                                } 
+                                else
+                                {
+                                    creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)
+                                    creaelementocondizionale(eliminaegenerata[1][1],posizioni2,matrix)   
+                                }
+                                setTimeout(function(){
+                                    stamparidotta(matrix)
+                                    matrix = shift(matrix)
+                                },400)
+                                scambio = undefined
+                            },400)
+                            arrabbiatura = 0
+                            mosse = 0
+                        }
+                        else
+                        {
+                            matrix = swap(posizioneelemento2,posizioneelemento,matrix)
+                            setTimeout(function(){
+                                reverse(idunivocoattuale,idunivocoscambiare)
+                                scambio.style.border = ""
+                                attuale.style.border = ""
+                                scambio = undefined
+                            },400)
+                            mosse = mosse + 1
+                            arrabbiatura = mosse
+                        }
                     }
                     else
                     {
-                        matrix = swap(posizioneelemento2,posizioneelemento,matrix)
-                        setTimeout(function(){
-                            reverse(idunivocoattuale,idunivocoscambiare)
-                            scambio.style.border = ""
-                            attuale.style.border = ""
-                            scambio = undefined
-                        },300)
-                        mosse = mosse + 1
-                        arrabbiatura = mosse
+                        scambio.style.border = ""
+                        scambio = attuale
+                        cella.style.border = "solid #c9b27d 5px"
                     }
+                }
+                else
+                {
+                    scambio.style.border = ""
+                    scambio = attuale
+                    cella.style.border = "solid #c9b27d 5px"
+                    noteseguendo = true
                 }
             }
         })
@@ -324,9 +399,11 @@ function controlloricorsivo(matrice)
                 }
                 matrice = elimina(eleminarea[0],matrice)
                 creaelementocondizionale(eleminarea[1],posizioni,matrice)
-                matrice = shift(matrice)
-                matrice = rigenera(matrice)
-                matrice = controlloricorsivo(matrice)
+                setTimeout(function(){
+                    stamparidotta(matrix)
+                    matrice = shift(matrice)
+                },400)
+                return matrice
             }
             else
             {
@@ -334,25 +411,37 @@ function controlloricorsivo(matrice)
             }
         }
     }
+    setTimeout(function(){
+        stampaggiorna(matrice)
+    },400)
     return matrice
 }
 function individua(id1, matrice)
 {
     let pos1
+    let ok = false
     for(let onkai = 0; onkai < matrice.length; onkai++) {
         for(let onka = 0; onka < matrice[onkai].length; onka++) {
             if(matrice[onkai][onka] != undefined && matrice[onkai][onka][2] === id1) {
-                pos1 = {i: onkai, j: onka};
+                pos1 = {i: onkai, j: onka}
+                ok = true
             }
         }
     }
-    return pos1
+    if(ok == true)
+    {
+        return pos1
+    }
+    else
+    {
+        return false
+    }
 }
 function swap(pos1,pos2,matrice) {
     if(pos1 && pos2) {
-        let temp = matrice[pos1.i][pos1.j];
-        matrice[pos1.i][pos1.j] = matrice[pos2.i][pos2.j];
-        matrice[pos2.i][pos2.j] = temp;
+        let temp = matrice[pos1.i][pos1.j]
+        matrice[pos1.i][pos1.j] = matrice[pos2.i][pos2.j]
+        matrice[pos2.i][pos2.j] = temp
     }
     return matrice
 }
@@ -371,20 +460,20 @@ function vicino(posizioni1,posizioni2)
 }
 function controllo(tipo, posizioni, matrice) 
 {
-    let adiacenti = [];
+    let adiacenti = []
 
-    let riga = posizioni[0];
-    let colonna = posizioni[1];
+    let riga = posizioni[0]
+    let colonna = posizioni[1]
 
     for (let j = colonna; j >= 0; j--) 
     {
         if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
         {
-            adiacenti.push(matrice[riga][j]);
+            adiacenti.push(matrice[riga][j])
         } 
         else 
         {
-            break; 
+            break
         }
     }
 
@@ -392,11 +481,11 @@ function controllo(tipo, posizioni, matrice)
     {
         if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
         {
-            adiacenti.push(matrice[riga][j]);
+            adiacenti.push(matrice[riga][j])
         }
         else 
         {
-            break;
+            break
         }
     }
 
@@ -404,11 +493,11 @@ function controllo(tipo, posizioni, matrice)
     {
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
         {
-            adiacenti.push(matrice[i][colonna]);
+            adiacenti.push(matrice[i][colonna])
         } 
         else 
         {
-            break; 
+            break
         }
     }
 
@@ -416,20 +505,20 @@ function controllo(tipo, posizioni, matrice)
     {
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
         {
-            adiacenti.push(matrice[i][colonna]);
+            adiacenti.push(matrice[i][colonna])
         } 
         else 
         {
-            break; 
+            break
         }
     }
 
     let elemdaeliminare = [];
     for (let i = 0; i < adiacenti.length; i++) 
     {
-        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6)
+        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6 && adiacenti[i][0] != 4 && adiacenti[i][0] != 5)
         {
-            elemdaeliminare.push(adiacenti[i]);
+            elemdaeliminare.push(adiacenti[i])
         }
     }
     if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
@@ -438,7 +527,7 @@ function controllo(tipo, posizioni, matrice)
     }
     if (elemdaeliminare.length > 5) 
     {
-        return [elemdaeliminare, elemdaeliminare.length];
+        return [elemdaeliminare, elemdaeliminare.length]
     } 
     else if(elemdaeliminare.length == 5)
     {
@@ -447,12 +536,12 @@ function controllo(tipo, posizioni, matrice)
     }
     else if (elemdaeliminare.length < 5 && elemdaeliminare.length > 2) 
     {
-        let kp = controllosecondario(tipo, posizioni, matrice);
-        return kp;
+        let kp = controllosecondario(tipo, posizioni, matrice)
+        return kp
     }
     else
     {
-        return false;
+        return false
     }
 }
 function controllosecondario(tipo,posizioni,matrice)
@@ -477,20 +566,20 @@ function controllosecondario(tipo,posizioni,matrice)
 }
 function controlloriga(tipo,posizioni,matrice)
 {
-    let adiacenti = [];
+    let adiacenti = []
 
-    let riga = posizioni[0];
-    let colonna = posizioni[1];
+    let riga = posizioni[0]
+    let colonna = posizioni[1]
 
     for (let j = colonna; j >= 0; j--) 
     {
         if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
         {
-            adiacenti.push(matrice[riga][j]);
+            adiacenti.push(matrice[riga][j])
         } 
         else 
         {
-            break; 
+            break 
         }
     }
 
@@ -498,25 +587,25 @@ function controlloriga(tipo,posizioni,matrice)
     {
         if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
         {
-            adiacenti.push(matrice[riga][j]);
+            adiacenti.push(matrice[riga][j])
         }
         else 
         {
-            break;
+            break
         }
     }
 
     let elemdaeliminare = [];
     for (let i = 0; i < adiacenti.length; i++) 
     {
-        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6) 
+        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6 && adiacenti[i][0] != 4 && adiacenti[i][0] != 5) 
         {
-            elemdaeliminare.push(adiacenti[i]);
+            elemdaeliminare.push(adiacenti[i])
         }
     }
     if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
     {
-        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]])
     }
     if(elemdaeliminare.length > 2 && elemdaeliminare.length <= 5)
     {
@@ -529,20 +618,20 @@ function controlloriga(tipo,posizioni,matrice)
 }
 function controllocolonna(tipo,posizioni,matrice)
 {
-    let adiacenti = [];
+    let adiacenti = []
 
-    let riga = posizioni[0];
-    let colonna = posizioni[1]; 
+    let riga = posizioni[0]
+    let colonna = posizioni[1] 
 
     for (let i = riga; i >= 0; i--) 
     {
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
         {
-            adiacenti.push(matrice[i][colonna]);
+            adiacenti.push(matrice[i][colonna])
         } 
         else 
         {
-            break; 
+            break
         }
     }
 
@@ -550,25 +639,25 @@ function controllocolonna(tipo,posizioni,matrice)
     {
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
         {
-            adiacenti.push(matrice[i][colonna]);
+            adiacenti.push(matrice[i][colonna])
         } 
         else 
         {
-            break; 
+            break
         }
     }
     
-    let elemdaeliminare = [];
+    let elemdaeliminare = []
     for (let i = 0; i < adiacenti.length; i++) 
     {
-        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6) 
+        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6 && adiacenti[i][0] != 4 && adiacenti[i][0] != 5) 
         {
-            elemdaeliminare.push(adiacenti[i]);
+            elemdaeliminare.push(adiacenti[i])
         }
     }
     if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
     {
-        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]])
     }
     if(elemdaeliminare.length > 2 && elemdaeliminare.length <= 5)
     {
@@ -581,10 +670,10 @@ function controllocolonna(tipo,posizioni,matrice)
 }
 function controlloal(tipo,posizioni,matrice)
 {
-    let adiacenti = [];
+    let adiacenti = []
 
-    let riga = posizioni[0];
-    let colonna = posizioni[1];
+    let riga = posizioni[0]
+    let colonna = posizioni[1]
     let adestra = []
     let asinistra = []
     let alto = []
@@ -594,11 +683,11 @@ function controlloal(tipo,posizioni,matrice)
     {
         if (matrice[riga][j] && tipo === matrice[riga][j][0] && alto.length < 3) 
         {
-            alto.push(matrice[riga][j]);
+            alto.push(matrice[riga][j])
         } 
         else 
         {
-            break; 
+            break
         }
     }
 
@@ -606,11 +695,11 @@ function controlloal(tipo,posizioni,matrice)
     {
         if (matrice[riga][j] && tipo === matrice[riga][j][0] && basso.length < 3) 
         {
-            basso.push(matrice[riga][j]);
+            basso.push(matrice[riga][j])
         }
         else 
         {
-            break;
+            break
         }
     }
 
@@ -618,11 +707,11 @@ function controlloal(tipo,posizioni,matrice)
     {
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0] && asinistra.length < 3) 
         {
-            asinistra.push(matrice[i][colonna]);
+            asinistra.push(matrice[i][colonna])
         } 
         else 
         {
-            break; 
+            break
         }
     }
 
@@ -630,17 +719,21 @@ function controlloal(tipo,posizioni,matrice)
     {
         if (matrice[i][colonna] && tipo === matrice[i][colonna][0] && adestra.length < 3) 
         {
-            adestra.push(matrice[i][colonna]);
+            adestra.push(matrice[i][colonna])
         } 
         else 
         {
-            break; 
+            break
         }
     }
     let dbpre = adestra.concat(basso)
+    dbpre.push(matrice[riga][colonna])
     let dapre = adestra.concat(alto)
+    dapre.push(matrice[riga][colonna])
     let sbpre = asinistra.concat(basso)
+    sbpre.push(matrice[riga][colonna])
     let sapre = asinistra.concat(alto)
+    sapre.push(matrice[riga][colonna])
     let db = []
     let da = []
     let sb = []
@@ -649,63 +742,60 @@ function controlloal(tipo,posizioni,matrice)
     {
         if (db.indexOf(adiacenti[i]) == -1 && dbpre[i][0] != 6)
         {
-            db.push(adiacenti[i]);
+            db.push(adiacenti[i])
         }
     }
     for (let i = 0; i < dapre.length; i++) 
     {
         if (da.indexOf(adiacenti[i]) == -1 && dapre[i][0] != 6)
         {
-            da.push(adiacenti[i]);
+            da.push(adiacenti[i])
         }
     }
     for (let i = 0; i < sbpre.length; i++) 
     {
         if (sb.indexOf(adiacenti[i]) == -1 && sbpre[i][0] != 6)
         {
-            sb.push(adiacenti[i]);
+            sb.push(adiacenti[i])
         }
     }
     for (let i = 0; i < sapre.length; i++) 
     {
         if (sa.indexOf(adiacenti[i]) == -1 && sapre[i][0] != 6)
         {
-            sa.push(adiacenti[i]);
+            sa.push(adiacenti[i])
         }
     }
     let u = []
-    if(db.length >= 4)
+    if(db.length > 4)
     {
-        db.push(matrice[riga][colonna])
         u = [db,db.length]
         return u
     }
     else
     {
-        if(da.length >= 4)
+        if(da.length > 4)
         {
-            da.push(matrice[riga][colonna])
             u = [da,da.length]
             return u
         }
         else
         {
-            if(sb.length >= 4)
+            if(sb.length > 4)
             {
-                sb.push(matrice[riga][colonna])
                 u = [sb,sb.length]
                 return u
             }
             else
             {
-                if(sa.length >= 4)
+                if(sa.length > 4)
                 {
-                    sa.push(matrice[riga][colonna])
                     u = [sa,sa.length]
                     return u
                 }
                 else
                 {
+                    console.log("ciao")
                     return false
                 }
             }
@@ -748,8 +838,9 @@ function elimina(elemdaeliminare,matrice)
         {
             if(elemdaeliminare.indexOf(matrice[i][j]) != -1 && matrice[i][j][0]!=6)
             {
-                esplosione(matrice[i][j][3])
-                matrice[i][j] = undefined
+                let posizioni = [i,j]
+                esplosione(matrice[i][j][2])
+                matrice[i][j] = generaelemento(posizioni,"no",matrice)
             }
         }
     }
@@ -770,22 +861,25 @@ function creaelementocondizionale(long,posizioni,matrice)
 }
 function effettospeciale(tipo, posizioni, matrice) 
 {
-    let darestituire = [];
-    let i = posizioni[0];
-    let j = posizioni[1];
-    matrice[i][j] = undefined;
+    let darestituire = []
+    let i = posizioni[0]
+    let j = posizioni[1]
+    esplosione(matrice[i][j][2])
+    matrice[i][j] = generaelemento([i,j],"no",matrice)
     if (i > 0 && matrice[i-1][j] != undefined) 
     {
         if( matrice[i-1][j][0] == 4 || matrice[i-1][j][0] == 5)
         {
             let g = [i-1,j]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i-1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
         }
         else if (matrice[i-1][j][0] == 6 && tipo == 5)
         {
-            matrice[i-1][j] = undefined;
+            esplosione(matrice[i-1][j][2])
+            matrice[i-1][j] = generaelemento([i-1,j],"no",matrice)
         }
         else if(matrice[i-1][j][0] == 6 && tipo == 4)
         {
@@ -793,8 +887,9 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            darestituire.push(matrice[i-1][j]);
-            matrice[i-1][j] = undefined;
+            esplosione(matrice[i-1][j][2])
+            darestituire.push(matrice[i-1][j])
+            matrice[i-1][j] = generaelemento([i-1,j],"no",matrice)
         }
     }
     if (i < matrice.length - 1 && matrice[i+1][j] != undefined) 
@@ -802,13 +897,15 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i+1][j][0] == 4 ||matrice[i+1][j][0] == 5)
         {
             let g = [i+1,j]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i+1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
         }
         else if (matrice[i+1][j][0] == 6 && tipo == 5)
         {
-            matrice[i+1][j] = undefined;
+            esplosione(matrice[i+1][j][2])
+            matrice[i+1][j] = generaelemento([i+1,j],"no",matrice)
         }
         else if(matrice[i+1][j][0] == 6 && tipo == 4)
         {
@@ -816,8 +913,9 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            darestituire.push(matrice[i+1][j]);
-            matrice[i+1][j] = undefined;
+            esplosione(matrice[i+1][j][2])
+            darestituire.push(matrice[i+1][j])
+            matrice[i+1][j] = generaelemento([i+1,j],"no",matrice)
         }
     }
     if (j > 0 && matrice[i][j-1] != undefined) 
@@ -825,13 +923,15 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i][j-1][0] == 4 ||matrice[i][j-1][0] == 5)
         {
             let g = [i,j-1]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i][j-1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
         }
         else if (matrice[i][j-1][0] == 6 && tipo == 5)
         {
-            matrice[i][j-1] = undefined;
+            esplosione(matrice[i][j-1][2])
+            matrice[i][j-1] = generaelemento([i,j-1],"no",matrice)
         }
         else if(matrice[i][j-1][0] == 6 && tipo == 4)
         {
@@ -839,8 +939,9 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            darestituire.push(matrice[i][j-1]);
-            matrice[i][j-1] = undefined;
+            esplosione(matrice[i][j-1][2])
+            darestituire.push(matrice[i][j-1])
+            matrice[i][j-1] = generaelemento([i,j-1],"no",matrice)
         }
     }
     if (j < matrice[i].length - 1 && matrice[i][j+1] != undefined) 
@@ -848,13 +949,15 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i][j+1][0] == 4 ||matrice[i][j+1][0] == 5)
         {
             let g = [i,j+1]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i][j+1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
         }
         else if (matrice[i][j+1][0] == 6 && tipo == 5)
         {
-            matrice[i][j+1] = undefined;
+            esplosione(matrice[i][j+1][2])
+            matrice[i][j+1] = generaelemento([i,j+1],"no",matrice)
         }
         else if(matrice[i][j+1][0] == 6 && tipo == 4)
         {
@@ -862,8 +965,9 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            darestituire.push(matrice[i][j+1]);
-            matrice[i][j+1] = undefined;
+            esplosione(matrice[i][j+1][2])
+            darestituire.push(matrice[i][j+1])
+            matrice[i][j+1] =generaelemento([i,j+1],"no",matrice)
         }
     }
     if (tipo == 5) 
@@ -873,18 +977,21 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i-1][j-1][0] == 4 ||matrice[i-1][j-1][0] == 5)
             {
                 let g = [i-1,j-1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i-1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
             }
             else if (matrice[i-1][j-1][0] == 6)
             {
-                matrice[i-1][j-1] = undefined;
+                esplosione(matrice[i-1][j-1][2])
+                matrice[i-1][j-1] = generaelemento([i-1,j-1],"no",matrice)
             }
             else
             {
-                darestituire.push(matrice[i-1][j-1]);
-                matrice[i-1][j-1] = undefined;
+                esplosione(matrice[i-1][j-1][2])
+                darestituire.push(matrice[i-1][j-1])
+                matrice[i-1][j-1] = generaelemento([i-1,j-1],"no",matrice)
             }
         }
         if (i > 0 && j < matrice[i].length - 1 && matrice[i-1][j+1] != undefined) 
@@ -892,18 +999,21 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i-1][j+1][0] == 4 ||matrice[i-1][j+1][0] == 5)
             {
                 let g = [i-1,j+1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i-1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
             }
             else if (matrice[i-1][j+1][0] == 6)
             {
-                matrice[i-1][j+1] = undefined;
+                esplosione(matrice[i-1][j+1][2])
+                matrice[i-1][j+1] = generaelemento([i-1,j+1],"no",matrice)
             }
             else
-            {            
-                darestituire.push(matrice[i-1][j+1]);
-                matrice[i-1][j+1] = undefined;
+            {          
+                esplosione(matrice[i-1][j+1][2])  
+                darestituire.push(matrice[i-1][j+1])
+                matrice[i-1][j+1] = generaelemento([i-1,j+1],"no",matrice)
             }
 
         }
@@ -912,18 +1022,21 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i+1][j-1][0] == 4 ||matrice[i+1][j-1][0] == 5)
             {
                 let g = [i+1,j-1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i+1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
             }
             else if (matrice[i+1][j-1][0] == 6)
             {
-                matrice[i+1][j-1] = undefined;
+                esplosione(matrice[i+1][j-1][2])
+                matrice[i+1][j-1] = generaelemento([i+1,j-1],"no",matrice)
             }
            else
             {
-                darestituire.push(matrice[i+1][j-1]);
-                matrice[i+1][j-1] = undefined;
+                esplosione(matrice[i+1][j-1][2])
+                darestituire.push(matrice[i+1][j-1])
+                matrice[i+1][j-1] = generaelemento([i+1,j-1],"no",matrice)
             }
         }
         if (i < matrice.length - 1 && j < matrice[i].length - 1 && matrice[i+1][j+1] != undefined) 
@@ -931,46 +1044,54 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i+1][j+1][0] == 4 ||matrice[i+1][j+1][0] == 5)
             {
                 let g = [i+1,j+1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i+1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
             }
             else if (matrice[i+1][j+1][0] == 6)
             {
-                matrice[i+1][j+1] = undefined;
+                esplosione(matrice[i+1][j+1][2])
+                matrice[i+1][j+1] = generaelemento([i+1,j+1],"no",matrice)
             }
             else
             {
-                darestituire.push(matrice[i+1][j+1]);
-                matrice[i+1][j+1] = undefined;
+                esplosione(matrice[i+1][j+1][2])
+                darestituire.push(matrice[i+1][j+1])
+                matrice[i+1][j+1] = generaelemento([i+1,j+1],"no",matrice)
             }
         }
     }
-
-    return [matrice, darestituire];
+    return [matrice, darestituire]
 }
 function shift(matrice) 
 {
-    let moved;
-    do 
+    for (let i = matrice.length - 2; i >= 0; i--) 
     {
-        moved = false;
-        for(let i = matrice.length - 2; i >= 0; i--) 
-        { 
-            for(let j = 0; j < matrice[i].length; j++) 
+        for (let j = 0; j < matrice[i].length; j++) 
+        {
+            if (matrice[i][j][0] != undefined && matrice[i + 1][j][0] == undefined) 
             {
-                if(matrice[i][j] != undefined && matrice[i+1][j] == undefined) 
-                {
-                    let pos1 = {i: i, j: j};
-                    let pos2 = {i: i+1, j: j};
-                    swap(pos1, pos2, matrice);
-                    moved = true;
-                }
+                let pos1 = { i: i, j: j }
+                let pos2 = { i: i + 1, j: j }
+                matrice = swap(pos1, pos2, matrice)
+                let id1 = matrice[pos1.i][pos1.j][2]
+                let id2 = matrice[pos2.i][pos2.j][2]
+                swapanimation(id1, id2)
+                setTimeout(function () {
+                    stamparidotta(matrice)
+                    matrice = shift(matrice)
+                },400)
+                return matrice
             }
         }
-    } 
-    while(moved);
-    return matrice;
+    }
+    matrix = rigenera(matrice)
+    setTimeout(function(){
+        stamparidotta(matrice)
+        matrice = controlloricorsivo(matrice)
+    },400)
+    return matrice
 }
 function rigenera(matrice)
 {
@@ -978,7 +1099,7 @@ function rigenera(matrice)
     {
         for(let j = 0;j<matrice[i].length;j++)
         {
-            if(matrice[i][j]==undefined)
+            if(matrice[i][j][0]==undefined)
             {
                 let y = [i,j]
                 matrice[i][j] = generaelemento(y,undefined,matrice)
@@ -987,28 +1108,39 @@ function rigenera(matrice)
     }
     return matrice
 }
-function swapanimation(idunin, idunout) {
-    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
-    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
+function swapanimation(idunin, idunout)
+{
+    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]')
+    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]')
 
-    let rectIn = elementoIn.getBoundingClientRect();
-    let rectOut = elementoOut.getBoundingClientRect();
-    let dx = rectIn.left - rectOut.left;
-    let dy = rectIn.top - rectOut.top;
-    elementoIn.style.transform = 'translate(' + -dx + 'px, ' + -dy + 'px)';
-    elementoOut.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    let rectIn = elementoIn.getBoundingClientRect()
+    let rectOut = elementoOut.getBoundingClientRect()
+    let dx = rectIn.left - rectOut.left
+    let dy = rectIn.top - rectOut.top
+    elementoIn.style.transform = 'translate(' + -dx + 'px, ' + -dy + 'px)'
+    elementoOut.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)'
 }
 function reverse(idunin, idunout)
 {
-    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]');
-    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]');
+    let elementoIn = document.querySelector('[idunivoco="' + idunin + '"]')
+    let elementoOut = document.querySelector('[idunivoco="' + idunout + '"]')
 
-    elementoIn.style.transform = '';
-    elementoOut.style.transform = '';
+    elementoIn.style.transform = ''
+    elementoOut.style.transform = ''
 }
 function esplosione(idunivoco)
 {
-    
+    let o = Math.round(Math.random() * ((esplosioni.length-1) - 0) + 0)
+    document.body.style.setProperty("--esplosione",esplosioni[o])
+    let elemento = document.querySelector('[idunivoco="' + idunivoco + '"]')
+    if(elemento != null)
+    {
+        elemento.style.animation = "esplosione 0.4s ease forwards"
+    }
+    else
+    {
+
+    }
 }
 
 /*Gestione generale*/
@@ -1028,24 +1160,12 @@ setInterval(()=>{
     }
     let r = "Mosse :  <f style='color:" + colore + ";'>" + mosse + "</f>"
     strike.innerHTML = r
-    if(avviato == true)
-    {
-        if(tuttipunti(punteggio) == true)
-        {
-            win()
-        }
-        if(mosse > 3)
-        {
-            lose()
-        }
-    }
 },0)
 function win()
 {
     let y = "<h2>Hai Vinto</h2><h6>Tocca per tornare alla home</h6>"
     document.querySelector(".visiover").style.display = "flex"
-    messaggio(y,"#518c38")
-    document.querySelector(".areagioco").style.filter = "blur(10px)"
+    messaggio(y)
     document.querySelector(".avviso").addEventListener("click",function(){
         if(avviato == true)
         {
@@ -1053,14 +1173,15 @@ function win()
             classifica.push(kj)
             classifica = riordina(classifica)
             localStorage.setItem("classifica",JSON.stringify(classifica))
+            document.querySelector(".avviso").style.animation = "scompari 0.6s ease"
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
             statoattuale = "homescreen"
             setTimeout(function(){
                 document.querySelector(".visiover").style.display = "none"
                 document.querySelector(".avviso").style.display = "none"
-                resetta()
                 statoattuale = "homescreen"
-            },300)
+                resetta()
+            },400)
         }
     })
 }
@@ -1068,8 +1189,7 @@ function lose()
 {
     let y = "<h2>Hai Perso</h2><h6>Tocca per tornare alla home</h6>"
     document.querySelector(".visiover").style.display = "flex"
-    messaggio(y,"#833920")
-    document.querySelector(".areagioco").style.filter = "blur(10px)"
+    messaggio(y)
     document.querySelector(".avviso").addEventListener("click",function(){
         if(avviato == true)
         {
@@ -1080,7 +1200,7 @@ function lose()
                 document.querySelector(".avviso").style.display = "none"
                 resetta()
                 statoattuale = "homescreen"
-            },300)
+            },400)
         }
     })
 }
@@ -1095,6 +1215,8 @@ function resetta()
     arrabbiatura = mosse
     avviato = false
     spawnato = false
+    noteseguendo = false
+    punteggio = [0,0,0,0]
     scambio = undefined
 }
 function tuttipunti(array)
@@ -1116,15 +1238,29 @@ function tuttipunti(array)
 function riordina(classifica) 
 {
     classifica.forEach((giocatore) => {
-        let punteggioTotale = 0;
+        let punteggioTotale = 0
         giocatore[0].forEach((punteggio, index) => {
-            punteggioTotale += punteggio * punti[index];
+            punteggioTotale += punteggio * punti[index]
         });
-        giocatore.push(punteggioTotale);
+        giocatore.push(punteggioTotale)
     });
-    classifica.sort((a, b) => b[2] - a[2]);
 
-    return classifica;
+    const n = classifica.length;
+    let gap = Math.floor(n / 2);
+    while (gap > 0) {
+        for (let i = gap; i < n; i++) {
+            const temp = classifica[i]
+            let j = i
+            while (j >= gap && classifica[j - gap][2] < temp[2]) {
+                classifica[j] = classifica[j - gap]
+                j -= gap
+            }
+            classifica[j] = temp
+        }
+        gap = Math.floor(gap / 2)
+    }
+
+    return classifica
 }
 function stampaclassifica(classifica,dove)
 {
@@ -1200,7 +1336,6 @@ function transizioneavanzata(inn,outt,w)
 }
 function messaggio(n,p)
 {
-    document.body.style.setProperty("--esito",p)
     document.getElementById("avvisu").innerHTML = n
     document.querySelector(".avviso").style.animation = "se 0.6s ease"
     document.querySelector(".avviso").style.display = "flex"
@@ -1238,7 +1373,7 @@ function chiedinome(e)
             setTimeout(function(){
                 document.querySelector(".chiedinome").style.display = "none"
                 stampaggiorna(d)
-            },300)
+            },400)
         }
         else
         {
@@ -1324,6 +1459,7 @@ document.getElementById("riprendi").addEventListener("click",function(){
         document.querySelector(".pausa").style.animation = "seinverso 0.6s ease forwards"
         setTimeout(function(){
             document.querySelector(".pausa").style.display = "none"
+            document.querySelector(".areagioco").style.animation = ""
         },600)
     },50)
 })
@@ -1331,49 +1467,49 @@ history.pushState(null, null, document.URL)
 window.addEventListener('popstate', () => {
   if (statoattuale == "selezione") 
   {
-    history.pushState(null, null, document.URL);
-    transizione(document.querySelector(".selezione"),document.querySelector(".homescreen"));
-    statoattuale = "homescreen";
+    history.pushState(null, null, document.URL)
+    transizione(document.querySelector(".selezione"),document.querySelector(".homescreen"))
+    statoattuale = "homescreen"
   } 
   else if (statoattuale == "homescreen") 
   {
-    history.back();
+    history.back()
   }
   else if(statoattuale == "regole")
   {
-    history.pushState(null, null, document.URL);
-    transizione(document.querySelector(".regole"),document.querySelector(".homescreen"));
-    statoattuale = "homescreen";
+    history.pushState(null, null, document.URL)
+    transizione(document.querySelector(".regole"),document.querySelector(".homescreen"))
+    statoattuale = "homescreen"
   }
   else if(statoattuale == "areagioco")
   {
-    history.pushState(null, null, document.URL);
+    history.pushState(null, null, document.URL)
   }
   else if(statoattuale == "classifica")
   {
-    history.pushState(null, null, document.URL);
-    transizione(document.querySelector(".classifica"),document.querySelector(".homescreen"));
-    statoattuale = "homescreen";
+    history.pushState(null, null, document.URL)
+    transizione(document.querySelector(".classifica"),document.querySelector(".homescreen"))
+    statoattuale = "homescreen"
   }
   else if (statoattuale == "pausa")
   {
-    history.pushState(null, null, document.URL);
+    history.pushState(null, null, document.URL)
   }
   else if (statoattuale == "areaclassifica")
   {
-    history.pushState(null, null, document.URL);
+    history.pushState(null, null, document.URL)
     transizione(document.querySelector(".areaclassifica"),document.querySelector(".classifica"))
     statoattuale = "classifica"
   }
   else if (statoattuale == "avviso")
   {
-    history.pushState(null, null, document.URL);
+    history.pushState(null, null, document.URL)
   }
   else if(statoattuale == "chiedinome")
   {
-    history.pushState(null, null, document.URL);
-    transizioneavanzata(document.querySelector(".chiedinome"),document.querySelector(".selezione"),"sfondo");
-    statoattuale = "selezione";
+    history.pushState(null, null, document.URL)
+    transizioneavanzata(document.querySelector(".chiedinome"),document.querySelector(".selezione"),"sfondo")
+    statoattuale = "selezione"
   }
 })
 window.addEventListener("beforeunload",() => {

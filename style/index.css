@@ -24,14 +24,18 @@
 }
 @keyframes esplosione {
     0%{
-        transform: scale(1);
         opacity: 100%;
+        scale:1;
+    }
+    50%{
+        opacity: 0%;
+        border-radius: var(--esplosione);
+        scale:1.3;
     }
     100%{
-        transform: scale(1.1);
-        border: solid var(--sfondotabella);
-        border-radius: var(--esplosione);
         opacity: 0%;
+        border-radius: var(--esplosione);
+        scale:1.3;
     }
 }
 @keyframes se {
@@ -128,12 +132,12 @@
 }
 @keyframes compari {
     0%{
-        opacity: 100%;
-        transform: scale(1);
+        opacity: 0%;
+        transform: scale(0.1);
     }
     50%{
-        opacity: 0%;
-        transform: scale(0.95);
+        opacity: 100%;
+        transform: scale(1.3);
     }
     100%{
         opacity: 100%;
@@ -679,7 +683,7 @@ h2
 @media (orientation:landscape) {
     .cella:hover
     {
-        border: solid #c9b27d 5px;
+        border: solid white 5px;
         transform: scale(1.1);
     }
 }
@@ -687,7 +691,7 @@ h2
 {
     #logo
     {
-        width: 100%;
+        width: 85%;
         height: auto;
     }
     .appiglio
@@ -780,7 +784,7 @@ input{
 {
     display: flex;
     border-radius: 40px;
-    background: var(--esito);
+    background: var(--sfondotabella);
     border: solid white 10px;
     padding: 20px;
     width: 50%;
