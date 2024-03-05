@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "eco-crush",
     "public": "public",
     "ignore": [
       "firebase.json",
