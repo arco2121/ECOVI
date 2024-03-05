@@ -1299,6 +1299,7 @@ function stampaclassifica(classifica,dove)
     let html = ""
     if(classifica != "")
     {
+        document.querySelector(".fg").style.justifyContent = ""
         classifica.forEach((giocatore,index) => {
             let riga = "<div dati='" + JSON.stringify(giocatore) + "' class='giocatore levelbutton'><div class='posizioneclass'>" + (index+1) +"</div><div class='player'>" + giocatore[1] + "</div><div class='punteggio'>"+ giocatore[3] +"</div><img src='img/" + giocatore[2] + ".jpg' class='imglivello posizioneabso'></div>"
             html = html + riga
@@ -1318,6 +1319,7 @@ function stampaclassifica(classifica,dove)
     else
     {
         dove.innerHTML = "<h3>Attualmente vuota</h3>"
+        document.querySelector(".fg").style.justifyContent = "center"
     }
 }
 function costruisciclassifica(dati,dove,si) 
