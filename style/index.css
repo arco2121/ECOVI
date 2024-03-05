@@ -823,7 +823,7 @@ input{
     justify-content: center;
     align-items: center;
     width: 90%;
-    height: 100%;
+    height: auto;
 }
 .player
 {
@@ -840,7 +840,7 @@ input{
 .giocatore
 {
     display: flex;
-    margin: 10px;
+    margin: 30px;
     padding: 10px;
     position: sticky;
     padding-top: 20px;
@@ -851,7 +851,7 @@ input{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    height: 60px;
+    height: 80px;
     flex-wrap: wrap;
 }
 @media(orientation:landscape)

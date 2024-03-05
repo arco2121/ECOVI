@@ -281,6 +281,16 @@ function stampaggiorna(matrix)
                     scambio = undefined
                     arrabbiatura = 0
                     mosse = 0
+                    if(tuttipunti(punteggio) == true)
+                    {
+                        document.querySelector(".areagioco").style.filter = "blur(20px)"
+                        win()
+                    }
+                    if(mosse > 3)
+                    {
+                        document.querySelector(".areagioco").style.filter = "blur(20px)"
+                        lose()
+                    }
                 }
             }
             else if (attuale.id == '6')
@@ -351,6 +361,16 @@ function stampaggiorna(matrix)
                             },400)
                             arrabbiatura = 0
                             mosse = 0
+                            if(tuttipunti(punteggio) == true)
+                            {
+                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                win()
+                            }
+                            if(mosse > 3)
+                            {
+                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                lose()
+                            }
                         }
                         else
                         {
@@ -363,6 +383,16 @@ function stampaggiorna(matrix)
                             },400)
                             mosse = mosse + 1
                             arrabbiatura = mosse
+                            if(tuttipunti(punteggio) == true)
+                            {
+                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                win()
+                            }
+                            if(mosse > 3)
+                            {
+                                document.querySelector(".areagioco").style.filter = "blur(20px)"
+                                lose()
+                            }
                         }
                     }
                     else
@@ -1334,7 +1364,7 @@ function transizioneavanzata(inn,outt,w)
         
     },50)
 }
-function messaggio(n,p)
+function messaggio(n)
 {
     document.getElementById("avvisu").innerHTML = n
     document.querySelector(".avviso").style.animation = "se 0.6s ease"
@@ -1391,8 +1421,10 @@ regolebutton.addEventListener("click",()=>{
 })
 classificabutton.addEventListener("click",()=>{
     stampaclassifica(classifica,document.querySelector(".classi-view"))
-    transizione(document.querySelector(".homescreen"),document.querySelector(".classifica"))
-    statoattuale = "classifica"
+    setTimeout(function(){
+        transizione(document.querySelector(".homescreen"),document.querySelector(".classifica"))
+        statoattuale = "classifica"
+    },50)
 })
 backtohomebutton.forEach(button => {
     button.addEventListener("click", ()=>{
