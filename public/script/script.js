@@ -36,14 +36,16 @@ if(localStorage.getItem("player"))
 }
 document.querySelector(".homescreen").style.display = "flex"
 
-setTimeout(function(){
-    document.querySelector(".loadscreen").addEventListener("click",()=>{
-        setTimeout(()=>{
-            transizione(document.querySelector(".loadscreen"),document.querySelector(".homescreen"))
-            statoattuale = "homescreen"
-        },50)
-    })
-},1650)
+window.addEventListener("DOMContentLoaded",()=>{
+    setTimeout(function(){
+        document.querySelector(".loadscreen").addEventListener("click",()=>{
+            setTimeout(()=>{
+                transizione(document.querySelector(".loadscreen"),document.querySelector(".homescreen"))
+                statoattuale = "homescreen"
+            },50)
+        })
+    },1650)
+})
 
 /*Gestione Tabella*/
 function genid()
