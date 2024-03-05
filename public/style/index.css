@@ -521,6 +521,11 @@ h2
 {
     font-size: 25px;
 }
+.back
+{
+    background: #76390b;
+    padding: 10px;
+}
 @media(orientation:landscape)
 {
     .secondo:hover{
