@@ -6,10 +6,15 @@ let pausabutton = document.getElementById("pausa")
 let x5button = document.getElementById("x5")
 let x6button = document.getElementById("x6")
 let x7button =  document.getElementById("x7")
+let view = true
 let xcasualebutton = document.getElementById("xcasuale")
 let classificabutton = document.getElementById("classici")
 let statoattuale = ""
+let audio = document.getElementById("sottofondo")
+let sonori = document.getElementById("effetti")
 let colori = new Map()
+let siaudio = true
+let siaudiof = true
 let avviato = false
 let strike = document.getElementById("strike")
 let scambio = undefined
@@ -34,7 +39,26 @@ if(localStorage.getItem("player"))
 {
     player = localStorage.getItem("player")
 }
-document.querySelector(".homescreen").style.display = "flex"
+if(localStorage.getItem("audio"))
+{
+    console.log(localStorage.getItem("audio"))
+    audio.value = localStorage.getItem("audio")
+    console.log(audio.value)
+}
+else
+{
+    localStorage.setItem("audio","2")
+    audio.value = localStorage.getItem("audio")
+}
+if(localStorage.getItem("sonori"))
+{
+    sonori.value = localStorage.getItem("sonori")
+}
+else
+{
+    localStorage.setItem("sonori","2")
+    sonori.value = localStorage.getItem("sonori")
+}
 
 window.addEventListener("DOMContentLoaded",()=>{
     setTimeout(function(){
@@ -45,6 +69,28 @@ window.addEventListener("DOMContentLoaded",()=>{
             },50)
         })
     },1650)
+})
+
+let bottonia = document.querySelectorAll("button")
+bottonia.forEach(qw => {
+    qw.addEventListener("click",function(e){
+        let au = e.currentTarget
+        if(siaudio == true)
+        {
+            if(au.id == "pausa" || au.id == "impostazionibutton" || au.id == "riprendi")
+            {
+                document.getElementById("esplodiaudio").play()
+            }
+            else if(au.classList.contains("backtohome") || au.classList.contains("backtoclassifica") || au.id == "termina")
+            {
+                document.getElementById("backaudio").play()
+            }
+            else
+            {
+                document.getElementById("clickaudio").play()
+            }
+        }
+    })
 })
 
 /*Gestione Tabella*/
@@ -156,7 +202,7 @@ function generaelemento(posizioni,tipo,matrice)
                 valo = [p,codice,idunivoco,false]
             }
         }
-        let urai = Math.round(Math.random() * ((Math.round(900 / arrabbiatura) - arrabbiatura) - 0) + 0)
+        let urai = Math.round(Math.random() * ((Math.round(300 / arrabbiatura) - arrabbiatura) - 0) + 0)
         if(urai <= 1)
         {
             idunivoco = genid()
@@ -186,8 +232,9 @@ function stamparidotta(matrix)
         let posizioni = [pos.i,pos.j]
         if(matrix[posizioni[0]][posizioni[1]][0] != undefined && matrix[posizioni[0]][posizioni[1]][3] == false)
         {
-            cella.style.animation = "compari 0.6s ease-in-out"
+            cella.style.animation = "compari 0.3s ease-in-out"
             matrix[posizioni[0]][posizioni[1]][3] = true
+            document.getElementById("esplodiaudio").play()
         }
         else
         {
@@ -222,7 +269,7 @@ function stampaggiorna(matrix)
         let posizioni = [pos.i,pos.j]
         if(matrix[posizioni[0]][posizioni[1]][0] != undefined && matrix[posizioni[0]][posizioni[1]][3] == false)
         {
-            cella.style.animation = "compari 0.6s ease-in-out"
+            cella.style.animation = "compari 0.3s ease-in-out"
             matrix[posizioni[0]][posizioni[1]][3] = true
         }
         else
@@ -255,6 +302,10 @@ function stampaggiorna(matrix)
     let celle = document.querySelectorAll(".cella")
     celle.forEach(cella => {
         cella.addEventListener("click",(e)=>{
+            if(siaudio == true)
+            {
+                document.getElementById("clickaudio").play()
+            }
             noteseguendo = false
             let attuale = e.currentTarget
             if(attuale.id == 'undefined')
@@ -268,20 +319,27 @@ function stampaggiorna(matrix)
                 {
                     let posizioni = [posatu.i,posatu.j]
                     let k = effettospeciale(attuale.id,posizioni,matrix)
-                    matrix = k[0]
-                    for(let i = 0; i<k[1].length;i++)
-                    {
-                        if(k[1][i][0] < 4)
-                        {
-                            punteggio[k[1][i][0]] = parseInt(punteggio[k[1][i][0]]) + 1
-                        }
-                    }
-                    setTimeout(()=>{
-                        stamparidotta(matrix)
-                        setTimeout(function(){
-                            matrix = shift(matrix)
-                        },400)
+                    lampeggio(k[1])
+                    setTimeout(function(){
+                        k[1].forEach(ciao=>{
+                            let y = ciao[2]
+                            esplosione(y)
+                        })
                     },400)
+                    setTimeout(function(){
+                        matrix = k[0]
+                        stamparidotta(matrix)
+                        for(let i = 0; i<k[1].length;i++)
+                        {
+                            if(k[1][i][0] < 4)
+                            {
+                                punteggio[k[1][i][0]] = parseInt(punteggio[k[1][i][0]]) + 1
+                            }
+                        }
+                        setTimeout(()=>{
+                            matrix = shift(matrix)
+                        },250)
+                    },550)
                     scambio = undefined
                     arrabbiatura = 0
                     mosse = 0
@@ -339,8 +397,10 @@ function stampaggiorna(matrix)
                                     {
                                         punteggio[eliminaegenerata[0][0][i][0]] = parseInt(punteggio[eliminaegenerata[0][0][i][0]]) + 1
                                     }
-                                    for(let i = 0; i<eliminaegenerata[0][0].length;i++)
-                                    matrix = elimina(eliminaegenerata[0][0],matrix)
+                                    lampeggio(eliminaegenerata[0][0])
+                                    setTimeout(()=>{
+                                        matrix = elimina(eliminaegenerata[0][0],matrix)
+                                    },400)
                                 }
                                 if(eliminaegenerata[1] != false)
                                 {
@@ -348,21 +408,26 @@ function stampaggiorna(matrix)
                                     {
                                         punteggio[eliminaegenerata[1][0][i][0]] = parseInt(punteggio[eliminaegenerata[1][0][i][0]]) + 1
                                     }
-                                    matrix = elimina(eliminaegenerata[1][0],matrix)
-                                }
-                                if(eliminaegenerata[0] == eliminaegenerata[1])
-                                {
-                                    creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)   
-                                } 
-                                else
-                                {
-                                    creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)
-                                    creaelementocondizionale(eliminaegenerata[1][1],posizioni2,matrix)   
+                                    lampeggio(eliminaegenerata[1][0])
+                                    setTimeout(()=>{
+                                        matrix = elimina(eliminaegenerata[1][0],matrix)
+                                    },400)
                                 }
                                 setTimeout(function(){
+                                    if(eliminaegenerata[0] == eliminaegenerata[1])
+                                    {
+                                        creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)   
+                                    } 
+                                    else
+                                    {
+                                        creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)
+                                        creaelementocondizionale(eliminaegenerata[1][1],posizioni2,matrix)   
+                                    }
                                     stamparidotta(matrix)
-                                    matrix = shift(matrix)
-                                },400)
+                                    setTimeout(function(){
+                                        matrix = shift(matrix)
+                                    },350)
+                                },550)
                                 scambio = undefined
                             },400)
                             arrabbiatura = 0
@@ -430,19 +495,24 @@ function controlloricorsivo(matrice)
         for(let j = 0; j<matrice[i].length;j++)
         {
             let posizioni = [i,j]
-            let eleminarea = controllo(matrice[i][j][0],posizioni,matrice)
+            let eleminarea = controllocontrollo(matrice[i][j][0],posizioni,matrice)
             if(eleminarea != false)
             {
                 for(let i = 0; i<eleminarea[0].length;i++)
                 {
                     punteggio[eleminarea[0][i][0]] = parseInt(punteggio[eleminarea[0][i][0]]) + 1
                 }
-                matrice = elimina(eleminarea[0],matrice)
-                creaelementocondizionale(eleminarea[1],posizioni,matrice)
-                setTimeout(function(){
-                    stamparidotta(matrix)
-                    matrice = shift(matrice)
+                lampeggio(eleminarea[0])
+                setTimeout(()=>{
+                    matrix = elimina(eleminarea[0],matrix)
                 },400)
+                setTimeout(function(){
+                    creaelementocondizionale(eleminarea[1],posizioni,matrice)
+                    stamparidotta(matrix)
+                    setTimeout(function(){
+                        matrice = shift(matrice)
+                    },350)
+                },550)
                 return matrice
             }
             else
@@ -455,6 +525,34 @@ function controlloricorsivo(matrice)
         stampaggiorna(matrice)
     },400)
     return matrice
+}
+function controllocontrollo(tipo,posizioni,matrice)
+{
+    let uio = controllosmonco(tipo,posizioni,matrice)
+    if(uio != false)
+    {
+        return uio
+    }
+    else
+    {
+        uio = controlloterziario(tipo,posizioni,matrice)
+        if(uio != false)
+        {
+            return uio
+        }
+        else
+        {
+            uio = controllosecondario(tipo,posizioni,matrice)
+            if(uio != false)
+            {
+                return uio
+            }
+            else
+            {
+                return false
+            }
+        }
+    }
 }
 function individua(id1, matrice)
 {
@@ -493,6 +591,82 @@ function vicino(posizioni1,posizioni2)
     {
         return true
     }
+    else
+    {
+        return false
+    }
+}
+function controllosmonco(tipo,posizioni,matrice)
+{
+    let adiacenti = []
+
+    let riga = posizioni[0]
+    let colonna = posizioni[1]
+
+    for (let j = colonna; j >= 0; j--) 
+    {
+        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
+        {
+            adiacenti.push(matrice[riga][j])
+        } 
+        else 
+        {
+            break
+        }
+    }
+
+    for (let j = colonna + 1; j < matrice[riga].length; j++) 
+    {
+        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
+        {
+            adiacenti.push(matrice[riga][j])
+        }
+        else 
+        {
+            break
+        }
+    }
+
+    for (let i = riga; i >= 0; i--) 
+    {
+        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        {
+            adiacenti.push(matrice[i][colonna])
+        } 
+        else 
+        {
+            break
+        }
+    }
+
+    for (let i = riga + 1; i < matrice.length; i++)
+    {
+        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        {
+            adiacenti.push(matrice[i][colonna])
+        } 
+        else 
+        {
+            break
+        }
+    }
+
+    let elemdaeliminare = [];
+    for (let i = 0; i < adiacenti.length; i++) 
+    {
+        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6 && adiacenti[i][0] != 4 && adiacenti[i][0] != 5)
+        {
+            elemdaeliminare.push(adiacenti[i])
+        }
+    }
+    if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
+    {
+        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+    }
+    if (elemdaeliminare.length > 5) 
+    {
+        return [elemdaeliminare, elemdaeliminare.length]
+    } 
     else
     {
         return false
@@ -904,21 +1078,20 @@ function effettospeciale(tipo, posizioni, matrice)
     let darestituire = []
     let i = posizioni[0]
     let j = posizioni[1]
-    esplosione(matrice[i][j][2])
+    darestituire.push(matrice[i][j])
     matrice[i][j] = generaelemento([i,j],"no",matrice)
     if (i > 0 && matrice[i-1][j] != undefined) 
     {
         if( matrice[i-1][j][0] == 4 || matrice[i-1][j][0] == 5)
         {
             let g = [i-1,j]
-            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i-1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
+            return k
         }
         else if (matrice[i-1][j][0] == 6 && tipo == 5)
         {
-            esplosione(matrice[i-1][j][2])
             matrice[i-1][j] = generaelemento([i-1,j],"no",matrice)
         }
         else if(matrice[i-1][j][0] == 6 && tipo == 4)
@@ -927,7 +1100,6 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            esplosione(matrice[i-1][j][2])
             darestituire.push(matrice[i-1][j])
             matrice[i-1][j] = generaelemento([i-1,j],"no",matrice)
         }
@@ -937,14 +1109,13 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i+1][j][0] == 4 ||matrice[i+1][j][0] == 5)
         {
             let g = [i+1,j]
-            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i+1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
+            return k
         }
         else if (matrice[i+1][j][0] == 6 && tipo == 5)
         {
-            esplosione(matrice[i+1][j][2])
             matrice[i+1][j] = generaelemento([i+1,j],"no",matrice)
         }
         else if(matrice[i+1][j][0] == 6 && tipo == 4)
@@ -953,7 +1124,6 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            esplosione(matrice[i+1][j][2])
             darestituire.push(matrice[i+1][j])
             matrice[i+1][j] = generaelemento([i+1,j],"no",matrice)
         }
@@ -963,14 +1133,13 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i][j-1][0] == 4 ||matrice[i][j-1][0] == 5)
         {
             let g = [i,j-1]
-            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i][j-1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
+            return k
         }
         else if (matrice[i][j-1][0] == 6 && tipo == 5)
         {
-            esplosione(matrice[i][j-1][2])
             matrice[i][j-1] = generaelemento([i,j-1],"no",matrice)
         }
         else if(matrice[i][j-1][0] == 6 && tipo == 4)
@@ -979,7 +1148,6 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            esplosione(matrice[i][j-1][2])
             darestituire.push(matrice[i][j-1])
             matrice[i][j-1] = generaelemento([i,j-1],"no",matrice)
         }
@@ -989,14 +1157,13 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i][j+1][0] == 4 ||matrice[i][j+1][0] == 5)
         {
             let g = [i,j+1]
-            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i][j+1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
+            return k
         }
         else if (matrice[i][j+1][0] == 6 && tipo == 5)
         {
-            esplosione(matrice[i][j+1][2])
             matrice[i][j+1] = generaelemento([i,j+1],"no",matrice)
         }
         else if(matrice[i][j+1][0] == 6 && tipo == 4)
@@ -1005,7 +1172,6 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else
         {
-            esplosione(matrice[i][j+1][2])
             darestituire.push(matrice[i][j+1])
             matrice[i][j+1] =generaelemento([i,j+1],"no",matrice)
         }
@@ -1017,19 +1183,17 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i-1][j-1][0] == 4 ||matrice[i-1][j-1][0] == 5)
             {
                 let g = [i-1,j-1]
-                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i-1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
+                return k
             }
             else if (matrice[i-1][j-1][0] == 6)
             {
-                esplosione(matrice[i-1][j-1][2])
                 matrice[i-1][j-1] = generaelemento([i-1,j-1],"no",matrice)
             }
             else
             {
-                esplosione(matrice[i-1][j-1][2])
                 darestituire.push(matrice[i-1][j-1])
                 matrice[i-1][j-1] = generaelemento([i-1,j-1],"no",matrice)
             }
@@ -1039,19 +1203,17 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i-1][j+1][0] == 4 ||matrice[i-1][j+1][0] == 5)
             {
                 let g = [i-1,j+1]
-                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i-1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
+                return k
             }
             else if (matrice[i-1][j+1][0] == 6)
             {
-                esplosione(matrice[i-1][j+1][2])
                 matrice[i-1][j+1] = generaelemento([i-1,j+1],"no",matrice)
             }
             else
             {          
-                esplosione(matrice[i-1][j+1][2])  
                 darestituire.push(matrice[i-1][j+1])
                 matrice[i-1][j+1] = generaelemento([i-1,j+1],"no",matrice)
             }
@@ -1062,19 +1224,17 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i+1][j-1][0] == 4 ||matrice[i+1][j-1][0] == 5)
             {
                 let g = [i+1,j-1]
-                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i+1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
+                return k
             }
             else if (matrice[i+1][j-1][0] == 6)
             {
-                esplosione(matrice[i+1][j-1][2])
                 matrice[i+1][j-1] = generaelemento([i+1,j-1],"no",matrice)
             }
            else
             {
-                esplosione(matrice[i+1][j-1][2])
                 darestituire.push(matrice[i+1][j-1])
                 matrice[i+1][j-1] = generaelemento([i+1,j-1],"no",matrice)
             }
@@ -1084,19 +1244,17 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i+1][j+1][0] == 4 ||matrice[i+1][j+1][0] == 5)
             {
                 let g = [i+1,j+1]
-                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i+1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
+                return k
             }
             else if (matrice[i+1][j+1][0] == 6)
             {
-                esplosione(matrice[i+1][j+1][2])
                 matrice[i+1][j+1] = generaelemento([i+1,j+1],"no",matrice)
             }
             else
             {
-                esplosione(matrice[i+1][j+1][2])
                 darestituire.push(matrice[i+1][j+1])
                 matrice[i+1][j+1] = generaelemento([i+1,j+1],"no",matrice)
             }
@@ -1121,7 +1279,7 @@ function shift(matrice)
                 setTimeout(function () {
                     stamparidotta(matrice)
                     matrice = shift(matrice)
-                },400)
+                },200)
                 return matrice
             }
         }
@@ -1130,8 +1288,16 @@ function shift(matrice)
     setTimeout(function(){
         stamparidotta(matrice)
         matrice = controlloricorsivo(matrice)
-    },400)
+    },100)
     return matrice
+}
+function lampeggio(array)
+{
+    array.forEach(eleme => {
+        let jk = eleme[2]
+        let gh = document.querySelector("[idunivoco='"+ jk +"']")
+        gh.style.animation = "lampo 0.4s ease"
+    })
 }
 function rigenera(matrice)
 {
@@ -1173,6 +1339,11 @@ function esplosione(idunivoco)
     let o = Math.round(Math.random() * ((esplosioni.length-1) - 0) + 0)
     document.body.style.setProperty("--esplosione",esplosioni[o])
     let elemento = document.querySelector('[idunivoco="' + idunivoco + '"]')
+    let src = document.getElementById("backaudio")
+    if(siaudio == true)
+    {
+        src.play()
+    }
     if(elemento != null)
     {
         elemento.style.animation = "esplosione 0.4s ease forwards"
@@ -1491,7 +1662,7 @@ pausabutton.addEventListener("click",()=>{
         document.querySelector(".areagioco").style.animation = "sevabo 0.6s ease forwards"
         document.querySelector(".pausa").style.animation = "se 0.6s ease forwards"
         document.querySelector(".pausa").style.display = "flex"
-    },50)
+    },100)
     statoattuale = "pausa"
 })
 document.getElementById("termina").addEventListener("click",function(){
@@ -1506,6 +1677,23 @@ document.getElementById("riprendi").addEventListener("click",function(){
         setTimeout(function(){
             document.querySelector(".pausa").style.display = "none"
         },600)
+    },50)
+})
+document.getElementById("impostazionibutton").addEventListener("click",function(){
+    transizione(document.querySelector(".homescreen"),document.querySelector(".impostazioni"))
+    statoattuale = "impostazioni"
+})
+
+audio.addEventListener("input",function(){
+    localStorage.setItem("audio",audio.value)
+})
+sonori.addEventListener("input",function(){
+    localStorage.setItem("sonori",sonori.value)
+})
+document.getElementById("resetta").addEventListener("click",function(){
+    setTimeout(()=>{
+        localStorage.clear()
+        window.location.reload()
     },50)
 })
 history.pushState(null, null, document.URL)
@@ -1556,10 +1744,62 @@ window.addEventListener('popstate', () => {
     transizioneavanzata(document.querySelector(".chiedinome"),document.querySelector(".selezione"),"sfondo")
     statoattuale = "selezione"
   }
+  else if (statoattuale == "impostazioni")
+  {
+    history.pushState(null, null, document.URL)
+    transizioneavanzata(document.querySelector(".chiedinome"),document.querySelector(".selezione"),"sfondo")
+    statoattuale = "homescreen"
+  }
 })
+setInterval(function(){
+    if(localStorage.getItem("audio") == "1")
+    {
+        siaudiof = false
+        document.getElementById("main").pause()
+    }
+    else
+    {
+        if(view == true)
+        {
+            siaudiof = true
+            document.getElementById("main").play()
+        }
+    }
+    if(localStorage.getItem("sonori") == "1")
+    {
+        siaudio = false
+    }
+    else
+    {
+        siaudio = true
+    }
+},0)
 window.addEventListener("beforeunload",() => {
     if(avviato == true)
     {
-        e.preventDefault()
+        let ok = confirm("Se esci ora perderai tutti progressi, continuare?")
+        if(ok)
+        {
+
+        }
+        else
+        {
+            e.preventDefault()
+        }
+    }
+})
+
+window.addEventListener("focus",function(){
+    if(siaudiof==true)
+    {
+        document.getElementById("main").play()
+    }
+    view = true
+})
+window.addEventListener("blur",function(){
+    view = false
+    if(siaudiof==true)
+    {
+        document.getElementById("main").pause()
     }
 })

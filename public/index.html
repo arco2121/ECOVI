@@ -14,13 +14,6 @@
             <h2 id="avvisu"></h2>
         </div>
     </div>
-    <div class="pausa">
-        <div class="puntiview img"></div>
-        <div class="azioni">
-            <button id="riprendi">Riprendi</button>
-            <button id="termina">Termina</button>
-        </div>
-    </div>
     <div class="generalover"></div>
     <div class="blocco"></div>
     <div class="sfondo">
@@ -35,7 +28,7 @@
     </div>
     <div class="homescreen">
         <div class="barrasuperiore reverseflex">
-            <button class="impostazioni back">
+            <button id="impostazionibutton" class="back">
                 <img src="img/impostazioni.png" class="backimg">
             </button>
         </div>
@@ -97,19 +90,19 @@
             </button>
         </div>
         <div class="img divregole inizio">
-            <h1>Regole</h1>
+            <h2>Regole</h2>
         </div>
         <div class="regolario">
             <div class="img divregole secondo">
-                <h2>Funzionamento:</h2><br>
+                <h3>Funzionamento:</h3><br>
                 <h4>>Qui si inserira l'obbiettivo del gioco</h4>
             </div>
             <div class="img divregole secondo">
-                <h2>Obiettivo:</h2><br>
+                <h3>Obiettivo:</h3><br>
                 <h4>>Qui si inserira l'obbiettivo del gioco</h4>
             </div>
             <div class="img divregole secondo">
-                <h2>Punteggio:</h2><br>
+                <h3>Punteggio:</h3><br>
                 <h4>Qui si inserira l'obbiettivo del gioco</h4>
             </div>
         </div>
@@ -121,7 +114,6 @@
             <button class="ok">Conferma</button>
         </div>
     </div>
-    <div class="tutorial"></div>
     <div class="areagioco">
         <div class="barrasuperiore jklh">
             <div class="countmosse">
@@ -143,6 +135,13 @@
         </div>
         <div class="center classiview img"></div>
     </div>
+    <div class="pausa">
+        <div class="puntiview img"></div>
+        <div class="azioni">
+            <button id="termina">Termina</button>
+            <button id="riprendi">Riprendi</button>
+        </div>
+    </div>
     <div class="classifica">
         <div class="barrasuperiore">
             <button class="back backtohome">
@@ -150,12 +149,39 @@
             </button>
         </div>
         <div class="img divregole inizio">
-            <h1>Classifica</h1>
+            <h2>Classifica</h2>
         </div>
         <div class="regolario fg">
            <div class="classi-view img"></div>
         </div>
     </div>
+    <div class="impostazioni">
+        <div class="barrasuperiore">
+            <button class="back backtohome">
+                <img src="img/back.png" class="img backimg">
+            </button>
+        </div>
+        <div class="img divregole inizio">
+            <h2>Impostazioni</h2>
+        </div>
+        <div class="regolario centera">
+            <div class="rigai">
+                <h4>Audio sottofondo</h4>
+                <input id="sottofondo" type="range" max="2" min="1">
+            </div>
+            <div class="rigai">
+                <h4>Effetti Sonori</h4>
+                <input id="effetti" type="range" max="2" min="1">
+            </div>
+            <div class="rigai center">
+                <button id="resetta">Resetta Tutto</button>
+            </div>
+        </div>
+    </div>
+    <audio id="main" loop><source src="audio/Main.mp3"></audio>
+    <audio id="clickaudio"><source src="audio/click.mp3"></audio>
+    <audio id="backaudio"><source src="audio/cors.mp3"></audio>
+    <audio id="esplodiaudio"><source src="audio/appare.mp3"></audio>
     <script src="script/script.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need

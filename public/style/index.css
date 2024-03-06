@@ -22,6 +22,17 @@
 {
     display: none;
 }
+@keyframes lampo {
+    0%{
+        filter: brightness(100%);
+    }
+    50%{
+        filter: brightness(50%);
+    }
+    100%{
+        filter: brightness(100%);
+    }
+}
 @keyframes esplosione {
     0%{
         opacity: 100%;
@@ -329,7 +340,29 @@ body
     opacity: 0%;
     z-index: 4;
 }
+.tutorial
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 4;
+}
 .selezione
+{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    opacity: 0%;
+    z-index: 6;
+}
+.impostazioni
 {
     display: none;
     flex-direction: column;
@@ -440,12 +473,6 @@ button
     width: 95%;
     overflow-y: scroll;
 }
-.center
-{
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-}
 .level
 {
     display: flex;
@@ -512,7 +539,7 @@ p
     align-items:flex-start;
     justify-content: flex-start;
     text-align:justify;
-    margin: 15px;
+    margin: 25px;
 }
 .inizio
 {
@@ -539,7 +566,7 @@ h2
 @media(orientation:landscape)
 {
     .secondo:hover{
-        li
+        h4
         {
             font-size: 20px;
         }
@@ -694,6 +721,7 @@ h2
     padding: 5px;
     margin: 15px;
     border-radius: 20px;
+    transition: all 0.2s ease-in-out;
 }
 @media (orientation:landscape) {
     .cella:hover
@@ -1073,4 +1101,45 @@ progress::-webkit-progress-value
 .ok
 {
     background-color: var(--sfondotabella);
+}
+.centera
+{
+    align-items: center;
+    text-align: center;
+    justify-content:space-around;
+}
+.rigai
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    height: auto;
+}
+input
+{
+    appearance: none;
+    width: 50px;
+    height: 10px;
+    background-color: #76390b;
+    border-radius: 2000000px;
+}
+input[type="range"]::-webkit-slider-thumb
+{
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 2000000px;
+}
+input[type="range"]::-webkit-slider-runnable-track
+{
+    appearance: none;
+}
+.center
+{
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
