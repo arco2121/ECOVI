@@ -22,6 +22,21 @@
 {
     display: none;
 }
+@keyframes negativo {
+    0%{
+        transform: skewX(0deg);
+    }
+    25%
+    {
+        transform: skewX(45deg);
+    }
+    75%{
+        transform: skewX(-45deg);
+    }
+    100%{
+        transform: skewX(0deg);
+    }
+}
 @keyframes lampo {
     0%{
         filter: brightness(100%);
@@ -37,16 +52,19 @@
     0%{
         opacity: 100%;
         scale:1;
+        filter: brightness(100%);
     }
     50%{
         opacity: 0%;
         border-radius: var(--esplosione);
         scale:1.3;
+        filter: brightness(70%);
     }
     100%{
         opacity: 0%;
         border-radius: var(--esplosione);
         scale:1.3;
+        filter: brightness(0%);
     }
 }
 @keyframes se {
@@ -530,6 +548,14 @@ p
 {
     background:linear-gradient(to right,#518c38ce,#b1670cce,#b10c0cce)
 }
+h3
+{
+    text-align:justify;
+}
+h4
+{
+    text-align:justify;
+}
 .divregole
 {
     display: flex;
@@ -538,7 +564,6 @@ p
     height: auto;
     align-items:flex-start;
     justify-content: flex-start;
-    text-align:justify;
     margin: 25px;
 }
 .inizio
@@ -565,12 +590,6 @@ h2
 }
 @media(orientation:landscape)
 {
-    .secondo:hover{
-        h4
-        {
-            font-size: 20px;
-        }
-    }
     button:hover
     {
         transform: scale(1.1);
@@ -1117,7 +1136,7 @@ progress::-webkit-progress-value
     width: 90%;
     height: auto;
 }
-input
+input[type="range"]
 {
     appearance: none;
     width: 50px;

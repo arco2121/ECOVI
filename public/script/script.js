@@ -67,6 +67,29 @@ window.addEventListener("DOMContentLoaded",()=>{
                 transizione(document.querySelector(".loadscreen"),document.querySelector(".homescreen"))
                 statoattuale = "homescreen"
             },50)
+            setInterval(function(){
+                if(localStorage.getItem("audio") == "1")
+                {
+                    siaudiof = false
+                    document.getElementById("main").pause()
+                }
+                else
+                {
+                    if(view == true)
+                    {
+                        siaudiof = true
+                        document.getElementById("main").play()
+                    }
+                }
+                if(localStorage.getItem("sonori") == "1")
+                {
+                    siaudio = false
+                }
+                else
+                {
+                    siaudio = true
+                }
+            },0)
         })
     },1650)
 })
@@ -1751,29 +1774,6 @@ window.addEventListener('popstate', () => {
     statoattuale = "homescreen"
   }
 })
-setInterval(function(){
-    if(localStorage.getItem("audio") == "1")
-    {
-        siaudiof = false
-        document.getElementById("main").pause()
-    }
-    else
-    {
-        if(view == true)
-        {
-            siaudiof = true
-            document.getElementById("main").play()
-        }
-    }
-    if(localStorage.getItem("sonori") == "1")
-    {
-        siaudio = false
-    }
-    else
-    {
-        siaudio = true
-    }
-},0)
 window.addEventListener("beforeunload",() => {
     if(avviato == true)
     {
@@ -1788,7 +1788,6 @@ window.addEventListener("beforeunload",() => {
         }
     }
 })
-
 window.addEventListener("focus",function(){
     if(siaudiof==true)
     {
