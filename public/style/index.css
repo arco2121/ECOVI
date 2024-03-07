@@ -948,6 +948,18 @@ input{
     }
 }
 @media (orientation:portrait) {
+    #sfondo
+    {
+        transform: translate(-50%,-50%) scale(1.4);
+    }
+    .img
+    {
+        transform: scale(0.96);
+    }
+    #over
+    {
+        opacity: 40%;
+    }
     .destra
     {
         display: flex;
