@@ -491,6 +491,12 @@ button
     width: 95%;
     overflow-y: scroll;
 }
+.dfd
+{
+    border-radius: 30px;
+    border: solid white 10px;
+    background: rgba(0, 0, 0, 0.329);
+}
 .level
 {
     display: flex;
