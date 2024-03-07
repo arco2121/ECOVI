@@ -255,7 +255,6 @@ function stamparidotta(matrix)
         {
             cella.style.animation = "compari 0.3s ease-in-out"
             matrix[posizioni[0]][posizioni[1]][3] = true
-            document.getElementById("esplodiaudio").play()
         }
         else
         {
@@ -323,7 +322,7 @@ function stampaggiorna(matrix)
     let celle = document.querySelectorAll(".cella")
     celle.forEach(cella => {
         cella.addEventListener("click",(e)=>{
-            if(siaudio == true)
+            if(siaudio)
             {
                 document.getElementById("clickaudio").play()
             }
