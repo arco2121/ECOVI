@@ -1678,4 +1678,5 @@ window.addEventListener("blur",function(){
     {
         document.getElementById("main").pause()
     }
+    
 })
