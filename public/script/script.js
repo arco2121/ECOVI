@@ -41,9 +41,7 @@ if(localStorage.getItem("player"))
 }
 if(localStorage.getItem("audio"))
 {
-    console.log(localStorage.getItem("audio"))
     audio.value = localStorage.getItem("audio")
-    console.log(audio.value)
 }
 else
 {
@@ -381,11 +379,13 @@ function stampaggiorna(matrix)
             {
                 scambio = attuale
                 cella.style.border = "solid #c9b27d 5px"
+                cella.style.filter =  "brightness(80%)"
             }
             else if(scambio.getAttribute('idunivoco') == attuale.getAttribute('idunivoco'))
             {
                 scambio = undefined
                 cella.style.border = ""
+                cella.style.filter = ""
             }
             else if(scambio.getAttribute('idunivoco') != attuale.getAttribute('idunivoco') && attuale.id != "undefined" && scambio != undefined && (scambio.id != '5' || scambio.id != '4'))
             {
@@ -401,6 +401,8 @@ function stampaggiorna(matrix)
                         matrix = swap(posizioneelemento,posizioneelemento2,matrix)
                         swapanimation(idunivocoattuale,idunivocoscambiare)
                         let posizioni = [posizioneelemento.i,posizioneelemento.j]
+                        attuale.style.filter =  ""
+                        scambio.style.filter =  ""
                         let posizioni2 = [posizioneelemento2.i,posizioneelemento2.j]
                         eliminaegenerata = [controllocontrollo(matrix[posizioni[0]][posizioni[1]][0],posizioni,matrix),controllocontrollo(matrix[posizioni2[0]][posizioni2[1]][0],posizioni2,matrix)]
                         if(eliminaegenerata[0] != false || eliminaegenerata[1] != false)
@@ -442,7 +444,7 @@ function stampaggiorna(matrix)
                                     stamparidotta(matrix)
                                     setTimeout(function(){
                                         matrix = shift(matrix)
-                                    },350)
+                                    },450)
                                 },550)
                                 scambio = undefined
                             },400)
@@ -465,6 +467,8 @@ function stampaggiorna(matrix)
                         {
                             matrix = swap(posizioneelemento2,posizioneelemento,matrix)
                             setTimeout(function(){
+                                attuale.style.filter =  ""
+                                scambio.style.filter =  ""
                                 reverse(idunivocoattuale,idunivocoscambiare)
                                 scambio.style.border = ""
                                 attuale.style.border = ""
@@ -489,15 +493,19 @@ function stampaggiorna(matrix)
                     else
                     {
                         scambio.style.border = ""
+                        scambio.style.filter =  ""
                         scambio = attuale
                         cella.style.border = "solid #c9b27d 5px"
+                        cella.style.filter =  "brightness(80%)"
                     }
                 }
                 else
                 {
                     scambio.style.border = ""
+                    scambio.style.filter =  ""
                     scambio = attuale
                     cella.style.border = "solid #c9b27d 5px"
+                    cella.style.filter =  "brightness(80%)"
                     noteseguendo = true
                 }
             }
@@ -527,7 +535,7 @@ function controlloricorsivo(matrice)
                     stamparidotta(matrix)
                     setTimeout(function(){
                         matrice = shift(matrice)
-                    },350)
+                    },450)
                 },550)
                 return matrice
             }
@@ -541,6 +549,82 @@ function controlloricorsivo(matrice)
         stampaggiorna(matrice)
     },400)
     return matrice
+}
+function controllom(tipo,posizioni,matrice)
+{
+    let adiacenti = []
+
+    let riga = posizioni[0]
+    let colonna = posizioni[1]
+
+    for (let j = colonna; j >= 0; j--) 
+    {
+        if (matrice[riga][j] && tipo == matrice[riga][j][0]) 
+        {
+            adiacenti.push(matrice[riga][j])
+        } 
+        else 
+        {
+            break
+        }
+    }
+
+    for (let j = colonna + 1; j < matrice[riga].length; j++) 
+    {
+        if (matrice[riga][j] && tipo == matrice[riga][j][0]) 
+        {
+            adiacenti.push(matrice[riga][j])
+        }
+        else 
+        {
+            break
+        }
+    }
+
+    for (let i = riga; i >= 0; i--) 
+    {
+        if (matrice[i][colonna] && tipo == matrice[i][colonna][0]) 
+        {
+            adiacenti.push(matrice[i][colonna])
+        } 
+        else 
+        {
+            break
+        }
+    }
+
+    for (let i = riga + 1; i < matrice.length; i++)
+    {
+        if (matrice[i][colonna] && tipo == matrice[i][colonna][0]) 
+        {
+            adiacenti.push(matrice[i][colonna])
+        } 
+        else 
+        {
+            break
+        }
+    }
+
+    let elemdaeliminare = [];
+    for (let i = 0; i < adiacenti.length; i++) 
+    {
+        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6 && adiacenti[i][0] != 4 && adiacenti[i][0] != 5)
+        {
+            elemdaeliminare.push(adiacenti[i])
+        }
+    }
+    if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
+    {
+        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
+    }
+    if (elemdaeliminare.length >= 5) 
+    {
+        return [elemdaeliminare, elemdaeliminare.length]
+    } 
+    else
+    {
+        return false
+    }
 }
 function controllocontrollo(tipo,posizioni,matrice)
 {
@@ -576,7 +660,7 @@ function individua(id1, matrice)
     let ok = false
     for(let onkai = 0; onkai < matrice.length; onkai++) {
         for(let onka = 0; onka < matrice[onkai].length; onka++) {
-            if(matrice[onkai][onka] != undefined && matrice[onkai][onka][2] === id1) {
+            if(matrice[onkai][onka] != undefined && matrice[onkai][onka][2] == id1) {
                 pos1 = {i: onkai, j: onka}
                 ok = true
             }
@@ -621,7 +705,7 @@ function controllosmonco(tipo,posizioni,matrice)
 
     for (let j = colonna; j >= 0; j--) 
     {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
+        if (matrice[riga][j] && tipo == matrice[riga][j][0]) 
         {
             adiacenti.push(matrice[riga][j])
         } 
@@ -633,7 +717,7 @@ function controllosmonco(tipo,posizioni,matrice)
 
     for (let j = colonna + 1; j < matrice[riga].length; j++) 
     {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
+        if (matrice[riga][j] && tipo == matrice[riga][j][0]) 
         {
             adiacenti.push(matrice[riga][j])
         }
@@ -645,7 +729,7 @@ function controllosmonco(tipo,posizioni,matrice)
 
     for (let i = riga; i >= 0; i--) 
     {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        if (matrice[i][colonna] && tipo == matrice[i][colonna][0]) 
         {
             adiacenti.push(matrice[i][colonna])
         } 
@@ -657,7 +741,7 @@ function controllosmonco(tipo,posizioni,matrice)
 
     for (let i = riga + 1; i < matrice.length; i++)
     {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        if (matrice[i][colonna] && tipo == matrice[i][colonna][0]) 
         {
             adiacenti.push(matrice[i][colonna])
         } 
@@ -717,7 +801,7 @@ function controlloriga(tipo,posizioni,matrice)
 
     for (let j = colonna; j >= 0; j--) 
     {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
+        if (matrice[riga][j] && tipo == matrice[riga][j][0]) 
         {
             adiacenti.push(matrice[riga][j])
         } 
@@ -729,7 +813,7 @@ function controlloriga(tipo,posizioni,matrice)
 
     for (let j = colonna + 1; j < matrice[riga].length; j++) 
     {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
+        if (matrice[riga][j] && tipo == matrice[riga][j][0]) 
         {
             adiacenti.push(matrice[riga][j])
         }
@@ -769,7 +853,7 @@ function controllocolonna(tipo,posizioni,matrice)
 
     for (let i = riga; i >= 0; i--) 
     {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        if (matrice[i][colonna] && tipo == matrice[i][colonna][0]) 
         {
             adiacenti.push(matrice[i][colonna])
         } 
@@ -781,7 +865,7 @@ function controllocolonna(tipo,posizioni,matrice)
 
     for (let i = riga + 1; i < matrice.length; i++)
     {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
+        if (matrice[i][colonna] && tipo == matrice[i][colonna][0]) 
         {
             adiacenti.push(matrice[i][colonna])
         } 
@@ -812,142 +896,9 @@ function controllocolonna(tipo,posizioni,matrice)
         return false
     }
 }
-function controlloal(tipo,posizioni,matrice)
-{
-    let adiacenti = []
-
-    let riga = posizioni[0]
-    let colonna = posizioni[1]
-    let adestra = []
-    let asinistra = []
-    let alto = []
-    let basso = []
-
-    for (let j = colonna; j >= 0; j--) 
-    {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0] && alto.length < 3) 
-        {
-            alto.push(matrice[riga][j])
-        } 
-        else 
-        {
-            break
-        }
-    }
-
-    for (let j = colonna + 1; j < matrice[riga].length; j++) 
-    {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0] && basso.length < 3) 
-        {
-            basso.push(matrice[riga][j])
-        }
-        else 
-        {
-            break
-        }
-    }
-
-    for (let i = riga; i >= 0; i--) 
-    {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0] && asinistra.length < 3) 
-        {
-            asinistra.push(matrice[i][colonna])
-        } 
-        else 
-        {
-            break
-        }
-    }
-
-    for (let i = riga + 1; i < matrice.length; i++)
-    {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0] && adestra.length < 3) 
-        {
-            adestra.push(matrice[i][colonna])
-        } 
-        else 
-        {
-            break
-        }
-    }
-    let dbpre = adestra.concat(basso)
-    dbpre.push(matrice[riga][colonna])
-    let dapre = adestra.concat(alto)
-    dapre.push(matrice[riga][colonna])
-    let sbpre = asinistra.concat(basso)
-    sbpre.push(matrice[riga][colonna])
-    let sapre = asinistra.concat(alto)
-    sapre.push(matrice[riga][colonna])
-    let db = []
-    let da = []
-    let sb = []
-    let sa = []
-    for (let i = 0; i < dbpre.length; i++) 
-    {
-        if (db.indexOf(adiacenti[i]) == -1 && dbpre[i][0] != 6)
-        {
-            db.push(adiacenti[i])
-        }
-    }
-    for (let i = 0; i < dapre.length; i++) 
-    {
-        if (da.indexOf(adiacenti[i]) == -1 && dapre[i][0] != 6)
-        {
-            da.push(adiacenti[i])
-        }
-    }
-    for (let i = 0; i < sbpre.length; i++) 
-    {
-        if (sb.indexOf(adiacenti[i]) == -1 && sbpre[i][0] != 6)
-        {
-            sb.push(adiacenti[i])
-        }
-    }
-    for (let i = 0; i < sapre.length; i++) 
-    {
-        if (sa.indexOf(adiacenti[i]) == -1 && sapre[i][0] != 6)
-        {
-            sa.push(adiacenti[i])
-        }
-    }
-    let u = []
-    if(db.length > 4)
-    {
-        u = [db,db.length]
-        return u
-    }
-    else
-    {
-        if(da.length > 4)
-        {
-            u = [da,da.length]
-            return u
-        }
-        else
-        {
-            if(sb.length > 4)
-            {
-                u = [sb,sb.length]
-                return u
-            }
-            else
-            {
-                if(sa.length > 4)
-                {
-                    u = [sa,sa.length]
-                    return u
-                }
-                else
-                {
-                    return false
-                }
-            }
-        }
-    }
-}
 function controlloterziario(tipo,posizioni,matrice)
 {
-    let ui = controllocolonna(tipo,posizioni,matrice)
+    let ui = controllom(tipo,posizioni,matrice)
     if(ui != false)
     {
         return ui
@@ -961,7 +912,7 @@ function controlloterziario(tipo,posizioni,matrice)
         }
         else
         {
-            ui = controlloal(tipo,posizioni,matrice)
+            ui = controllocolonna(tipo,posizioni,matrice)
             if(ui != false)
             {
                 return ui
