@@ -12,21 +12,19 @@ let classificabutton = document.getElementById("classici")
 let statoattuale = ""
 let audio = document.getElementById("sottofondo")
 let sonori = document.getElementById("effetti")
-let colori = new Map()
-let siaudio = true
-let siaudiof = true
+let siaudio = false
+let siaudiof = false
 let avviato = false
 let strike = document.getElementById("strike")
 let scambio = undefined
 let mosse = 0
 let player = ""
 let noteseguendo = false
-let arrabbiatura = 0
 let eliminaegenerata = []
-colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
-let punti = [1,2,3,5]
-let esplosioni = ["30% 70% 70% 30% / 47% 30% 70% 53% ","70% 30% 84% 16% / 20% 80% 20% 80%","83% 17% 34% 66% / 81% 80% 20% 19%","83% 17% 34% 66% / 81% 38% 62% 19%", "83% 17% 55% 45% / 29% 38% 62% 71%"]
-let oggetti = [["secco.png","#4d2083"],["carta.png","#948923"],["plastica.png","#245b19"],["vetro.png","#206283"],["poterericiclo.png","white"],["amorenatura.png","white"],["rifiutotossico.png","#810404"]]
+const colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
+const punti = [1,2,3,5]
+const esplosioni = ["30% 70% 70% 30% / 47% 30% 70% 53% ","70% 30% 84% 16% / 20% 80% 20% 80%","83% 17% 34% 66% / 81% 80% 20% 19%","83% 17% 34% 66% / 81% 38% 62% 19%", "83% 17% 55% 45% / 29% 38% 62% 71%"]
+const oggetti = [["secco.png","#4d2083"],["carta.png","#948923"],["plastica.png","#245b19"],["vetro.png","#206283"],["poterericiclo.png","white"],["amorenatura.png","white"],["rifiutotossico.png","#810404"]]
 let punteggio = [0,0,0,0]
 let spawnato = false
 let livello = ""
@@ -223,13 +221,29 @@ function generaelemento(posizioni,tipo,matrice)
                 valo = [p,codice,idunivoco,false]
             }
         }
-        let urai = Math.round(Math.random() * ((Math.round(300 / arrabbiatura) - arrabbiatura) - 0) + 0)
-        if(urai <= 1)
+        let ono = 0
+        for(let i = 0; i<matrice.length;i++)
         {
-            idunivoco = genid()
-            p = 6
-            codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-            valo = [p,codice,idunivoco,false]
+            for(let j = 0;j<matrice[i].length;j++)
+            {
+                if(matrice[i][j][0] == 6)
+                {
+                    ono = ono + 1
+                }
+            }
+        }
+        if(ono >= matrice.length-2)
+        {}
+        else
+        {
+            let urai = Math.round(Math.random() * (25 - 0) + 0)
+            if(urai <= 2)
+            {
+                idunivoco = genid()
+                p = 6
+                codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
+                valo = [p,codice,idunivoco,false]
+            }
         }
         return valo
     }
@@ -354,7 +368,6 @@ function stampaggiorna(matrix)
                         },250)
                     },450)
                     scambio = undefined
-                    arrabbiatura = 0
                     mosse = 0
                     if(tuttipunti(punteggio) == true)
                     {
@@ -447,7 +460,6 @@ function stampaggiorna(matrix)
                                 },550)
                                 scambio = undefined
                             },400)
-                            arrabbiatura = 0
                             mosse = 0
                             if(tuttipunti(punteggio) == true)
                             {
@@ -465,6 +477,7 @@ function stampaggiorna(matrix)
                         else
                         {
                             matrix = swap(posizioneelemento2,posizioneelemento,matrix)
+                            navigator.vibrate(250)
                             setTimeout(function(){
                                 attuale.style.filter =  ""
                                 scambio.style.filter =  ""
@@ -474,7 +487,6 @@ function stampaggiorna(matrix)
                                 scambio = undefined
                             },400)
                             mosse = mosse + 1
-                            arrabbiatura = mosse
                             if(tuttipunti(punteggio) == true)
                             {
                                 document.querySelector(".griglia").style.animation = "blur 0.3s ease forwards"
@@ -1324,7 +1336,6 @@ function resetta()
     document.querySelector(".appiglio").innerHTML = ""
     mosse = 0
     player = ""
-    arrabbiatura = mosse
     avviato = false
     spawnato = false
     noteseguendo = false
