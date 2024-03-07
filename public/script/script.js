@@ -342,13 +342,6 @@ function stampaggiorna(matrix)
                 {
                     let posizioni = [posatu.i,posatu.j]
                     let k = effettospeciale(attuale.id,posizioni,matrix)
-                    lampeggio(k[1])
-                    setTimeout(function(){
-                        k[1].forEach(ciao=>{
-                            let y = ciao[2]
-                            esplosione(y)
-                        })
-                    },400)
                     setTimeout(function(){
                         matrix = k[0]
                         stamparidotta(matrix)
@@ -362,7 +355,7 @@ function stampaggiorna(matrix)
                         setTimeout(()=>{
                             matrix = shift(matrix)
                         },250)
-                    },550)
+                    },450)
                     scambio = undefined
                     arrabbiatura = 0
                     mosse = 0
@@ -409,7 +402,7 @@ function stampaggiorna(matrix)
                         swapanimation(idunivocoattuale,idunivocoscambiare)
                         let posizioni = [posizioneelemento.i,posizioneelemento.j]
                         let posizioni2 = [posizioneelemento2.i,posizioneelemento2.j]
-                        eliminaegenerata = [controllo(matrix[posizioni[0]][posizioni[1]][0],posizioni,matrix),controllo(matrix[posizioni2[0]][posizioni2[1]][0],posizioni2,matrix)]
+                        eliminaegenerata = [controllocontrollo(matrix[posizioni[0]][posizioni[1]][0],posizioni,matrix),controllocontrollo(matrix[posizioni2[0]][posizioni2[1]][0],posizioni2,matrix)]
                         if(eliminaegenerata[0] != false || eliminaegenerata[1] != false)
                         {
                             setTimeout(()=>{
@@ -695,92 +688,6 @@ function controllosmonco(tipo,posizioni,matrice)
         return false
     }
 }
-function controllo(tipo, posizioni, matrice) 
-{
-    let adiacenti = []
-
-    let riga = posizioni[0]
-    let colonna = posizioni[1]
-
-    for (let j = colonna; j >= 0; j--) 
-    {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
-        {
-            adiacenti.push(matrice[riga][j])
-        } 
-        else 
-        {
-            break
-        }
-    }
-
-    for (let j = colonna + 1; j < matrice[riga].length; j++) 
-    {
-        if (matrice[riga][j] && tipo === matrice[riga][j][0]) 
-        {
-            adiacenti.push(matrice[riga][j])
-        }
-        else 
-        {
-            break
-        }
-    }
-
-    for (let i = riga; i >= 0; i--) 
-    {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
-        {
-            adiacenti.push(matrice[i][colonna])
-        } 
-        else 
-        {
-            break
-        }
-    }
-
-    for (let i = riga + 1; i < matrice.length; i++)
-    {
-        if (matrice[i][colonna] && tipo === matrice[i][colonna][0]) 
-        {
-            adiacenti.push(matrice[i][colonna])
-        } 
-        else 
-        {
-            break
-        }
-    }
-
-    let elemdaeliminare = [];
-    for (let i = 0; i < adiacenti.length; i++) 
-    {
-        if (elemdaeliminare.indexOf(adiacenti[i]) == -1 && adiacenti[i][0] != 6 && adiacenti[i][0] != 4 && adiacenti[i][0] != 5)
-        {
-            elemdaeliminare.push(adiacenti[i])
-        }
-    }
-    if(elemdaeliminare.indexOf(matrice[posizioni[0]][posizioni[1]]) == -1)
-    {
-        elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
-    }
-    if (elemdaeliminare.length > 5) 
-    {
-        return [elemdaeliminare, elemdaeliminare.length]
-    } 
-    else if(elemdaeliminare.length == 5)
-    {
-        let y = controlloterziario(tipo,posizioni,matrice)
-        return y
-    }
-    else if (elemdaeliminare.length < 5 && elemdaeliminare.length > 2) 
-    {
-        let kp = controllosecondario(tipo, posizioni, matrice)
-        return kp
-    }
-    else
-    {
-        return false
-    }
-}
 function controllosecondario(tipo,posizioni,matrice)
 {
     let ui = controllocolonna(tipo,posizioni,matrice)
@@ -1032,7 +939,6 @@ function controlloal(tipo,posizioni,matrice)
                 }
                 else
                 {
-                    console.log("ciao")
                     return false
                 }
             }
@@ -1101,6 +1007,7 @@ function effettospeciale(tipo, posizioni, matrice)
     let darestituire = []
     let i = posizioni[0]
     let j = posizioni[1]
+    esplosione(matrice[i][j][2])
     darestituire.push(matrice[i][j])
     matrice[i][j] = generaelemento([i,j],"no",matrice)
     if (i > 0 && matrice[i-1][j] != undefined) 
@@ -1108,6 +1015,7 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i-1][j][0] == 4 || matrice[i-1][j][0] == 5)
         {
             let g = [i-1,j]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i-1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
@@ -1115,14 +1023,15 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else if (matrice[i-1][j][0] == 6 && tipo == 5)
         {
+            esplosione(matrice[i-1][j][2])
             matrice[i-1][j] = generaelemento([i-1,j],"no",matrice)
         }
         else if(matrice[i-1][j][0] == 6 && tipo == 4)
         {
-
         }
         else
         {
+            esplosione(matrice[i-1][j][2])
             darestituire.push(matrice[i-1][j])
             matrice[i-1][j] = generaelemento([i-1,j],"no",matrice)
         }
@@ -1132,6 +1041,7 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i+1][j][0] == 4 ||matrice[i+1][j][0] == 5)
         {
             let g = [i+1,j]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i+1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
@@ -1139,14 +1049,15 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else if (matrice[i+1][j][0] == 6 && tipo == 5)
         {
+            esplosione(matrice[i+1][j][2])
             matrice[i+1][j] = generaelemento([i+1,j],"no",matrice)
         }
         else if(matrice[i+1][j][0] == 6 && tipo == 4)
         {
-            
         }
         else
         {
+            esplosione(matrice[i+1][j][2])
             darestituire.push(matrice[i+1][j])
             matrice[i+1][j] = generaelemento([i+1,j],"no",matrice)
         }
@@ -1156,6 +1067,7 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i][j-1][0] == 4 ||matrice[i][j-1][0] == 5)
         {
             let g = [i,j-1]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i][j-1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
@@ -1163,14 +1075,15 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else if (matrice[i][j-1][0] == 6 && tipo == 5)
         {
+            esplosione(matrice[i][j-1][2])
             matrice[i][j-1] = generaelemento([i,j-1],"no",matrice)
         }
         else if(matrice[i][j-1][0] == 6 && tipo == 4)
         {
-            
         }
         else
         {
+            esplosione(matrice[i][j-1][2])
             darestituire.push(matrice[i][j-1])
             matrice[i][j-1] = generaelemento([i,j-1],"no",matrice)
         }
@@ -1180,6 +1093,7 @@ function effettospeciale(tipo, posizioni, matrice)
         if( matrice[i][j+1][0] == 4 ||matrice[i][j+1][0] == 5)
         {
             let g = [i,j+1]
+            esplosione(matrice[g[0]][g[1]][2])
             let k = effettospeciale(matrice[i][j+1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
@@ -1187,14 +1101,15 @@ function effettospeciale(tipo, posizioni, matrice)
         }
         else if (matrice[i][j+1][0] == 6 && tipo == 5)
         {
+            esplosione(matrice[i][j+1][2])
             matrice[i][j+1] = generaelemento([i,j+1],"no",matrice)
         }
         else if(matrice[i][j+1][0] == 6 && tipo == 4)
         {
-            
         }
         else
         {
+            esplosione(matrice[i][j+1][2])
             darestituire.push(matrice[i][j+1])
             matrice[i][j+1] =generaelemento([i,j+1],"no",matrice)
         }
@@ -1206,6 +1121,7 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i-1][j-1][0] == 4 ||matrice[i-1][j-1][0] == 5)
             {
                 let g = [i-1,j-1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i-1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
@@ -1213,10 +1129,12 @@ function effettospeciale(tipo, posizioni, matrice)
             }
             else if (matrice[i-1][j-1][0] == 6)
             {
+                esplosione(matrice[i-1][j-1][2])
                 matrice[i-1][j-1] = generaelemento([i-1,j-1],"no",matrice)
             }
             else
             {
+                esplosione(matrice[i-1][j-1][2])
                 darestituire.push(matrice[i-1][j-1])
                 matrice[i-1][j-1] = generaelemento([i-1,j-1],"no",matrice)
             }
@@ -1226,6 +1144,7 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i-1][j+1][0] == 4 ||matrice[i-1][j+1][0] == 5)
             {
                 let g = [i-1,j+1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i-1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
@@ -1233,20 +1152,22 @@ function effettospeciale(tipo, posizioni, matrice)
             }
             else if (matrice[i-1][j+1][0] == 6)
             {
+                esplosione(matrice[i-1][j+1][2])
                 matrice[i-1][j+1] = generaelemento([i-1,j+1],"no",matrice)
             }
             else
             {          
+                esplosione(matrice[i-1][j+1][2])  
                 darestituire.push(matrice[i-1][j+1])
                 matrice[i-1][j+1] = generaelemento([i-1,j+1],"no",matrice)
             }
-
         }
         if (i < matrice.length - 1 && j > 0 && matrice[i+1][j-1] != undefined) 
         {
             if( matrice[i+1][j-1][0] == 4 ||matrice[i+1][j-1][0] == 5)
             {
                 let g = [i+1,j-1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i+1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
@@ -1254,10 +1175,12 @@ function effettospeciale(tipo, posizioni, matrice)
             }
             else if (matrice[i+1][j-1][0] == 6)
             {
+                esplosione(matrice[i+1][j-1][2])
                 matrice[i+1][j-1] = generaelemento([i+1,j-1],"no",matrice)
             }
-           else
+            else
             {
+                esplosione(matrice[i+1][j-1][2])
                 darestituire.push(matrice[i+1][j-1])
                 matrice[i+1][j-1] = generaelemento([i+1,j-1],"no",matrice)
             }
@@ -1267,6 +1190,7 @@ function effettospeciale(tipo, posizioni, matrice)
             if( matrice[i+1][j+1][0] == 4 ||matrice[i+1][j+1][0] == 5)
             {
                 let g = [i+1,j+1]
+                esplosione(matrice[g[0]][g[1]][2])
                 let k = effettospeciale(matrice[i+1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
@@ -1274,10 +1198,12 @@ function effettospeciale(tipo, posizioni, matrice)
             }
             else if (matrice[i+1][j+1][0] == 6)
             {
+                esplosione(matrice[i+1][j+1][2])
                 matrice[i+1][j+1] = generaelemento([i+1,j+1],"no",matrice)
             }
             else
             {
+                esplosione(matrice[i+1][j+1][2])
                 darestituire.push(matrice[i+1][j+1])
                 matrice[i+1][j+1] = generaelemento([i+1,j+1],"no",matrice)
             }
@@ -1308,10 +1234,10 @@ function shift(matrice)
         }
     }
     matrix = rigenera(matrice)
+    stamparidotta(matrice)
     setTimeout(function(){
-        stamparidotta(matrice)
         matrice = controlloricorsivo(matrice)
-    },100)
+    },200)
     return matrice
 }
 function lampeggio(array)
