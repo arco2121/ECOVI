@@ -15,7 +15,9 @@
 2. **Completa i livelli**: Completa i puzzle abbinando le risorse e raggiungendo gli obiettivi richiesti esistono ben tre difficoltà.
 3. **Condividi con gli amici**: Condividi i tuoi successi su social media e invita i tuoi amici a unirsi a te in questa avventura.
 <br>
+<div style="display: flex; flex-direction: column;">
 <img src="public/img/cattura1.png" alt="Ecovi" width="400"><img src="public/img/cattura2.png" alt="Ecovi" width="400">
+</div>
 
 ## Crediti
 
