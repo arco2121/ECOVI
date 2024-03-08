@@ -18,6 +18,7 @@ let avviato = false
 let strike = document.getElementById("strike")
 let scambio = undefined
 let mosse = 0
+let possible = true
 let player = ""
 let noteseguendo = true
 let eliminaegenerata = []
@@ -236,13 +237,17 @@ function generaelemento(posizioni,tipo,matrice)
         {}
         else
         {
-            let urai = Math.round(Math.random() * (35 - 0) + 0)
-            if(urai <= 1)
+            if(possible == true)
             {
-                idunivoco = genid()
-                p = 6
-                codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-                valo = [p,codice,idunivoco,false]
+                let urai = Math.round(Math.random() * (50 - 0) + 0)
+                if(urai <= 1)
+                {
+                    idunivoco = genid()
+                    p = 6
+                    codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
+                    valo = [p,codice,idunivoco,false]
+                    possible = false
+                }
             }
         }
         return valo
@@ -290,6 +295,7 @@ function stamparidotta(matrix)
 }
 function stampaggiorna(matrix)
 {
+    possible = true
     noteseguendo = true
     let stringa = ""
     for(let i = 0;i<matrix.length;i++)
