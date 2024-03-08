@@ -2,7 +2,7 @@
 {
     text-align: center;
     color: white;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-out;
     font-family: "Coffe", sans-serif;
     font-weight: 200;
     user-select: none;
@@ -496,6 +496,8 @@ button
     border-radius: 30px;
     border: solid white 10px;
     background: rgba(0, 0, 0, 0.329);
+    width: 80%;
+    height: 65%;
 }
 .level
 {
@@ -746,7 +748,7 @@ h2
     padding: 10px;
     margin: 10px;
     border-radius: 20px;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-out;
 }
 @media (orientation:landscape) {
     .cella:hover
