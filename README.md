@@ -14,7 +14,7 @@
 1. **Inizia a giocare**: Avvia il gioco da [qui](https://eco-crush.web.app/) e segui le istruzioni per iniziare il tuo viaggio con castorino.
 2. **Completa i livelli**: Completa i puzzle abbinando le risorse e raggiungendo gli obiettivi richiesti esistono ben tre difficoltà.
 3. **Condividi con gli amici**: Condividi i tuoi successi su social media e invita i tuoi amici a unirsi a te in questa avventura.
-<img src="public/img/cattura1.png" alt="Ecovi" width="400">
+<img src="public/img/cattura1.png" alt="Ecovi" width="400"><img src="public/img/cattura2.png" alt="Ecovi" width="400">
 
 ## Crediti
 
