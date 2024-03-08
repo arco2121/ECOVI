@@ -232,11 +232,11 @@ function generaelemento(posizioni,tipo,matrice)
                 }
             }
         }
-        /*if(ono >= matrice.length-2)
+        if(ono >= matrice.length - 3)
         {}
         else
         {
-            let urai = Math.round(Math.random() * (30 - 0) + 0)
+            let urai = Math.round(Math.random() * (35 - 0) + 0)
             if(urai <= 1)
             {
                 idunivoco = genid()
@@ -244,7 +244,7 @@ function generaelemento(posizioni,tipo,matrice)
                 codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
                 valo = [p,codice,idunivoco,false]
             }
-        }*/
+        }
         return valo
     }
 }
