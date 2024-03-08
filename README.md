@@ -16,11 +16,6 @@
 3. **Condividi con gli amici**: Condividi i tuoi successi su social media e invita i tuoi amici a unirsi a te in questa avventura.
 
 
-## Contatti
-
-- Sito Web: [www.ecovi.com](https://eco-crush.web.app/)
-- Email: 10934171@itisrossi.vi.it
-
 ## Crediti
 
 Ecovi è stato sviluppato da Marco Colombara e Federico Femia.
