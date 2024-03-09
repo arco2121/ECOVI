@@ -1340,7 +1340,26 @@ function win()
                 j = j + (fg * punti[index])
             })
             let kj = [punteggio,player,livello,j]
-            classifica.push(kj)
+            let trovato = false
+            classifica.forEach((elemento,index)=>{
+                if(elemento[1] == kj[1])
+                {
+                    classifica[index] = kj
+                    trovato = true
+                }
+            })
+            if(trovato == false)
+            {
+                classifica.push(kj)
+            }
+            let certo = []
+            classifica.forEach(elem => {
+                if(certo.indexOf(elem) <= -1)
+                {
+                    certo.push(elem)
+                }
+            })
+            classifica = certo
             classifica = classifica.sort((a,b) => b[3] - a[3])
             localStorage.setItem("classifica",JSON.stringify(classifica))
             document.querySelector(".avviso").style.animation = "scompari 0.6s ease-out"
