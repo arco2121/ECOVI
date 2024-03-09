@@ -268,20 +268,68 @@ function generaelemento(posizioni,tipo,matrice)
                 }
             }
         }
-        if(ono >= matrice.length - 3)
+        if(ono >= matrice.length - 2)
         {}
         else
         {
-            if(possible == true)
+            if(livello == "x5")
             {
-                let urai = Math.round(Math.random() * (50 - 0) + 0)
-                if(urai <= 1)
+                if(possible == true)
                 {
-                    idunivoco = genid()
-                    p = 6
-                    codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
-                    valo = [p,codice,idunivoco,false]
-                    possible = false
+                    let urai = Math.round(Math.random() * (80 - 0) + 0)
+                    if(urai <= 1)
+                    {
+                        idunivoco = genid()
+                        p = 6
+                        codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
+                        valo = [p,codice,idunivoco,false]
+                        possible = false
+                    }
+                }
+            }
+            else if(livello == "x6")
+            {
+                if(possible == true)
+                {
+                    let urai = Math.round(Math.random() * (50 - 0) + 0)
+                    if(urai <= 1)
+                    {
+                        idunivoco = genid()
+                        p = 6
+                        codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
+                        valo = [p,codice,idunivoco,false]
+                        possible = false
+                    }
+                }
+            }
+            else if(livello == "x7")
+            {
+                if(possible == true)
+                {
+                    let urai = Math.round(Math.random() * (25 - 0) + 0)
+                    if(urai <= 1)
+                    {
+                        idunivoco = genid()
+                        p = 6
+                        codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
+                        valo = [p,codice,idunivoco,false]
+                        possible = false
+                    }
+                }
+            }
+            else if(livello == "xcasuale")
+            {
+                if(possible == true)
+                {
+                    let urai = Math.round(Math.random() * ((Math.random()(80-25)+25) - 0) + 0)
+                    if(urai <= 1)
+                    {
+                        idunivoco = genid()
+                        p = 6
+                        codice = "<div style='background:" + oggetti[p][1] + ";' idunivoco='" + idunivoco + "' class='cella' id='" + p +"'><img class='immaginecella' src='img/" + oggetti[p][0] +"'></div>"
+                        valo = [p,codice,idunivoco,false]
+                        possible = false
+                    }
                 }
             }
         }
