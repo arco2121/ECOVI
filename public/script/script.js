@@ -30,6 +30,7 @@ let punteggio = [0,0,0,0]
 let spawnato = false
 let livello = ""
 let classifica = []
+let matrixprov = []
 if(localStorage.getItem("classifica"))
 {
     classifica = JSON.parse(localStorage.getItem("classifica"))
@@ -61,8 +62,26 @@ window.addEventListener("DOMContentLoaded",()=>{
     setTimeout(function(){
         document.querySelector(".loadscreen").addEventListener("click",()=>{
             setTimeout(()=>{
-                transizione(document.querySelector(".loadscreen"),document.querySelector(".homescreen"))
-                statoattuale = "homescreen"
+                if(localStorage.getItem("backup") == "")
+                {
+                    transizione(document.querySelector(".loadscreen"),document.querySelector(".homescreen"))
+                    statoattuale = "homescreen"
+                }
+                else
+                {
+                    let now = JSON.parse(localStorage.getItem("backup"))
+                    player = now[1]
+                    punteggio = now[0]
+                    livello = now[2]
+                    mosse = now[3]
+                    localStorage.setItem("player",player)
+                    avviato = true
+                    transizioneavanzata(document.querySelector(".loadscreen"),document.querySelector(".areagioco"),livello)
+                    statoattuale = "areagioco"
+                    setTimeout(function(){
+                        stampaggiorna(now[4])
+                    },400)
+                }
             },50)
             setInterval(function(){
                 if(localStorage.getItem("audio") == "1")
@@ -295,6 +314,8 @@ function stamparidotta(matrix)
 }
 function stampaggiorna(matrix)
 {
+    matrixprov = matrix
+    localStorage.setItem("backup",JSON.stringify([punteggio,player,livello,mosse,matrix]))
     possible = true
     noteseguendo = true
     let stringa = ""
@@ -1291,6 +1312,7 @@ setInterval(()=>{
 },0)
 function win()
 {
+    localStorage.setItem("backup","")
     let y = "<h2>Hai Vinto</h2><h6>Tocca per tornare alla home</h6>"
     document.querySelector(".visiover").style.display = "flex"
     messaggio(y)
@@ -1320,6 +1342,7 @@ function win()
 function lose()
 {
     let y = "<h2>Hai Perso</h2><h6>Tocca per tornare alla home</h6>"
+    localStorage.setItem("backup","")
     document.querySelector(".visiover").style.display = "flex"
     messaggio(y)
     document.querySelector(".avviso").addEventListener("click",function(){
@@ -1647,15 +1670,11 @@ window.addEventListener('popstate', () => {
 window.addEventListener("beforeunload",() => {
     if(avviato == true)
     {
-        let ok = confirm("Se esci ora perderai tutti progressi, continuare?")
-        if(ok)
-        {
-
-        }
-        else
-        {
-            e.preventDefault()
-        }
+        localStorage.setItem("backup",JSON.stringify([punteggio,player,livello,mosse,matrixprov]))
+    }
+    else
+    {
+        localStorage.setItem("backup","")
     }
 })
 window.addEventListener("focus",function(){
