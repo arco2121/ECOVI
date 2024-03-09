@@ -62,7 +62,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     setTimeout(function(){
         document.querySelector(".loadscreen").addEventListener("click",()=>{
             setTimeout(()=>{
-                if(localStorage.getItem("backup") == "")
+                if(localStorage.getItem("backup") == "" || !localStorage.getItem("backup"))
                 {
                     transizione(document.querySelector(".loadscreen"),document.querySelector(".homescreen"))
                     statoattuale = "homescreen"
@@ -74,6 +74,22 @@ window.addEventListener("DOMContentLoaded",()=>{
                     punteggio = now[0]
                     livello = now[2]
                     mosse = now[3]
+                    if(livello == "x5")
+                    {
+                        document.body.style.setProperty("--sfondotabella",colori.x5+"d5")
+                    }
+                    else if(livello == "x6")
+                    {
+                        document.body.style.setProperty("--sfondotabella",colori.x6+"d5")
+                    }
+                    else if (livello == "x7")
+                    {
+                        document.body.style.setProperty("--sfondotabella",colori.x7+"d5")
+                    }
+                    else if(livello == "xcasuale")
+                    {
+                        document.body.style.setProperty("--sfondotabella",colori.xcasuale+"d5")
+                    }
                     localStorage.setItem("player",player)
                     avviato = true
                     transizioneavanzata(document.querySelector(".loadscreen"),document.querySelector(".areagioco"),livello)
@@ -1325,7 +1341,7 @@ function win()
             })
             let kj = [punteggio,player,livello,j]
             classifica.push(kj)
-            classifica = classifica.sort((a,b) => a - b)
+            classifica = classifica.sort((a,b) => b[3] - a[3])
             localStorage.setItem("classifica",JSON.stringify(classifica))
             document.querySelector(".avviso").style.animation = "scompari 0.6s ease-out"
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
