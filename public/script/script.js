@@ -321,7 +321,7 @@ function generaelemento(posizioni,tipo,matrice)
             {
                 if(possible == true)
                 {
-                    let urai = Math.round(Math.random() * ((Math.random()(80-25)+25) - 0) + 0)
+                    let urai = Math.round(Math.random() * ((Math.random()*(80-25)+25) - 0) + 0)
                     if(urai <= 1)
                     {
                         idunivoco = genid()
