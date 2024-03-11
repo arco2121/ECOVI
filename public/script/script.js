@@ -98,7 +98,7 @@ window.addEventListener("DOMContentLoaded",()=>{
                         stampaggiorna(now[4])
                     },400)
                 }
-            },50)
+            },25)
             setInterval(function(){
                 if(localStorage.getItem("audio") == "1")
                 {
@@ -123,7 +123,7 @@ window.addEventListener("DOMContentLoaded",()=>{
                 }
             },0)
         })
-    },1650)
+    },1625)
 })
 
 let bottonia = document.querySelectorAll("button")
@@ -153,7 +153,7 @@ function genid()
 {
     let caratteri = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890!£$%&/"
     caratteri = caratteri.split("")
-    let volte = Math.floor(Math.random()*(10-5)+5)
+    let volte = Math.floor(Math.random()*(20-5)+5)
     let st = ""
     for(let i = 0; i<volte; i++)
     {
@@ -357,7 +357,7 @@ function stamparidotta(matrix)
         {
             cella.style.animation = "compari 0.3s ease-in-out"
             matrix[posizioni[0]][posizioni[1]][3] = true
-            if(siaudio == true)
+            if(siaudio == true && view == true)
             {
                 document.getElementById("esplodiaudio").play()
             }
@@ -400,7 +400,7 @@ function stampaggiorna(matrix)
         if(matrix[posizioni[0]][posizioni[1]][0] != undefined && matrix[posizioni[0]][posizioni[1]][3] == false)
         {
             cella.style.animation = "compari 0.3s ease-in-out"
-            if(siaudio == true)
+            if(siaudio == true && view == true)
             {
                 document.getElementById("esplodiaudio").play()
             }
@@ -432,7 +432,7 @@ function stampaggiorna(matrix)
             document.querySelector(".jklh").style.animation = "blur 0.3s ease-out forwards"
             lose()
         }
-    },50)
+    },25)
     let celle = document.querySelectorAll(".cella")
     celle.forEach(cella => {
         cella.addEventListener("click",(e)=>{
@@ -467,8 +467,8 @@ function stampaggiorna(matrix)
                             }
                             setTimeout(()=>{
                                 matrix = shift(matrix)
-                            },50)
-                        },450)
+                            },25)
+                        },425)
                         scambio = undefined
                         mosse = 0
                         if(tuttipunti(punteggio) == true)
@@ -560,10 +560,10 @@ function stampaggiorna(matrix)
                                         stamparidotta(matrix)
                                         setTimeout(function(){
                                             matrix = shift(matrix)
-                                        },450)
-                                    },550)
+                                        },425)
+                                    },525)
                                     scambio = undefined
-                                },450)
+                                },425)
                                 mosse = 0
                                 if(tuttipunti(punteggio) == true)
                                 {
@@ -653,8 +653,8 @@ function controlloricorsivo(matrice)
                     stamparidotta(matrix)
                     setTimeout(function(){
                         matrice = shift(matrice)
-                    },450)
-                },550)
+                    },425)
+                },525)
                 return matrice
             }
             else
@@ -1013,7 +1013,7 @@ function effettospeciale(tipo, posizioni, matrice)
             let k = effettospeciale(matrice[i-1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
-            return k
+            
         }
         else if (matrice[i-1][j][0] == 6 && tipo == 5)
         {
@@ -1039,7 +1039,7 @@ function effettospeciale(tipo, posizioni, matrice)
             let k = effettospeciale(matrice[i+1][j][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
-            return k
+            
         }
         else if (matrice[i+1][j][0] == 6 && tipo == 5)
         {
@@ -1065,7 +1065,7 @@ function effettospeciale(tipo, posizioni, matrice)
             let k = effettospeciale(matrice[i][j-1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
-            return k
+            
         }
         else if (matrice[i][j-1][0] == 6 && tipo == 5)
         {
@@ -1091,7 +1091,7 @@ function effettospeciale(tipo, posizioni, matrice)
             let k = effettospeciale(matrice[i][j+1][0],g,matrice)
             matrice = k[0]
             darestituire = k[1]
-            return k
+            
         }
         else if (matrice[i][j+1][0] == 6 && tipo == 5)
         {
@@ -1119,7 +1119,7 @@ function effettospeciale(tipo, posizioni, matrice)
                 let k = effettospeciale(matrice[i-1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
-                return k
+                
             }
             else if (matrice[i-1][j-1][0] == 6)
             {
@@ -1142,7 +1142,7 @@ function effettospeciale(tipo, posizioni, matrice)
                 let k = effettospeciale(matrice[i-1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
-                return k
+                
             }
             else if (matrice[i-1][j+1][0] == 6)
             {
@@ -1165,7 +1165,7 @@ function effettospeciale(tipo, posizioni, matrice)
                 let k = effettospeciale(matrice[i+1][j-1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
-                return k
+                
             }
             else if (matrice[i+1][j-1][0] == 6)
             {
@@ -1188,7 +1188,7 @@ function effettospeciale(tipo, posizioni, matrice)
                 let k = effettospeciale(matrice[i+1][j+1][0],g,matrice)
                 matrice = k[0]
                 darestituire = k[1]
-                return k
+                
             }
             else if (matrice[i+1][j+1][0] == 6)
             {
@@ -1342,7 +1342,7 @@ function esplosione(idunivoco)
     document.body.style.setProperty("--esplosione",esplosioni[o])
     let elemento = document.querySelector('[idunivoco="' + idunivoco + '"]')
     let src = document.getElementById("backaudio")
-    if(siaudio == true)
+    if(siaudio == true && view == true)
     {
         src.play()
     }
@@ -1526,7 +1526,7 @@ function transizione(inn,outt)
             inn.style.display  ="none"
             document.querySelector(".blocco").style.display = "none"
         },600)
-    },50)
+    },25)
 }
 function transizioneavanzata(inn,outt,w)
 {
@@ -1546,7 +1546,7 @@ function transizioneavanzata(inn,outt,w)
             document.querySelector(".blocco").style.display = "none"
         },600)
         
-    },50)
+    },25)
 }
 function messaggio(n)
 {
@@ -1608,7 +1608,7 @@ classificabutton.addEventListener("click",()=>{
     setTimeout(function(){
         transizione(document.querySelector(".homescreen"),document.querySelector(".classifica"))
         statoattuale = "classifica"
-    },50)
+    },25)
 })
 backtohomebutton.forEach(button => {
     button.addEventListener("click", ()=>{
@@ -1676,7 +1676,7 @@ document.getElementById("riprendi").addEventListener("click",function(){
         setTimeout(function(){
             document.querySelector(".pausa").style.display = "none"
         },600)
-    },50)
+    },25)
 })
 document.getElementById("impostazionibutton").addEventListener("click",function(){
     transizione(document.querySelector(".homescreen"),document.querySelector(".impostazioni"))
@@ -1693,7 +1693,7 @@ document.getElementById("resetta").addEventListener("click",function(){
     setTimeout(()=>{
         localStorage.clear()
         window.location.reload()
-    },50)
+    },25)
 })
 history.pushState(null, null, document.URL)
 window.addEventListener('popstate', () => {
