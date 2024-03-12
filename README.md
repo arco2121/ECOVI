@@ -21,4 +21,4 @@
 
 ## Crediti
 
-Ecovi è stato sviluppato da Marco Colombara e Federico Femia.
+Eco Crush è stato sviluppato da Marco Colombara e Federico Femia.
