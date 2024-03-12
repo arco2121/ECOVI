@@ -1,6 +1,6 @@
 # Eco Crush
 
-<img src="public/img/logo.png" alt="Ecovi" width="200">
+<img src="public/img/logo.png" alt="Ecovi" width="400" style="display:flex;justify-content:center;align-items:center;">
 
 **Eco Crush** è un divertente gioco di puzzle ispirato a Candy Crush, ma con un tocco unico - il protagonista è un adorabile castoro! Unisciti a castorino in questa avventura emozionante nel brenta mentre risolvi puzzle coinvolgenti e raccogli la spazzatura per aiutare la comunità.
 
