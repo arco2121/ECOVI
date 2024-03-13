@@ -10,6 +10,7 @@ let view = true
 let xcasualebutton = document.getElementById("xcasuale")
 let classificabutton = document.getElementById("classici")
 let statoattuale = ""
+let ecoti = document.getElementById("ecoti")
 let audio = document.getElementById("sottofondo")
 let sonori = document.getElementById("effetti")
 let siaudio = false
@@ -20,13 +21,45 @@ let scambio = undefined
 let mosse = 0
 let possible = true
 let player = ""
+let passa = 0
 let noteseguendo = true
+let coppia = 0
+let simessaggi = true
 let eliminaegenerata = []
 const colori = {"x5":"#518c38","x6":"#b1670c","x7":"#b10c0c","xcasuale":"#00000075"}
 const punti = [1,2,3,5]
 const esplosioni = ["30% 70% 70% 30% / 47% 30% 70% 53% ","70% 30% 84% 16% / 20% 80% 20% 80%","83% 17% 34% 66% / 81% 80% 20% 19%","83% 17% 34% 66% / 81% 38% 62% 19%", "83% 17% 55% 45% / 29% 38% 62% 71%"]
 const oggetti = [["secco.png","#4d2083"],["carta.png","#948923"],["plastica.png","#245b19"],["vetro.png","#206283"],["poterericiclo.png","white"],["amorenatura.png","white"],["rifiutotossico.png","#810404"]]
 let punteggio = [0,0,0,0]
+const frasi = {
+    plastica:[
+        "La plastica puo durare fino a 1000 anni nell'ambiente, e' incredibilmente resistente",
+        "Ogni anno, oltre 8 milioni di tonnellate di plastica finiscono negli oceani, e' spaventoso",
+        "Solo il 9% della plastica prodotta viene riciclata, dobbiamo fare di piu'",
+        "La plastica riciclata puo' diventare molti oggetti diversi, fantastico",
+        "Alcuni tipi di plastica rilasciano sostanze chimiche nocive nell'ambiente, attenzione",
+        "Ci sono microplastiche ovunque nell'ambiente, dobbiamo fermare questa diffusione"
+    ],
+    vetro:[
+        "Il vetro e' riciclabile all'infinito, puo' essere fuso e riutilizzato molte volte",
+        "Ogni anno, tonnellate di vetro sono gettate via, ma puo' essere riciclato in nuove bottiglie",
+        "Il vetro e' principalmente fatto di sabbia, soda e calcare, incredibile",
+        "Il vetro non si decompone mai, a meno che non venga riciclato",
+        "Il vetro e' un ottimo isolante termico e acustico, perfetto per finestre e isolamenti"
+    ],
+    secco:[
+        "Il secco puo' essere trasformato in nuovi prodotti, anche se sembra solo spazzatura",
+        "E importante smaltire correttamente il secco per evitare danni agli ecosistemi",
+        "In molti paesi, il secco viene raccolto separatamente per facilitare il riciclaggio",
+        "Riciclare il secco riduce l'inquinamento e risparmia risorse naturali"
+    ],
+    carta:[
+        "Ogni anno, vengono tagliati circa 4 miliardi di alberi per produrre carta",
+        "La carta puo' essere riciclata fino a 5-7 volte prima di perdere qualita'",
+        "Riciclare la carta riduce il consumo di acqua, energia e alberi",
+        "La carta e' biodegradabile, ma non dovremmo sprecarla"
+    ]
+}
 let spawnato = false
 let livello = ""
 let classifica = []
@@ -57,8 +90,18 @@ else
     localStorage.setItem("sonori","2")
     sonori.value = localStorage.getItem("sonori")
 }
+if(localStorage.getItem("ecomessaggio"))
+{
+    ecoti.value = localStorage.getItem("ecomessaggio")
+}
+else
+{
+    localStorage.setItem("ecomessaggio","2")
+    ecoti.value = localStorage.getItem("ecomessaggio")
+}
 
 window.addEventListener("DOMContentLoaded",()=>{
+    document.querySelector(".loadscreen").style.animation = "se 0.6s ease forwards"
     setTimeout(function(){
         document.querySelector(".loadscreen").addEventListener("click",()=>{
             setTimeout(()=>{
@@ -92,6 +135,7 @@ window.addEventListener("DOMContentLoaded",()=>{
                     }
                     localStorage.setItem("player",player)
                     avviato = true
+                    passa = now[5]
                     transizioneavanzata(document.querySelector(".loadscreen"),document.querySelector(".areagioco"),livello)
                     statoattuale = "areagioco"
                     setTimeout(function(){
@@ -121,9 +165,18 @@ window.addEventListener("DOMContentLoaded",()=>{
                 {
                     siaudio = true
                 }
+                if(localStorage.getItem("ecomessaggio") == "1")
+                {
+                    simessaggi = false
+                    passa = 0
+                }
+                else
+                {
+                    simessaggi = true
+                }
             },0)
         })
-    },1625)
+    },1200)
 })
 
 let bottonia = document.querySelectorAll("button")
@@ -153,7 +206,7 @@ function genid()
 {
     let caratteri = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890!£$%&/"
     caratteri = caratteri.split("")
-    let volte = Math.floor(Math.random()*(20-5)+5)
+    let volte = Math.floor(Math.random()*(40-5)+5)
     let st = ""
     for(let i = 0; i<volte; i++)
     {
@@ -378,8 +431,20 @@ function stamparidotta(matrix)
 }
 function stampaggiorna(matrix)
 {
+    if(simessaggi == true)
+    {
+        if(passa > 2)
+        {
+            let gh = Math.round(Math.random())
+            if(gh == 1)
+            {
+                ecomessaggio(coppia)
+                passa = 0
+            }
+        }
+    }
     matrixprov = matrix
-    localStorage.setItem("backup",JSON.stringify([punteggio,player,livello,mosse,matrix]))
+    localStorage.setItem("backup",JSON.stringify([punteggio,player,livello,mosse,matrix,passa]))
     possible = true
     noteseguendo = true
     let stringa = ""
@@ -467,7 +532,7 @@ function stampaggiorna(matrix)
                             }
                             setTimeout(()=>{
                                 matrix = shift(matrix)
-                            },25)
+                            },50)
                         },425)
                         scambio = undefined
                         mosse = 0
@@ -487,6 +552,7 @@ function stampaggiorna(matrix)
                 }
                 else if (attuale.id == '6')
                 {
+                    navigator.vibrate(250)
                     noteseguendo = true
                 }
                 else if(scambio == undefined)
@@ -548,6 +614,8 @@ function stampaggiorna(matrix)
                                         },400)
                                     }
                                     setTimeout(function(){
+                                        coppia = attuale.id
+                                        passa = passa + 1
                                         if(eliminaegenerata[0] == eliminaegenerata[1])
                                         {
                                             creaelementocondizionale(eliminaegenerata[0][1],posizioni,matrix)   
@@ -560,10 +628,10 @@ function stampaggiorna(matrix)
                                         stamparidotta(matrix)
                                         setTimeout(function(){
                                             matrix = shift(matrix)
-                                        },425)
+                                        },450)
                                     },525)
                                     scambio = undefined
-                                },425)
+                                },400)
                                 mosse = 0
                                 if(tuttipunti(punteggio) == true)
                                 {
@@ -653,7 +721,7 @@ function controlloricorsivo(matrice)
                     stamparidotta(matrix)
                     setTimeout(function(){
                         matrice = shift(matrice)
-                    },425)
+                    },450)
                 },525)
                 return matrice
             }
@@ -1355,7 +1423,35 @@ function esplosione(idunivoco)
 
     }
 }
-
+/*Gestione messaggi in-game*/
+function ecomessaggio(tipo)
+{
+    let frase = ""
+    if(tipo == 0)
+    {
+        let n = Math.round(Math.random() * ((frasi.secco.length-1) - 0) + 0)
+        frase = frasi.secco[n]
+    }
+    else if(tipo == 1)
+    {
+        let n = Math.round(Math.random() * ((frasi.carta.length-1)- 0) + 0)
+        frase = frasi.carta[n]
+    }
+    else if(tipo == 2)
+    {
+        let n = Math.round(Math.random() * ((frasi.plastica.length-1) - 0) + 0)
+        frase = frasi.plastica[n]
+    }
+    else if(tipo == 3)
+    {
+        let n = Math.round(Math.random() * ((frasi.vetro.length-1) - 0) + 0)
+        frase = frasi.vetro[n]
+    }
+    document.getElementById("mes").innerText = frase
+    document.querySelector(".ecomessaggio").style.animation = "transitionin 0.3s ease-out forwards"
+    document.querySelector(".visiover").style.display = "flex"
+    document.querySelector(".ecomessaggio").style.display = "flex"
+}
 /*Gestione generale*/
 setInterval(()=>{
     let colore = ""
@@ -1410,11 +1506,13 @@ function win()
             classifica = certo
             classifica = classifica.sort((a,b) => b[3] - a[3])
             localStorage.setItem("classifica",JSON.stringify(classifica))
+            document.querySelector(".visiover").style.animation = "hhi 0.3s ease-out forwards"
             document.querySelector(".avviso").style.animation = "scompari 0.6s ease-out"
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
             statoattuale = "homescreen"
             setTimeout(function(){
                 document.querySelector(".visiover").style.display = "none"
+                document.querySelector(".visiover").style.animation = ""
                 document.querySelector(".avviso").style.display = "none"
                 statoattuale = "homescreen"
                 resetta()
@@ -1431,10 +1529,12 @@ function lose()
     document.querySelector(".avviso").addEventListener("click",function(){
         if(avviato == true)
         {
+            document.querySelector(".visiover").style.animation = "hhi 0.3s ease-out forwards"
             transizioneavanzata(document.querySelector(".areagioco"),document.querySelector(".homescreen"),"sfondo")
             statoattuale = "homescreen"
             setTimeout(function(){
                 document.querySelector(".visiover").style.display = "none"
+                document.querySelector(".visiover").style.animation = ""
                 document.querySelector(".avviso").style.display = "none"
                 resetta()
                 statoattuale = "homescreen"
@@ -1452,6 +1552,7 @@ function resetta()
     document.querySelector(".appiglio").innerHTML = ""
     mosse = 0
     player = ""
+    passa = 0
     avviato = false
     spawnato = false
     noteseguendo = false
@@ -1595,6 +1696,16 @@ function chiedinome(e)
         }
     })
 }
+document.querySelector(".ecomessaggio").addEventListener("click",function(){
+    document.querySelector(".ecomessaggio").style.animation = "transitionout 0.3s ease-out forwards"
+    document.querySelector(".visiover").style.animation = "hhi 0.3s ease-out forwards"
+    passa = 0
+    setTimeout(function(){
+        document.querySelector(".ecomessaggio").style.display = "none"
+        document.querySelector(".visiover").style.display = "none"
+        document.querySelector(".visiover").style.animation = ""
+    },300)
+})
 giocabutton.addEventListener("click", () => {
     transizione(document.querySelector(".homescreen"),document.querySelector(".selezione"))
     statoattuale = "selezione"
@@ -1658,8 +1769,8 @@ pausabutton.addEventListener("click",()=>{
     })
     costruisciclassifica([punteggio,player,"",tot],document.querySelector(".puntiview"),false)
     setTimeout(function(){
-        document.querySelector(".areagioco").style.animation = "sevabo 0.6s ease-out forwards"
-        document.querySelector(".pausa").style.animation = "se 0.6s ease-out forwards"
+        document.querySelector(".areagioco").style.animation = "sevabo 0.3s ease-out forwards"
+        document.querySelector(".pausa").style.animation = "se 0.3s ease-out forwards"
         document.querySelector(".pausa").style.display = "flex"
     },100)
     statoattuale = "pausa"
@@ -1671,11 +1782,11 @@ document.getElementById("termina").addEventListener("click",function(){
 })
 document.getElementById("riprendi").addEventListener("click",function(){
     setTimeout(function(){
-        document.querySelector(".areagioco").style.animation = "sevabow 0.6s ease-out forwards"
-        document.querySelector(".pausa").style.animation = "seinverso 0.6s ease-out forwards"
+        document.querySelector(".areagioco").style.animation = "sevabow 0.3s ease-out forwards"
+        document.querySelector(".pausa").style.animation = "seinverso 0.3s ease-out forwards"
         setTimeout(function(){
             document.querySelector(".pausa").style.display = "none"
-        },600)
+        },300)
     },25)
 })
 document.getElementById("impostazionibutton").addEventListener("click",function(){
@@ -1688,6 +1799,9 @@ audio.addEventListener("input",function(){
 })
 sonori.addEventListener("input",function(){
     localStorage.setItem("sonori",sonori.value)
+})
+ecoti.addEventListener("input",function(){
+    localStorage.setItem("ecomessaggio",ecoti.value)
 })
 document.getElementById("resetta").addEventListener("click",function(){
     setTimeout(()=>{
@@ -1753,7 +1867,7 @@ window.addEventListener('popstate', () => {
 window.addEventListener("beforeunload",() => {
     if(avviato == true)
     {
-        localStorage.setItem("backup",JSON.stringify([punteggio,player,livello,mosse,matrixprov]))
+        localStorage.setItem("backup",JSON.stringify([punteggio,player,livello,mosse,matrixprov,passa]))
     }
     else
     {
