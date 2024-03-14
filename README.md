@@ -21,4 +21,4 @@
 
 ## Crediti
 
-Eco Crush è stato sviluppato da Marco Colombara e Marco Colombara con le bestemmie di Gianluca Grammatica.
+Eco Crush è stato sviluppato da Marco Colombara e Federico Femia
