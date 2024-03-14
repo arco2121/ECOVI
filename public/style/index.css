@@ -1266,3 +1266,9 @@ input[type="range"]:active
 {
     text-align: center;
 }
+@media screen and (max-height:400px) {
+    .puntiview
+    {
+        display: none;
+    }
+}

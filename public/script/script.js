@@ -746,22 +746,14 @@ function controllocontrollo(tipo,posizioni,matrice)
     }
     else
     {
-        uio = controlloterziario(tipo,posizioni,matrice)
+        uio = controllosecondario(tipo,posizioni,matrice)
         if(uio != false)
         {
             return uio
         }
         else
         {
-            uio = controllosecondario(tipo,posizioni,matrice)
-            if(uio != false)
-            {
-                return uio
-            }
-            else
-            {
-                return false
-            }
+            return false
         }
     }
 }
@@ -874,7 +866,7 @@ function controllosmonco(tipo,posizioni,matrice)
     {
         elemdaeliminare.push(matrice[posizioni[0]][posizioni[1]]);
     }
-    if (elemdaeliminare.length > 5) 
+    if (elemdaeliminare.length >= 5) 
     {
         return [elemdaeliminare, elemdaeliminare.length]
     } 
@@ -1005,34 +997,6 @@ function controllocolonna(tipo,posizioni,matrice)
     else
     {
         return false
-    }
-}
-function controlloterziario(tipo,posizioni,matrice)
-{
-    let ui = controlloal(tipo,posizioni,matrice)
-    if(ui != false)
-    {
-        return ui
-    } 
-    else
-    {
-        ui = controlloriga(tipo,posizioni,matrice)
-        if(ui != false)
-        {
-            return ui
-        }
-        else
-        {
-            ui = controllocolonna(tipo,posizioni,matrice)
-            if(ui != false)
-            {
-                return ui
-            }
-            else 
-            {
-                return false
-            }
-        }
     }
 }
 function elimina(elemdaeliminare,matrice)
