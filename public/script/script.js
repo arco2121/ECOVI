@@ -15,6 +15,7 @@ let audio = document.getElementById("sottofondo")
 let sonori = document.getElementById("effetti")
 let siaudio = false
 let siaudiof = false
+let sharebutton = document.getElementById("share")
 let avviato = false
 let strike = document.getElementById("strike")
 let scambio = undefined
@@ -202,11 +203,60 @@ bottonia.forEach(qw => {
 })
 
 /*Gestione Tabella*/
+function backupscrivi(elemento)
+{
+    let array = elemento
+    let mezzo = gentot(30)
+    let stringa = mezzo + "&@%"
+    for(let i = 0; i<array.length;i++)
+    {
+        if(Array.isArray(array[i]))
+        {
+            stringa = stringa + JSON.stringify(array[i]) + "&@%"
+        }
+        else
+        {
+            stringa = stringa + array[i] + "&@%"
+        }
+    }
+    stringa = stringa + gentot(30)
+    return stringa
+}
+function backupleggi(elemento)
+{
+    let stringa = elemento
+    stringa = stringa.split("&@%")
+    let array = []
+    for(let i = 1; i<stringa.length-1;i++)
+    {
+        if(Array.isArray(stringa[i]))
+        {
+            array.push(JSON.parse(stringa[i]))
+        }
+        else
+        {
+            array.push(stringa[i])
+        }
+    }
+    return array
+}
 function genid()
 {
     let caratteri = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890!£$%&/"
     caratteri = caratteri.split("")
     let volte = Math.floor(Math.random()*(40-5)+5)
+    let st = ""
+    for(let i = 0; i<volte; i++)
+    {
+        let cv = caratteri[Math.floor(Math.random()*caratteri.length)]
+        st = st + cv
+    }
+    return st
+}
+function gentot(volte)
+{
+    let caratteri = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890!£$%&/,"
+    caratteri = caratteri.split("")
     let st = ""
     for(let i = 0; i<volte; i++)
     {
@@ -1669,6 +1719,17 @@ document.querySelector(".ecomessaggio").addEventListener("click",function(){
         document.querySelector(".visiover").style.display = "none"
         document.querySelector(".visiover").style.animation = ""
     },300)
+})
+sharebutton.addEventListener(true,()=>{
+    if(avviato == true)
+    {
+        let stringata = backupscrivi([punteggio,player,livello,mosse,matrixprov,passa])
+        navigator.clipboard.write(stringata)
+        if(navigator.canShare())
+        {
+            navigator.share(stringata)
+        }
+    }
 })
 giocabutton.addEventListener("click", () => {
     transizione(document.querySelector(".homescreen"),document.querySelector(".selezione"))
