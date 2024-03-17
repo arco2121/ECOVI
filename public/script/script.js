@@ -103,6 +103,7 @@ else
 
 window.addEventListener("DOMContentLoaded",()=>{
     document.querySelector(".loadscreen").style.animation = "se 0.6s ease forwards"
+    document.querySelector(".loadscreen").style.display = "flex"
     setTimeout(function(){
         document.querySelector(".loadscreen").addEventListener("click",()=>{
             setTimeout(()=>{
@@ -118,33 +119,37 @@ window.addEventListener("DOMContentLoaded",()=>{
                     punteggio = now[0]
                     livello = now[2]
                     mosse = now[3]
-                    if(livello == "x5")
-                    {
-                        document.body.style.setProperty("--sfondotabella",colori.x5+"d5")
-                    }
-                    else if(livello == "x6")
-                    {
-                        document.body.style.setProperty("--sfondotabella",colori.x6+"d5")
-                    }
-                    else if (livello == "x7")
-                    {
-                        document.body.style.setProperty("--sfondotabella",colori.x7+"d5")
-                    }
-                    else if(livello == "xcasuale")
-                    {
-                        document.body.style.setProperty("--sfondotabella",colori.xcasuale+"d5")
-                    }
                     localStorage.setItem("player",player)
                     avviato = true
                     passa = now[5]
                     transizioneavanzata(document.querySelector(".loadscreen"),document.querySelector(".areagioco"),livello)
                     statoattuale = "areagioco"
                     setTimeout(function(){
+                        if(livello == "x5")
+                        {
+                            document.body.style.setProperty("--sfondotabella",colori.x5+"8a")
+                        }
+                        else if(livello == "x6")
+                        {
+                            document.body.style.setProperty("--sfondotabella",colori.x6+"8a")
+                        }
+                        else if (livello == "x7")
+                        {
+                            document.body.style.setProperty("--sfondotabella",colori.x7+"8a")
+                        }
+                        else if(livello == "xcasuale")
+                        {
+                            document.body.style.setProperty("--sfondotabella",colori.xcasuale+"8a")
+                        }
                         stampaggiorna(now[4])
                     },400)
                 }
             },25)
             setInterval(function(){
+                if(statoattuale == "chiedibacup")
+                {
+                    document.body.style.setProperty("--sfondotabella","")
+                }
                 if(localStorage.getItem("audio") == "1")
                 {
                     siaudiof = false
@@ -201,33 +206,49 @@ bottonia.forEach(qw => {
         }
     })
 })
-
 /*Gestione Tabella*/
 function backupscrivi(elemento)
 {
     let array = elemento
     let mezzo = gentot(30)
-    let stringa = mezzo + "&@%"
+    let stringa = "($£!)/&@%" + mezzo + "&@%"
+    let sadr = ''
     for(let i = 0; i<array.length;i++)
     {
         if(Array.isArray(array[i]))
         {
-            stringa = stringa + JSON.stringify(array[i]) + "&@%"
+            sadr = sadr + JSON.stringify(array[i]) + "&@%"
         }
         else
         {
-            stringa = stringa + array[i] + "&@%"
+            sadr = sadr + array[i] + "&@%"
         }
     }
-    stringa = stringa + gentot(30)
+    for(let i = 0; i <= 20;i++)
+    {
+        stringa = stringa + sadr
+    }
+    stringa = stringa + gentot(30) + "&@%/(!$£)"
     return stringa
+}
+function backupvalido(stringa)
+{
+    stringa = stringa.split("&@%")
+    if(stringa[0] == "($£!)/" && stringa[stringa.length-1] == "/(!$£)" && stringa.length == 130)
+    {
+        return true
+    }
+    else
+    {
+        return false
+    }
 }
 function backupleggi(elemento)
 {
     let stringa = elemento
     stringa = stringa.split("&@%")
     let array = []
-    for(let i = 1; i<stringa.length-1;i++)
+    for(let i = 80; i<86;i++)
     {
         if(Array.isArray(stringa[i]))
         {
@@ -379,7 +400,7 @@ function generaelemento(posizioni,tipo,matrice)
             {
                 if(possible == true)
                 {
-                    let urai = Math.round(Math.random() * (80 - 0) + 0)
+                    let urai = Math.round(Math.random() * (100 - 0) + 0)
                     if(urai <= 1)
                     {
                         idunivoco = genid()
@@ -678,7 +699,7 @@ function stampaggiorna(matrix)
                                         stamparidotta(matrix)
                                         setTimeout(function(){
                                             matrix = shift(matrix)
-                                        },450)
+                                        },460)
                                     },525)
                                     scambio = undefined
                                 },400)
@@ -1634,33 +1655,30 @@ function transizione(inn,outt)
 {
     setTimeout(()=>{
         document.querySelector(".blocco").style.display = "block"
-        inn.style.animation = "transitionout 0.6s ease-out forwards"
-        outt.style.animation = "transitionin 0.6s ease-out forwards"
-        outt.style.display = "flex"
+        inn.style.animation = "transitionout 0.3s ease-out forwards"
         setTimeout(function(){
             inn.style.display  ="none"
+            outt.style.animation = "transitionin 0.3s ease-out forwards"
+            outt.style.display = "flex"
             document.querySelector(".blocco").style.display = "none"
-        },600)
+        },300)
     },25)
 }
 function transizioneavanzata(inn,outt,w)
 {
     setTimeout(()=>{
         document.querySelector(".blocco").style.display = "block"
-        inn.style.animation = "transitionout 0.6s ease-out forwards"
-        outt.style.animation = "transitionin 0.6s ease-out forwards"
+        inn.style.animation = "transitionout 0.3s ease-out forwards"
         document.querySelector(".generalover").style.display = "block"
         document.querySelector(".generalover").style.animation = "transitionover 0.6s ease-out forwards"
         setTimeout(function(){
             document.getElementById("sfondo").src = "img/"+w+".jpg"
-        },200)
-        outt.style.display = "flex"
-        setTimeout(function(){
-            inn.style.display  ="none"
+            inn.style.display  = "none"
+            outt.style.animation = "transitionin 0.3s ease-out forwards"
+            outt.style.display = "flex"
             document.querySelector(".generalover").style.display = "none"
             document.querySelector(".blocco").style.display = "none"
-        },600)
-        
+        },300)
     },25)
 }
 function messaggio(n)
@@ -1673,11 +1691,9 @@ function avviso(n)
 {
     document.body.style.setProperty("--esito","#833920")
     document.getElementById("avvisu").innerHTML = n
-    transizione(document.querySelector(".chiedinome"),document.querySelector(".avviso"))
-    statoattuale = "avviso"
+    transizione(document.querySelector("." + statoattuale),document.querySelector(".avviso"))
     setTimeout(function(){
-        transizione(document.querySelector(".avviso"),document.querySelector(".chiedinome"))  
-        statoattuale = "chiedinome"      
+        transizione(document.querySelector(".avviso"),document.querySelector("." + statoattuale))       
     },800)
 }
 function chiedinome(e)
@@ -1720,14 +1736,14 @@ document.querySelector(".ecomessaggio").addEventListener("click",function(){
         document.querySelector(".visiover").style.animation = ""
     },300)
 })
-sharebutton.addEventListener(true,()=>{
+sharebutton.addEventListener("click",()=>{
     if(avviato == true)
     {
-        let stringata = backupscrivi([punteggio,player,livello,mosse,matrixprov,passa])
-        navigator.clipboard.write(stringata)
+        let stringatas = backupscrivi([punteggio,player,livello,mosse,matrixprov,passa])
+        navigator.clipboard.writeText(stringatas)
         if(navigator.canShare())
         {
-            navigator.share(stringata)
+            navigator.share(stringatas)
         }
     }
 })
@@ -1759,21 +1775,21 @@ backtoclassifica.forEach(bottone => {
     })
 })
 x5button.addEventListener("click", ()=>{
-    document.body.style.setProperty("--sfondotabella",colori.x5+"d5")
+    document.body.style.setProperty("--sfondotabella",colori.x5+"8a")
     livello = "x5"
     chiedinome(5)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x5")
     statoattuale = "chiedinome"
 })
 x6button.addEventListener("click", ()=>{
-    document.body.style.setProperty("--sfondotabella",colori.x6+"d5")
+    document.body.style.setProperty("--sfondotabella",colori.x6+"8a")
     livello = "x6"
     chiedinome(6)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x6")
     statoattuale = "chiedinome"
 })
 x7button.addEventListener("click", ()=>{
-    document.body.style.setProperty("--sfondotabella",colori.x7+"d5")
+    document.body.style.setProperty("--sfondotabella",colori.x7+"8a")
     livello = "x7"
     chiedinome(7)
     transizioneavanzata(document.querySelector(".selezione"),document.querySelector(".chiedinome"),"x7")
@@ -1795,9 +1811,11 @@ pausabutton.addEventListener("click",()=>{
     costruisciclassifica([punteggio,player,"",tot],document.querySelector(".puntiview"),false)
     setTimeout(function(){
         document.querySelector(".areagioco").style.animation = "sevabo 0.3s ease-out forwards"
-        document.querySelector(".pausa").style.animation = "se 0.3s ease-out forwards"
-        document.querySelector(".pausa").style.display = "flex"
-    },100)
+        setTimeout(()=>{
+            document.querySelector(".pausa").style.animation = "se 0.3s ease-out forwards"
+            document.querySelector(".pausa").style.display = "flex"
+        },300)
+    },25)
     statoattuale = "pausa"
 })
 document.getElementById("termina").addEventListener("click",function(){
@@ -1807,10 +1825,10 @@ document.getElementById("termina").addEventListener("click",function(){
 })
 document.getElementById("riprendi").addEventListener("click",function(){
     setTimeout(function(){
-        document.querySelector(".areagioco").style.animation = "sevabow 0.3s ease-out forwards"
         document.querySelector(".pausa").style.animation = "seinverso 0.3s ease-out forwards"
         setTimeout(function(){
             document.querySelector(".pausa").style.display = "none"
+            document.querySelector(".areagioco").style.animation = "sevabow 0.3s ease-out forwards"
         },300)
     },25)
 })
@@ -1818,7 +1836,68 @@ document.getElementById("impostazionibutton").addEventListener("click",function(
     transizione(document.querySelector(".homescreen"),document.querySelector(".impostazioni"))
     statoattuale = "impostazioni"
 })
-
+document.getElementById("rese").addEventListener("click",function(){
+    transizione(document.querySelector(".impostazioni"),document.querySelector(".chiedibacup"))
+    statoattuale = "chiedibacup"
+})
+document.getElementById("baci").addEventListener("input",(e)=>{
+    e.preventDefault()
+    document.getElementById("baci").value = ""
+})
+document.getElementById("baci").addEventListener("paste",(e)=>{
+    e.preventDefault()
+    document.getElementById("baci").value = e.clipboardData.getData('text')
+})
+document.getElementById("colla").addEventListener("click",function(){
+    navigator.clipboard.readText().then(function(text){
+        let gh = text
+        document.getElementById("baci").value = gh
+    }).catch()
+})
+document.getElementById("oki").addEventListener("click",function(){
+    let jk = document.getElementById("baci").value 
+    if(!backupvalido(document.getElementById("baci").value))
+    {
+        avviso("Striga non valida")
+        document.getElementById("baci").value = ""
+    }
+    else
+    {
+        document.getElementById("baci").value = ""
+        let now = backupleggi(jk)
+        player = now[1]
+        punteggio = JSON.parse(now[0])
+        livello = now[2]
+        mosse = now[3]
+        localStorage.setItem("player",player)
+        avviato = true
+        passa = now[5]
+        transizioneavanzata(document.querySelector(".chiedibacup"),document.querySelector(".areagioco"),livello)
+        statoattuale = "areagioco"
+        setTimeout(function(){
+            if(livello == "x5")
+            {
+                document.body.style.setProperty("--sfondotabella",colori.x5+"8a")
+            }
+            else if(livello == "x6")
+            {
+                document.body.style.setProperty("--sfondotabella",colori.x6+"8a")
+            }
+            else if (livello == "x7")
+            {
+                document.body.style.setProperty("--sfondotabella",colori.x7+"8a")
+            }
+            else if(livello == "xcasuale")
+            {
+                document.body.style.setProperty("--sfondotabella",colori.xcasuale+"8a")
+            }
+            stampaggiorna(JSON.parse(now[4]))
+        },400)
+    }
+})
+document.body.addEventListener("click",()=>{
+    history.pushState(null, null, document.URL)
+})
 audio.addEventListener("input",function(){
     localStorage.setItem("audio",audio.value)
 })
@@ -1834,7 +1913,6 @@ document.getElementById("resetta").addEventListener("click",function(){
         window.location.reload()
     },25)
 })
-history.pushState(null, null, document.URL)
 window.addEventListener('popstate', () => {
   if (statoattuale == "selezione") 
   {
@@ -1887,6 +1965,12 @@ window.addEventListener('popstate', () => {
     history.pushState(null, null, document.URL)
     transizioneavanzata(document.querySelector(".chiedinome"),document.querySelector(".selezione"),"sfondo")
     statoattuale = "homescreen"
+  }
+  else if(statoattuale == "chiedibacup")
+  {
+    history.pushState(null, null, document.URL)
+    transizione(document.querySelector(".chiedibacup"),document.querySelector(".impostazioni"))
+    statoattuale = "impostazioni"
   }
 })
 window.addEventListener("beforeunload",() => {
