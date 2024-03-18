@@ -224,7 +224,7 @@ function backupscrivi(elemento)
             sadr = sadr + array[i] + "&@%"
         }
     }
-    for(let i = 0; i <= 20;i++)
+    for(let i = 0; i <= 10;i++)
     {
         stringa = stringa + sadr
     }
@@ -234,7 +234,7 @@ function backupscrivi(elemento)
 function backupvalido(stringa)
 {
     stringa = stringa.split("&@%")
-    if(stringa[0] == "($£!)/" && stringa[stringa.length-1] == "/(!$£)" && stringa.length == 130)
+    if(stringa[0] == "($£!)/" && stringa[stringa.length-1] == "/(!$£)" && stringa.length == 70)
     {
         return true
     }
@@ -248,7 +248,7 @@ function backupleggi(elemento)
     let stringa = elemento
     stringa = stringa.split("&@%")
     let array = []
-    for(let i = 80; i<86;i++)
+    for(let i = 20; i<26;i++)
     {
         if(Array.isArray(stringa[i]))
         {
@@ -1895,9 +1895,6 @@ document.getElementById("oki").addEventListener("click",function(){
         },400)
     }
 })
-document.body.addEventListener("click",()=>{
-    history.pushState(null, null, document.URL)
-})
 audio.addEventListener("input",function(){
     localStorage.setItem("audio",audio.value)
 })
@@ -1963,7 +1960,7 @@ window.addEventListener('popstate', () => {
   else if (statoattuale == "impostazioni")
   {
     history.pushState(null, null, document.URL)
-    transizioneavanzata(document.querySelector(".chiedinome"),document.querySelector(".selezione"),"sfondo")
+    transizione(document.querySelector(".impostazioni"),document.querySelector(".homescreen"))
     statoattuale = "homescreen"
   }
   else if(statoattuale == "chiedibacup")
