@@ -231,6 +231,9 @@ function backupscrivi(elemento)
     stringa = stringa + gentot(30) + "&@%/(!$£)"
     return stringa
 }
+document.body.addEventListener("click",()=>{
+    history.pushState(null, null, document.URL)
+})
 function backupvalido(stringa)
 {
     stringa = stringa.split("&@%")
@@ -507,7 +510,7 @@ function stampaggiorna(matrix)
         if(passa > 2)
         {
             let gh = Math.round(Math.random())
-            if(gh == 1)
+            if(gh == 1 && tuttipunti(punteggio) != true)
             {
                 ecomessaggio(coppia)
                 passa = 0
